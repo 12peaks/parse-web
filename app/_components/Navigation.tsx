@@ -69,7 +69,6 @@ export const Navigation = ({
   user,
 }: NavigationProps) => {
   const pathname = usePathname();
-  console.log(pathname);
   const queryClient = useQueryClient();
   const groupQuery = useQuery({
     queryKey: ["groups-joined"],

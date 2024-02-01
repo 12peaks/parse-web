@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Combobox,
   Group,
@@ -8,23 +8,28 @@ import {
   useCombobox,
 } from "@mantine/core";
 
-type CustomSelectOption = {
+type Item = {
   icon: React.ReactNode;
   label: string;
   description: string;
   value: string;
 };
 
-export function CustomSelect(
-  props: any,
-  { data }: { data: CustomSelectOption[] }
-) {
+export function CustomSelect({
+  data,
+  defaultValue,
+  setValue,
+  ...comboboxProps
+}: {
+  data: Item[];
+  defaultValue: string | null;
+  setValue: Dispatch<SetStateAction<string>>;
+  [key: string]: any;
+}) {
   const combobox = useCombobox({
     onDropdownClose: () => combobox.resetSelectedOption(),
   });
-
-  const [value, setValue] = useState<string | null>(null);
-  const selectedOption = data.find((item) => item.value === value);
+  const selectedOption = data.find((item) => item.value === defaultValue);
 
   const options = data.map((item) => (
     <Combobox.Option value={item.value} key={item.value}>
@@ -34,13 +39,13 @@ export function CustomSelect(
 
   return (
     <Combobox
-      {...props}
       store={combobox}
       withinPortal={false}
       onOptionSubmit={(value) => {
         setValue(value);
         combobox.closeDropdown();
       }}
+      {...comboboxProps}
     >
       <Combobox.Target>
         <InputBase
@@ -51,12 +56,13 @@ export function CustomSelect(
           onClick={() => combobox.toggleDropdown()}
           rightSectionPointerEvents="none"
           multiline
-        />
-        {selectedOption ? (
-          <SelectOption {...selectedOption} />
-        ) : (
-          <Input.Placeholder>Select option</Input.Placeholder>
-        )}
+        >
+          {selectedOption ? (
+            <SelectOption {...selectedOption} />
+          ) : (
+            <Input.Placeholder>Select option</Input.Placeholder>
+          )}
+        </InputBase>
       </Combobox.Target>
       <Combobox.Dropdown>
         <Combobox.Options>{options}</Combobox.Options>
@@ -65,10 +71,10 @@ export function CustomSelect(
   );
 }
 
-function SelectOption({ icon, label, description }: CustomSelectOption) {
+function SelectOption({ icon, label, description }: Item) {
   return (
-    <Group>
-      {icon}
+    <div className="flex flex-row space-x-2">
+      <div>{icon}</div>
       <div>
         <Text size="sm" fw={500}>
           {label}
@@ -77,6 +83,6 @@ function SelectOption({ icon, label, description }: CustomSelectOption) {
           {description}
         </Text>
       </div>
-    </Group>
+    </div>
   );
 }

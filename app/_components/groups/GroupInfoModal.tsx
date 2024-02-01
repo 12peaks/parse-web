@@ -20,6 +20,46 @@ type GroupInfoModalProps = {
   handleNewNameNavigation?: (newUrl: string) => void;
 };
 
+const privacyOptions = [
+  {
+    label: "Public",
+    description:
+      "Anyone on your team can see who is in the group and what they post.",
+    icon: (
+      <GlobeAltIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />
+    ),
+    value: "true",
+  },
+  {
+    label: "Private",
+    description: "Only members can see who is in the group and what they post.",
+    icon: (
+      <LockClosedIcon
+        className="mr-3 flex-shrink-0 h-6 w-6"
+        aria-hidden="true"
+      />
+    ),
+    value: "false",
+  },
+];
+
+const visibilityOptions = [
+  {
+    label: "Visible",
+    description: "Anyone can find this group.",
+    icon: <EyeIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />,
+    value: "true",
+  },
+  {
+    label: "Private",
+    description: "Only members can find this group.",
+    icon: (
+      <EyeSlashIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />
+    ),
+    value: "false",
+  },
+];
+
 export const GroupInfoModal = ({
   group,
   handleNewNameNavigation,
@@ -224,18 +264,16 @@ export const GroupInfoModal = ({
         className="col-span-6"
         label="Privacy"
         placeholder="Select option"
-        value={isGroupPublic}
+        defaultValue={isGroupPublic}
+        setValue={setIsGroupPublic}
         data={privacyOptions}
       />
 
       <CustomSelect
-        className={`col-span-6 ${
-          isGroupPublic === "true" || isGroupPublic === null
-            ? "invisible"
-            : "visibile"
-        }`}
+        className={`col-span-6 ${isGroupPublic === "true" ? "visible" : "invisible"}`}
         label="Visibility"
-        value={isGroupVisible}
+        defaultValue={isGroupVisible}
+        setValue={setIsGroupVisible}
         data={visibilityOptions}
       />
 
@@ -259,43 +297,3 @@ export const GroupInfoModal = ({
     </div>
   );
 };
-
-const privacyOptions = [
-  {
-    label: "Public",
-    description:
-      "Anyone on your team can see who is in the group and what they post.",
-    icon: (
-      <GlobeAltIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />
-    ),
-    value: "true",
-  },
-  {
-    label: "Private",
-    description: "Only members can see who is in the group and what they post.",
-    icon: (
-      <LockClosedIcon
-        className="mr-3 flex-shrink-0 h-6 w-6"
-        aria-hidden="true"
-      />
-    ),
-    value: "false",
-  },
-];
-
-const visibilityOptions = [
-  {
-    label: "Visible",
-    description: "Anyone can find this group.",
-    icon: <EyeIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />,
-    value: "true",
-  },
-  {
-    label: "Private",
-    description: "Only members can find this group.",
-    icon: (
-      <EyeSlashIcon className="mr-3 flex-shrink-0 h-6 w-6" aria-hidden="true" />
-    ),
-    value: "false",
-  },
-];
