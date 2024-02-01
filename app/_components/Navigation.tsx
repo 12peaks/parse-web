@@ -80,7 +80,12 @@ export const Navigation = ({
       <AppShell.Section className={classes.title}>parse</AppShell.Section>
       <AppShell.Section className={classes.navbarMain}>
         {navigation.map((item) => (
-          <Link key={item.name} href={item.href} className={classes.link}>
+          <Link
+            key={item.name}
+            href={item.href}
+            data-active={pathname === item.href ? true : undefined}
+            className={classes.link}
+          >
             <item.icon
               className="mr-3 flex-shrink-0 h-6 w-6"
               aria-hidden="true"
