@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import {
-  QueryClient,
-  useQueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
-import "./globals.css";
 import QueryProvider from "@/libs/query-provider";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ModalsProvider } from "@mantine/modals";
+import { Notifications } from "@mantine/notifications";
+import { NavigationProgress } from "@mantine/nprogress";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,8 +14,6 @@ export const metadata: Metadata = {
   description: "Collaboration software for teams.",
 };
 
-const queryClient = new QueryClient();
-
 export default async function RootLayout({
   children,
 }: Readonly<{
@@ -24,8 +21,17 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <ColorSchemeScript defaultColorScheme="auto" />
+      </head>
       <body className={inter.className}>
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <MantineProvider defaultColorScheme="auto">
+            <NavigationProgress />
+            <Notifications />
+            <ModalsProvider>{children}</ModalsProvider>
+          </MantineProvider>
+        </QueryProvider>
       </body>
     </html>
   );

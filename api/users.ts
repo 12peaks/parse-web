@@ -9,3 +9,7 @@ export const getCurrentUser = async (): Promise<CurrentUser | null> => {
     return null;
   }
 };
+
+export const getProfile = async (): Promise<CurrentUser | null> => {
+  return null;
+};
