@@ -1,8 +1,9 @@
 "use client";
-import { Button } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { GroupInfoModal } from "./GroupInfoModal";
 import { useRouter } from "next/navigation";
+import { IconPlus } from "@tabler/icons-react";
 
 export const CreateGroupButton = () => {
   const modals = useModals();
@@ -23,18 +24,12 @@ export const CreateGroupButton = () => {
   };
 
   return (
-    <div className="pl-2 col-span-1">
-      <Button
-        variant="default"
-        radius="md"
-        fullWidth
-        size="xs"
-        color="gray"
-        classNames={{ root: "rounded-md", section: "mr-2 -ml-1" }}
-        onClick={() => openNewGroupModal()}
-      >
-        Add group
-      </Button>
-    </div>
+    <ActionIcon
+      color="gray"
+      variant="subtle"
+      onClick={() => openNewGroupModal()}
+    >
+      <IconPlus style={{ width: "70%", height: "70%" }} stroke={2} />
+    </ActionIcon>
   );
 };

@@ -102,20 +102,21 @@ export const Navigation = ({
         ))}
       </AppShell.Section>
       {groupQuery.isSuccess ? (
-        <AppShell.Section grow component={ScrollArea}>
-          <div className="sticky top-0 ">
-            <Divider
-              my="xs"
-              className={classes.divider}
-              label="Groups"
-              styles={{ label: { fontSize: "0.75rem" } }}
-            />
-            <div className="grid grid-cols-2 gap-2 -mt-1 mb-2">
-              <CreateGroupButton />
-              <BrowseGroupsButton />
+        <AppShell.Section
+          className={classes.groupSection}
+          grow
+          component={ScrollArea}
+        >
+          <div className="sticky top-0">
+            <div className="flex flex-row justify-between items-center">
+              <div className="text-sm font-medium">Groups</div>
+              <div className="space-x-2">
+                <CreateGroupButton />
+                <BrowseGroupsButton />
+              </div>
             </div>
           </div>
-          <div className="">
+          <div>
             {groupQuery.data.map((group) => (
               <Link
                 key={group.id}
@@ -133,7 +134,7 @@ export const Navigation = ({
       )}
       {user ? (
         <AppShell.Section className={classes.footer}>
-          <Link href={`/team/${user?.id}`} className={classes.link}>
+          <Link href="/profile" className={classes.link}>
             <div className="flex items-center">
               <div>
                 <img

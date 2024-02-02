@@ -1,8 +1,9 @@
 "use client";
-import { Button } from "@mantine/core";
+import { ActionIcon } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useRouter } from "next/navigation";
 import BrowseGroupsModal from "@/app/_components/groups/BrowseGroupsModal";
+import { IconSearch } from "@tabler/icons-react";
 
 export const BrowseGroupsButton = () => {
   const modals = useModals();
@@ -22,17 +23,12 @@ export const BrowseGroupsButton = () => {
   };
 
   return (
-    <div className="col-span-1">
-      <Button
-        variant="default"
-        radius="md"
-        fullWidth
-        size="xs"
-        color="gray"
-        onClick={() => openBrowseGroupsModal()}
-      >
-        Browse all
-      </Button>
-    </div>
+    <ActionIcon
+      color="gray"
+      variant="subtle"
+      onClick={() => openBrowseGroupsModal()}
+    >
+      <IconSearch style={{ width: "70%", height: "70%" }} stroke={2} />
+    </ActionIcon>
   );
 };
