@@ -1,5 +1,5 @@
 "use client";
-import { Authenticated } from "@/app/_components/Authenticated";
+import { Authenticated } from "@/app/_components/auth/Authenticated";
 import Link from "next/link";
 
 export default function Home() {

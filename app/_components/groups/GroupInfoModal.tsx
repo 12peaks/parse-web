@@ -13,7 +13,7 @@ import {
   LockClosedIcon,
   PhotoIcon,
 } from "@heroicons/react/24/outline";
-import { CustomSelect } from "@/app/_components/CustomSelect";
+import { CustomSelect } from "@/app/_components/ui/CustomSelect";
 
 type GroupInfoModalProps = {
   group?: Group;

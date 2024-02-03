@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/api/users";
 import { AppShell, Button, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { Navigation } from "@/app/_components/Navigation";
+import { Navigation } from "@/app/_components/navigation/Navigation";
 import { useDisclosure } from "@mantine/hooks";
 
 export const Authenticated = ({ children }: { children: React.ReactNode }) => {

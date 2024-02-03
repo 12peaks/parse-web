@@ -19,7 +19,7 @@ import {
 import { CreateGroupButton } from "@/app/_components/groups/CreateGroupButton";
 import { BrowseGroupsButton } from "@/app/_components/groups/BrowseGroupsButton";
 import type { CurrentUser } from "@/types/user";
-import classes from "@/app/_components/Navigation.module.css";
+import classes from "@/app/_components/navigation/Navigation.module.css";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon, current: false, badgeCount: null },
