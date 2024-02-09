@@ -4,62 +4,69 @@ import axios from "@/libs/axios";
 type CreateGroupDTO = {
   name: string;
   description?: string;
-  group_image?: string;
-  header_image?: string;
   is_private: boolean;
   is_visible: boolean;
-  url_name: string;
 };
 
 type UpdateGroupDTO = {
-  id: number;
+  id: string;
   name?: string;
   description?: string;
-  group_image?: string;
-  header_image?: string;
-  team_id?: string;
   is_private?: boolean;
   is_visible?: boolean;
-  url_name?: string;
 };
 
 export const getJoinedGroups = async (): Promise<Group[]> => {
-  return [];
+  const response = await axios.get("/api/groups?joined=true");
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return [];
+  }
 };
 
 export const createGroup = async ({
   name,
   description,
-  group_image,
-  header_image,
   is_private,
   is_visible,
-  url_name,
-}: CreateGroupDTO): Promise<Group[]> => {
-  return [];
+}: CreateGroupDTO): Promise<Group> => {
+  const response = await axios.post("/api/groups", {
+    name,
+    description,
+    is_private,
+    is_visible,
+  });
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return {} as Group;
+  }
 };
 
 export const updateGroup = async ({
   id,
   name,
   description,
-  group_image,
-  header_image,
   is_private,
   is_visible,
-  url_name,
-}: UpdateGroupDTO): Promise<Group[]> => {
-  return [];
+}: UpdateGroupDTO): Promise<Group> => {
+  return {} as Group;
 };
 
 export const getAllGroups = async (searchTerm: string): Promise<Group[]> => {
+  const response = await axios.get("/api/groups");
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return [];
+  }
+};
+
+export const joinGroup = async (groupId: string): Promise<Group[]> => {
   return [];
 };
 
-export const joinGroup = async (groupId: number): Promise<Group[]> => {
-  return [];
-};
-
-export const leaveGroup = async (groupId: number): Promise<Group[]> => {
+export const leaveGroup = async (groupId: string): Promise<Group[]> => {
   return [];
 };

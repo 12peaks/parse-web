@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getJoinedGroups } from "@/api/groups";
-import { Divider, AppShell, ScrollArea } from "@mantine/core";
+import { AppShell, ScrollArea } from "@mantine/core";
 import { GroupIcon } from "@/app/_components/groups/GroupIcon";
 import placeholderAvatar from "@/public/sunglasses.png";
 import {
@@ -102,13 +102,9 @@ export const Navigation = ({
         ))}
       </AppShell.Section>
       {groupQuery.isSuccess ? (
-        <AppShell.Section
-          className={classes.groupSection}
-          grow
-          component={ScrollArea}
-        >
+        <AppShell.Section grow component={ScrollArea}>
           <div className="sticky top-0">
-            <div className="flex flex-row justify-between items-center">
+            <div className="flex flex-row px-4 mb-1 justify-between items-center">
               <div className="text-sm font-medium">Groups</div>
               <div className="space-x-2">
                 <CreateGroupButton />
@@ -120,10 +116,10 @@ export const Navigation = ({
             {groupQuery.data.map((group) => (
               <Link
                 key={group.id}
-                href={`/groups/${group.url_name ? group.url_name : group.name}`}
-                className="flex cursor-pointer items-center px-2 py-1 flex-row font-medium hover:bg-gray-50 hover:text-gray-900 text-gray-600 rounded-md"
+                href={`/groups/${group.url_slug ? group.url_slug : group.name}`}
+                className={classes.groupLink}
               >
-                <GroupIcon size={null} groupImage={group.group_image} />
+                <GroupIcon size={null} groupImage={group.avatar_url} />
                 <span className="text-sm">{group.name}</span>
               </Link>
             ))}

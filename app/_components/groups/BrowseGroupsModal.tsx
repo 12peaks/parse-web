@@ -34,11 +34,11 @@ const BrowseGroupsModal: React.FC<BrowseGroupsModalProps> = ({
     },
   });
 
-  const handleJoinGroup = async (groupId: number) => {
+  const handleJoinGroup = async (groupId: string) => {
     joinGroupMutation.mutate(groupId);
   };
 
-  const handleLeaveGroup = async (groupId: number) => {
+  const handleLeaveGroup = async (groupId: string) => {
     leaveGroupMutation.mutate(groupId);
   };
 
@@ -46,7 +46,7 @@ const BrowseGroupsModal: React.FC<BrowseGroupsModalProps> = ({
     <>
       <TextInput
         radius="xl"
-        className="mb-2 mt-0.5 mx-0.5"
+        className="mb-2 mt-0.5"
         size="sm"
         placeholder="Search groups..."
         value={searchTerm}
@@ -55,30 +55,30 @@ const BrowseGroupsModal: React.FC<BrowseGroupsModalProps> = ({
       {allGroupsQuery.isSuccess ? (
         <div>
           <div className="flow-root">
-            <ul className="list-none divide-y divide-gray-200">
+            <ul className="list-none divide-y theme-divide">
               {allGroupsQuery.data.map((group) => (
                 <li key={group.id} className="py-3">
                   <div className="flex items-center space-x-4">
                     <div
                       className="flex-shrink-0 hover:cursor-pointer"
-                      onClick={() => handleGroupNavigate(group.url_name)}
+                      onClick={() => handleGroupNavigate(group.url_slug)}
                     >
-                      <GroupIcon size={6} groupImage={group.group_image} />
+                      <GroupIcon size={6} groupImage={group.avatar_url} />
                     </div>
                     <div
                       className="flex-1 min-w-0 hover:cursor-pointer"
-                      onClick={() => handleGroupNavigate(group.url_name)}
+                      onClick={() => handleGroupNavigate(group.url_slug)}
                     >
-                      <p className="text-sm font-medium text-gray-900 truncate">
+                      <p className="text-sm font-medium theme-text truncate">
                         {group.name}
                       </p>
-                      <p className="text-sm text-gray-500 truncate">
+                      <p className="text-sm theme-text-subtle truncate">
                         {group.description}
                       </p>
                     </div>
 
                     <div>
-                      {group.group_members && group.group_members.length > 0 ? (
+                      {group.group_users && group.group_users.length > 0 ? (
                         <Button
                           size="xs"
                           radius="xl"

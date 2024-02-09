@@ -17,4 +17,17 @@
   .text-balance {
     text-wrap: balance;
   }
+  .theme-text {
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  }
+  .theme-text-subtle {
+    color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+  }
+  .theme-divide > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1;
+    border-color: light-dark(
+      var(--mantine-color-gray-4),
+      var(--mantine-color-gray-7)
+    );
+  }
 }

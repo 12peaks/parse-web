@@ -75,7 +75,7 @@ export const GroupInfoModal = ({
     group ? group.is_visible.toString() : "true"
   );
   const [iconPhotoUrl, setIconPhotoUrl] = useState(
-    group ? group.group_image : ""
+    group ? group.avatar_url : ""
   );
   const headerImageUrl =
     "https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80";
@@ -90,26 +90,14 @@ export const GroupInfoModal = ({
     }
   };
 
-  const makeUrlName = (value: string) => {
-    return value === undefined
-      ? ""
-      : value
-          .replace(/[^a-z0-9_]+/gi, "-")
-          .replace(/^-|-$/g, "")
-          .toLowerCase();
-  };
-
   const createGroupMutation = useMutation({
     mutationFn: createGroup,
-    onSuccess: (data: Group[]) => {
-      if (data && data[0]) {
+    onSuccess: (data: Group) => {
+      if (data && data.id) {
         queryClient.invalidateQueries({
-          queryKey: ["group", data[0].url_name],
+          queryKey: ["group", data.url_slug],
         });
         queryClient.invalidateQueries({ queryKey: ["groups-joined"] });
-        if (data[0].url_name && handleNewNameNavigation) {
-          handleNewNameNavigation(data[0].url_name);
-        }
         modals.closeAll();
       }
     },
@@ -117,19 +105,11 @@ export const GroupInfoModal = ({
 
   const updateGroupMutation = useMutation({
     mutationFn: updateGroup,
-    onSuccess: (data: Group[]) => {
-      if (data && data[0]) {
+    onSuccess: (data: Group) => {
+      if (data && data.id) {
         queryClient.invalidateQueries({
-          queryKey: ["group", data[0].url_name],
+          queryKey: ["group", data.url_slug],
         });
-        queryClient.invalidateQueries({ queryKey: ["groups-joined"] });
-        if (
-          group &&
-          data[0].url_name !== group.url_name &&
-          handleNewNameNavigation
-        ) {
-          handleNewNameNavigation(data[0].url_name);
-        }
         modals.closeAll();
       }
     },
@@ -138,14 +118,9 @@ export const GroupInfoModal = ({
   const handleGroupCreate = async () => {
     createGroupMutation.mutateAsync({
       name,
-      url_name: makeUrlName(name),
       description,
       is_private: isGroupPublic === "true" ? false : true,
       is_visible: isGroupVisible === "true" ? true : false,
-      group_image: iconPhotoUrl
-        ? iconPhotoUrl
-        : "https://xppizafbojqouewkucmx.supabase.co/storage/v1/object/public/group-images/speech_balloon.png?t=2022-05-29T22%3A09%3A09.370Z",
-      header_image: headerImageUrl,
     });
   };
 
@@ -154,12 +129,9 @@ export const GroupInfoModal = ({
       updateGroupMutation.mutateAsync({
         id: group.id,
         name,
-        url_name: makeUrlName(name),
         description,
         is_private: isGroupPublic === "true" ? false : true,
         is_visible: isGroupVisible === "true" ? true : false,
-        group_image: iconPhotoUrl,
-        header_image: headerImageUrl,
       });
     }
   };
@@ -167,14 +139,14 @@ export const GroupInfoModal = ({
   return (
     <div className="grid grid-cols-12 gap-4">
       <TextInput
-        className="col-span-6"
+        className="col-span-12"
         placeholder="Group name"
         label="Name"
         required
         value={name}
         onChange={(e) => setName(e.currentTarget.value)}
       />
-      {/* Group Photo */}
+      {/* Group Photo 
       <div className="col-span-6">
         <div className="mt-6 flex-grow lg:mt-0 lg:ml-6 lg:flex-grow-0 lg:flex-shrink-0">
           <p
@@ -251,6 +223,7 @@ export const GroupInfoModal = ({
           </div>
         </div>
       </div>
+      */}
 
       <Textarea
         className="col-span-12"
