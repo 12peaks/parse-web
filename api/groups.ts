@@ -16,12 +16,30 @@ type UpdateGroupDTO = {
   is_visible?: boolean;
 };
 
+export const getAllGroups = async (searchTerm: string): Promise<Group[]> => {
+  const response = await axios.get("/api/groups");
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return [];
+  }
+};
+
 export const getJoinedGroups = async (): Promise<Group[]> => {
   const response = await axios.get("/api/groups?joined=true");
   if (response.status === 200) {
     return response.data;
   } else {
     return [];
+  }
+};
+
+export const getGroupById = async (groupId: string): Promise<Group> => {
+  const response = await axios.get(`/api/groups/${groupId}`);
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return {} as Group;
   }
 };
 
@@ -52,15 +70,6 @@ export const updateGroup = async ({
   is_visible,
 }: UpdateGroupDTO): Promise<Group> => {
   return {} as Group;
-};
-
-export const getAllGroups = async (searchTerm: string): Promise<Group[]> => {
-  const response = await axios.get("/api/groups");
-  if (response.status === 200) {
-    return response.data;
-  } else {
-    return [];
-  }
 };
 
 export const joinGroup = async (groupId: string): Promise<Group[]> => {
