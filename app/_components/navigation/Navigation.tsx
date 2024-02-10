@@ -136,9 +136,7 @@ export const Navigation = ({
                 <img
                   className="inline-block h-9 w-9 rounded-full bg-white"
                   src={
-                    user.github_image
-                      ? user.github_image
-                      : placeholderAvatar.src
+                    user.avatar_url ? user.avatar_url : placeholderAvatar.src
                   }
                   alt="placeholder avatar"
                 />

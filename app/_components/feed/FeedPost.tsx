@@ -182,7 +182,7 @@ export const FeedPost = ({
                   <Link href={`/team/${post.user_id}`}>
                     <img
                       className="h-10 w-10 rounded-full"
-                      src={post.user.github_image}
+                      src={post.user.avatar_url}
                       alt=""
                     />
                   </Link>

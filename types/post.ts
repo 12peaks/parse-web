@@ -19,6 +19,7 @@ export interface FeedPost extends Post {
     id: string;
     name: string;
     github_image: string;
+    avatar_url: string;
   };
 }
 

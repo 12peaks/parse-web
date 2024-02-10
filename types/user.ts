@@ -4,6 +4,7 @@ export type CurrentUser = {
   created_at: string;
   updated_at: string;
   name?: string;
+  avatar_url?: string;
   github_image?: string;
   github_username?: string;
   x_username?: string;
@@ -19,6 +20,7 @@ export type TeamUser = {
   created_at: string;
   updated_at: string;
   name?: string;
+  avatar_url?: string;
   github_image?: string;
   github_username?: string;
   x_username?: string;

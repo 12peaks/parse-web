@@ -92,7 +92,7 @@ export const ComposerModal = ({
           return {
             id: user.id,
             value: user.name,
-            avatar: user.github_image,
+            avatar: user.avatar_url,
             uid: user.id,
           };
         });
@@ -179,7 +179,7 @@ export const ComposerModal = ({
         <div className="h-12 w-12 flex-shrink-0">
           <img
             className="h-12 w-12 rounded-full bg-white"
-            src={user.github_image ? user.github_image : placeholderAvatar.src}
+            src={user.avatar_url ? user.avatar_url : placeholderAvatar.src}
             alt=""
           />
         </div>
