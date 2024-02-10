@@ -1,5 +1,4 @@
 import { FeedPost } from "@/app/_components/feed/FeedPost";
-import { Loader } from "@mantine/core";
 import CreatePostWidget from "./CreatePostWidget";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts } from "@/api/posts";
