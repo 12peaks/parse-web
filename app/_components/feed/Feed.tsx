@@ -18,7 +18,7 @@ export const Feed: React.FC<FeedProps> = ({ groupId, teamId, homeFeed }) => {
   });
 
   const { data: posts, isLoading: postsLoading } = useQuery({
-    queryKey: ["posts", groupId, teamId, homeFeed],
+    queryKey: ["home-feed-posts"],
     queryFn: getPosts,
   });
 

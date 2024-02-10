@@ -36,6 +36,18 @@
       var(--mantine-color-gray-7)
     );
   }
+  .theme-border-dark {
+    border-color: light-dark(
+      var(--mantine-color-gray-3),
+      var(--mantine-color-gray-6)
+    );
+  }
+  .theme-bg-subtle {
+    background-color: light-dark(
+      var(--mantine-color-gray-1),
+      var(--mantine-color-dark-8)
+    );
+  }
   #home-sidebar-container {
     max-height: calc(100vh - 4rem);
   }
@@ -73,4 +85,89 @@ ul {
   syntax: "<angle>";
   initial-value: 0deg;
   inherits: false;
+}
+
+.mentions-input__input {
+  border: 1px solid transparent;
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  );
+  font-family:
+    Inter var,
+    san-serif;
+  height: auto;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.55;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  resize: none;
+  box-sizing: border-box;
+  font-size: 14px;
+  width: 100%;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  display: block;
+  text-align: left;
+  min-height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.mentions-input__input::selection {
+  background-color: #93c5fd;
+}
+
+.mentions-input__highlighter {
+  border: 1px solid transparent;
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  );
+  font-family:
+    Inter var,
+    san-serif;
+  height: auto;
+  -webkit-tap-highlight-color: transparent;
+  line-height: 1.55;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  resize: none;
+  box-sizing: border-box;
+  font-size: 14px;
+  width: 100%;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  display: block;
+  text-align: left;
+  min-height: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 8px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.mentions-input__suggestions {
+  margin-top: 18px !important;
+  margin-left: 4px !important;
+  font-size: 13px;
+  padding: 4px 0px 4px 0px;
+  border: 1px solid #ced4da;
+  background-color: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.mentions-input__suggestions li {
+  padding: 4px 8px 4px 8px;
+}
+
+.mentions-input__suggestions li:hover {
+  background-color: #f3f4f6;
 }

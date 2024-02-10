@@ -1,3 +1,5 @@
+import type { Comment } from "@/types/comment";
+
 export type Post = {
   id: string;
   created_at: number;
@@ -21,6 +23,7 @@ export interface FeedPost extends Post {
     github_image: string;
     avatar_url: string;
   };
+  comments: Comment[];
 }
 
 export type HiddenPost = {

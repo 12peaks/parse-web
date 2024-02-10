@@ -8,8 +8,8 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
-//import { CommentComposer } from "@/features/comments";
-//import { CommentsDisplay } from "@/features/comments";
+import { CommentComposer } from "@/app/_components/comments/CommentComposer";
+import { CommentsDisplay } from "@/app/_components/comments/CommentsDisplay";
 import TimeAgo from "timeago-react";
 import { Menu, Button, Text, ActionIcon } from "@mantine/core";
 import {
@@ -19,6 +19,7 @@ import {
   IconPinned,
   IconEyeOff,
   IconDots,
+  IconMessage2,
 } from "@tabler/icons-react";
 import { useModals } from "@mantine/modals";
 import Link from "next/link";
@@ -281,88 +282,102 @@ export const FeedPost = ({
             </div>
             {post ? (
               <>
-                {postContentHidden ? null : (
-                  <>
-                    <RichTextEditor
-                      editor={editor}
-                      className={
-                        editing ? "mt-2" : "!border-0 ml-8 mb-2 break-words"
-                      }
-                      styles={{
-                        toolbar: {
-                          borderBottom: editing ? "" : "none !important",
-                          display: editing ? "" : "none",
-                        },
-                      }}
-                      style={{ listStyleType: "disc" }}
+                <RichTextEditor
+                  editor={editor}
+                  className={
+                    editing ? "mt-2" : "!border-0 ml-8 mb-2 break-words"
+                  }
+                  styles={{
+                    toolbar: {
+                      borderBottom: editing ? "" : "none !important",
+                      display: editing ? "" : "none",
+                    },
+                  }}
+                  style={{ listStyleType: "disc" }}
+                >
+                  <RichTextEditor.Toolbar>
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.Bold />
+                      <RichTextEditor.Italic />
+                      <RichTextEditor.Underline />
+                      <RichTextEditor.Strikethrough />
+                      <RichTextEditor.ClearFormatting />
+                      <RichTextEditor.Highlight />
+                      <RichTextEditor.CodeBlock />
+                    </RichTextEditor.ControlsGroup>
+
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.H1 />
+                      <RichTextEditor.H2 />
+                      <RichTextEditor.H3 />
+                      <RichTextEditor.H4 />
+                    </RichTextEditor.ControlsGroup>
+
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.Blockquote />
+                      <RichTextEditor.Hr />
+                      <RichTextEditor.BulletList />
+                      <RichTextEditor.OrderedList />
+                      <RichTextEditor.Superscript />
+                      <RichTextEditor.Subscript />
+                    </RichTextEditor.ControlsGroup>
+
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.Link />
+                      <RichTextEditor.Unlink />
+                    </RichTextEditor.ControlsGroup>
+
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.AlignLeft />
+                      <RichTextEditor.AlignCenter />
+                      <RichTextEditor.AlignJustify />
+                      <RichTextEditor.AlignRight />
+                    </RichTextEditor.ControlsGroup>
+
+                    <RichTextEditor.ControlsGroup>
+                      <RichTextEditor.Undo />
+                      <RichTextEditor.Redo />
+                    </RichTextEditor.ControlsGroup>
+                  </RichTextEditor.Toolbar>
+                  <RichTextEditor.Content />
+                </RichTextEditor>
+                {editing ? (
+                  <div className="bottom-row my-4 grid grid-cols-2 gap-4">
+                    <Button
+                      color="gray"
+                      variant="light"
+                      className="col-span-1"
+                      onClick={() => togglePostEdit()}
                     >
-                      <RichTextEditor.Toolbar>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Bold />
-                          <RichTextEditor.Italic />
-                          <RichTextEditor.Underline />
-                          <RichTextEditor.Strikethrough />
-                          <RichTextEditor.ClearFormatting />
-                          <RichTextEditor.Highlight />
-                          <RichTextEditor.CodeBlock />
-                        </RichTextEditor.ControlsGroup>
+                      Cancel
+                    </Button>
+                    <Button
+                      className="col-span-1"
+                      disabled={loading}
+                      onClick={() => handlePostUpdate()}
+                    >
+                      Save
+                    </Button>
+                  </div>
+                ) : null}
+                <>
+                  <div className="text-sm theme-text flex flex-column flex-wrap items-center">
+                    <div
+                      className="border rounded-full mt-2 theme-border hover:theme-border-dark hover:cursor-pointer py-1.5 px-4 text-xs items-center flex flex-column"
+                      onClick={() => handleCommentFocus()}
+                    >
+                      <IconMessage2 size={16} className="mr-2 theme-text" />{" "}
+                      <span className="theme-text">Comment</span>
+                    </div>
 
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.H1 />
-                          <RichTextEditor.H2 />
-                          <RichTextEditor.H3 />
-                          <RichTextEditor.H4 />
-                        </RichTextEditor.ControlsGroup>
+                    {/*<PostReactions postId={post.id} userId={user.id} />*/}
+                  </div>
+                  <div className="my-4">
+                    <CommentsDisplay post={post} user={user} />
 
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Blockquote />
-                          <RichTextEditor.Hr />
-                          <RichTextEditor.BulletList />
-                          <RichTextEditor.OrderedList />
-                          <RichTextEditor.Superscript />
-                          <RichTextEditor.Subscript />
-                        </RichTextEditor.ControlsGroup>
-
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Link />
-                          <RichTextEditor.Unlink />
-                        </RichTextEditor.ControlsGroup>
-
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.AlignLeft />
-                          <RichTextEditor.AlignCenter />
-                          <RichTextEditor.AlignJustify />
-                          <RichTextEditor.AlignRight />
-                        </RichTextEditor.ControlsGroup>
-
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Undo />
-                          <RichTextEditor.Redo />
-                        </RichTextEditor.ControlsGroup>
-                      </RichTextEditor.Toolbar>
-                      <RichTextEditor.Content />
-                    </RichTextEditor>
-                    {editing ? (
-                      <div className="bottom-row my-4 grid grid-cols-2 gap-4">
-                        <Button
-                          color="gray"
-                          variant="light"
-                          className="col-span-1"
-                          onClick={() => togglePostEdit()}
-                        >
-                          Cancel
-                        </Button>
-                        <Button
-                          className="col-span-1"
-                          disabled={loading}
-                          onClick={() => handlePostUpdate()}
-                        >
-                          Save
-                        </Button>
-                      </div>
-                    ) : null}
-                  </>
-                )}
+                    <CommentComposer user={user} post={post} />
+                  </div>
+                </>
               </>
             ) : null}
           </div>
