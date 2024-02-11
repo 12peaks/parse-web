@@ -158,8 +158,15 @@ ul {
   margin-left: 4px !important;
   font-size: 13px;
   padding: 4px 0px 4px 0px;
-  border: 1px solid #ced4da;
-  background-color: #fff;
+  border: 1px solid;
+  border-color: light-dark(
+    var(--mantine-color-gray-2),
+    var(--mantine-color-gray-7)
+  ) !important;
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  ) !important;
   border-radius: 4px;
   overflow: hidden;
 }
@@ -169,5 +176,8 @@ ul {
 }
 
 .mentions-input__suggestions li:hover {
-  background-color: #f3f4f6;
+  background-color: light-dark(
+    var(--mantine-color-gray-1),
+    var(--mantine-color-dark-8)
+  ) !important;
 }

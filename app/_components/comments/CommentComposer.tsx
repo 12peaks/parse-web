@@ -119,12 +119,12 @@ export function CommentComposer({
     let isMounted = true;
     if (teamQuery.data && teamQuery.data.length > 0) {
       let mentionUsers: MentionUserDTO[] = [];
-      for (const user of teamQuery.data) {
+      for (const teamUser of teamQuery.data) {
         let mentionUser = {
-          id: user.id,
-          display: user.name ?? user.email,
-          avatar: user.avatar_url ?? placeholderAvatar.src,
-          uid: user.id,
+          id: teamUser.id,
+          display: teamUser.name ?? teamUser.email,
+          avatar: teamUser.avatar_url ?? placeholderAvatar.src,
+          uid: teamUser.id,
         };
         mentionUsers.push(mentionUser);
       }
@@ -135,7 +135,7 @@ export function CommentComposer({
     return () => {
       isMounted = false;
     };
-  }, [user, teamQuery.data]);
+  }, [teamQuery.data]);
 
   return (
     <div className="w-full flex flex-row">
@@ -158,7 +158,7 @@ export function CommentComposer({
       >
         <Mention
           trigger="@"
-          data={teamQuery.data ?? []}
+          data={userList}
           appendSpaceOnAdd={true}
           onAdd={(id, _) =>
             setCommentMentions([...commentMentions, id as string])
