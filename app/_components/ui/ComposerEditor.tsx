@@ -51,7 +51,6 @@ export const ComposerEditor = ({
     <RichTextEditor
       editor={editor}
       className={editing ? "mt-2" : "break-words"}
-      //style={{ listStyleType: "disc" }}
     >
       <RichTextEditor.Toolbar>
         <RichTextEditor.ControlsGroup>
