@@ -1,7 +1,23 @@
 {
-  "name": "parse-next",
+  "name": "parse-web",
   "version": "0.1.0",
+  "description": "Parse front end web application.",
   "private": true,
+  "author": "Tyler Myracle (https://tylermyracle.com)",
+  "keywords": [
+    "nextjs",
+    "react",
+    "typescript",
+    "collaboration"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/12peaks/parse-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/12peaks/parse-web/issues"
+  },
+  "homepage": "https://github.com/12peaks/parse-web#readme",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
