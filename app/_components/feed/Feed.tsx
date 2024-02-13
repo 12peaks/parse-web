@@ -24,7 +24,7 @@ export const Feed: React.FC<FeedProps> = ({ groupId, teamId, homeFeed }) => {
   return (
     <>
       <main>
-        <div className="mx-auto">
+        <div className="mx-auto max-w-[800px]">
           {postsLoading || userLoading || !user ? null : (
             <>
               <div className="mb-4">
