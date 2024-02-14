@@ -15,6 +15,15 @@ export const getPosts = async (): Promise<FeedPost[]> => {
   }
 };
 
+export const getGroupPosts = async (group_id: string): Promise<FeedPost[]> => {
+  const response = await axios.get(`/api/posts?group_id=${group_id}`);
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return [];
+  }
+};
+
 export const createPost = async ({
   content,
   text_content,

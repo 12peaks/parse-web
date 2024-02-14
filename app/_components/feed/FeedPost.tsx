@@ -372,6 +372,7 @@ export const FeedPost = ({
                     <Reactions
                       post_id={post.id}
                       user_id={user.id}
+                      group_id={post.group_id}
                       reactions={post.reactions}
                     />
                   </div>

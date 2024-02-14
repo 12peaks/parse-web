@@ -28,7 +28,7 @@ export function CommentDisplay({ post, comment, user }: CommentDisplayProps) {
     mutationFn: deleteComment,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["home-feed-posts"],
+        queryKey: ["feed", post.group_id, post.group_id ? false : true],
       });
     },
   });

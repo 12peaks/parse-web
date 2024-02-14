@@ -1,7 +1,7 @@
 import { FeedPost } from "@/app/_components/feed/FeedPost";
 import CreatePostWidget from "./CreatePostWidget";
 import { useQuery } from "@tanstack/react-query";
-import { getPosts } from "@/api/posts";
+import { getPosts, getGroupPosts } from "@/api/posts";
 import { getCurrentUser } from "@/api/users";
 
 type FeedProps = {
@@ -10,15 +10,15 @@ type FeedProps = {
   homeFeed: boolean;
 };
 
-export const Feed: React.FC<FeedProps> = ({ groupId, teamId, homeFeed }) => {
+export const Feed = ({ groupId, teamId, homeFeed }: FeedProps) => {
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
 
   const { data: posts, isLoading: postsLoading } = useQuery({
-    queryKey: ["home-feed-posts"],
-    queryFn: getPosts,
+    queryKey: ["feed", groupId, homeFeed],
+    queryFn: homeFeed ? getPosts : () => getGroupPosts(groupId ?? ""),
   });
 
   return (

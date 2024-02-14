@@ -17,4 +17,7 @@ export type GroupUser = {
   id: string;
   created_at: number;
   updated_at: number;
+  name: string;
+  email: string;
+  avatar_url?: string;
 };

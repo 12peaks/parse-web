@@ -43,6 +43,15 @@ export const getGroupById = async (groupId: string): Promise<Group> => {
   }
 };
 
+export const getGroupBySlug = async (groupSlug: string): Promise<Group> => {
+  const response = await axios.get(`/api/groups?slug=${groupSlug}`);
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return {} as Group;
+  }
+};
+
 export const createGroup = async ({
   name,
   description,

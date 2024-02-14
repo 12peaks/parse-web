@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Button, Switch, Select } from "@mantine/core";
+import { Button, Select } from "@mantine/core";
 import { useState, useMemo, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModals } from "@mantine/modals";
@@ -51,7 +51,6 @@ export const ComposerModal = ({
 
   const queryClient = useQueryClient();
   const modals = useModals();
-  //const composerRef = useRef<Editor>(null);
 
   const groupsQuery = useQuery({
     queryKey: ["groups"],
@@ -75,7 +74,7 @@ export const ComposerModal = ({
     onSuccess: async (data) => {
       await getMentionsAndCreate(data.id);
       await queryClient.invalidateQueries({
-        queryKey: ["posts", groupId, teamId, homeFeed],
+        queryKey: ["feed", groupId, homeFeed],
       });
       modals.closeAll();
       setContent("");

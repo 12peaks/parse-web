@@ -12,10 +12,16 @@ function classNames(...classes: string[]) {
 type ReactionsProps = {
   user_id: string;
   post_id: string;
+  group_id: string | null;
   reactions: Reaction[];
 };
 
-export const Reactions = ({ user_id, post_id, reactions }: ReactionsProps) => {
+export const Reactions = ({
+  user_id,
+  post_id,
+  group_id,
+  reactions,
+}: ReactionsProps) => {
   const [opened, setOpened] = useState(false);
   const queryClient = useQueryClient();
 
@@ -24,7 +30,7 @@ export const Reactions = ({ user_id, post_id, reactions }: ReactionsProps) => {
     onSuccess: () => {
       setOpened(false);
       queryClient.invalidateQueries({
-        queryKey: ["home-feed-posts"],
+        queryKey: ["feed", group_id, group_id ? false : true],
       });
     },
   });

@@ -48,7 +48,7 @@ export function CommentComposer({
     onSuccess: async (data) => {
       setCommentContent("");
       queryClient.invalidateQueries({
-        queryKey: ["home-feed-posts"],
+        queryKey: ["feed", post.group_id, post.group_id ? false : true],
       });
     },
   });
@@ -59,7 +59,7 @@ export function CommentComposer({
       setCommentContent("");
       toggleCommentEdit && toggleCommentEdit();
       queryClient.invalidateQueries({
-        queryKey: ["home-feed-posts"],
+        queryKey: ["feed", post.group_id, post.group_id ? false : true],
       });
     },
   });
