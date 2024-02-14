@@ -48,6 +48,12 @@
       var(--mantine-color-dark-8)
     );
   }
+  .theme-reaction-bg {
+    background-color: light-dark(
+      var(--mantine-color-blue-0),
+      var(--mantine-color-blue-9)
+    );
+  }
   #home-sidebar-container {
     max-height: calc(100vh - 4rem);
   }

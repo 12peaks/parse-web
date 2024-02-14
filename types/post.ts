@@ -1,4 +1,5 @@
 import type { Comment } from "@/types/comment";
+import { Reaction } from "@/types/reaction";
 
 export type Post = {
   id: string;
@@ -24,6 +25,7 @@ export interface FeedPost extends Post {
     avatar_url: string;
   };
   comments: Comment[];
+  reactions: Reaction[];
 }
 
 export type HiddenPost = {

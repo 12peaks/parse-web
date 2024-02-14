@@ -10,6 +10,7 @@ import Superscript from "@tiptap/extension-superscript";
 import Subscript from "@tiptap/extension-subscript";
 import { CommentComposer } from "@/app/_components/comments/CommentComposer";
 import { CommentsDisplay } from "@/app/_components/comments/CommentsDisplay";
+import { Reactions } from "@/app/_components/reactions/Reactions";
 import TimeAgo from "timeago-react";
 import { Menu, Button, Text, ActionIcon } from "@mantine/core";
 import {
@@ -30,10 +31,8 @@ import ts from "highlight.js/lib/languages/typescript";
 import { showNotification } from "@mantine/notifications";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updatePost, deletePost } from "@/api/posts";
-//import { PostReactions } from "@/features/reactions";
 //import { FeedPoll } from "@/features/polls";
 import { FeedPost as FeedPostType, Post } from "@/types/post";
-//import { InView } from "react-intersection-observer";
 import { CurrentUser } from "@/types/user";
 
 const lowlight = createLowlight();
@@ -370,7 +369,11 @@ export const FeedPost = ({
                       <span className="theme-text">Comment</span>
                     </div>
 
-                    {/*<PostReactions postId={post.id} userId={user.id} />*/}
+                    <Reactions
+                      post_id={post.id}
+                      user_id={user.id}
+                      reactions={post.reactions}
+                    />
                   </div>
                   <div className="my-4">
                     <CommentsDisplay post={post} user={user} />
