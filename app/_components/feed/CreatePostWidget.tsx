@@ -43,7 +43,7 @@ const CreatePostWidget = ({
       <div className="mx-auto rounded shadow border theme-border px-4 pt-4 pb-4 items-center">
         <div className="flex flex-row items-center">
           <img
-            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full self-start"
+            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full self-start bg-white"
             src={user.avatar_url ? user.avatar_url : placeholderAvatar.src}
             alt="avatar"
           />
