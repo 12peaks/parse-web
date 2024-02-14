@@ -78,7 +78,7 @@ const BrowseGroupsModal: React.FC<BrowseGroupsModalProps> = ({
                     </div>
 
                     <div>
-                      {group.group_users && group.group_users.length > 0 ? (
+                      {group.users && group.users.length > 0 ? (
                         <Button
                           size="xs"
                           radius="xl"

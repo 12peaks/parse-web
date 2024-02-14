@@ -58,7 +58,7 @@ export function CommentDisplay({ post, comment, user }: CommentDisplayProps) {
     <div key={comment.id} className="text-sm mb-4 flex flex-row">
       <div className="mr-2 min-w-[32px]">
         <img
-          className="inline-block h-8 w-8 rounded-full"
+          className="inline-block h-8 w-8 rounded-full bg-white"
           src={comment.user.avatar_url}
           alt="profile"
         />

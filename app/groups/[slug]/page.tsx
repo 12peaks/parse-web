@@ -137,7 +137,7 @@ export default function GroupPage() {
                     <h1 className="text-2xl font-bold">{group.name}</h1>
                   </div>
                   <div className="mt-4 sm:mt-6 px-4 sm:px-0 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
-                    {group.group_users.find(
+                    {group.users.find(
                       (group_user) => group_user.id === user.id
                     ) ? (
                       <Button
@@ -313,7 +313,7 @@ export default function GroupPage() {
                   </div>
 
                   <div className="text-sm theme-text-subtle mt-4">
-                    {pluralize("member", group.group_users.length, true)}
+                    {pluralize("member", group.users.length, true)}
                   </div>
                 </div>
               </div>

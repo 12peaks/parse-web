@@ -181,7 +181,7 @@ export const FeedPost = ({
                 <div className="h-10 w-10 flex-shrink-0">
                   <Link href={`/team/${post.user_id}`}>
                     <img
-                      className="h-10 w-10 rounded-full"
+                      className="h-10 w-10 rounded-full bg-white"
                       src={post.user.avatar_url}
                       alt=""
                     />

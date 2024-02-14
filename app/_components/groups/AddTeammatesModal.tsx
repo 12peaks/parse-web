@@ -1,20 +1,10 @@
 import type { Group as GroupType } from "@/types/group";
 import { forwardRef, useEffect, useState } from "react";
-import {
-  Avatar,
-  Group,
-  Text,
-  Checkbox,
-  Button,
-  TransferList,
-  TransferListData,
-  TransferListItem,
-  TransferListItemComponent,
-  TransferListItemComponentProps,
-} from "@mantine/core";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Avatar, Group, Text, Checkbox, Button } from "@mantine/core";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTeamUsers } from "@/api/teams";
 import { useModals } from "@mantine/modals";
+import { addToGroup, removeFromGroup } from "@/api/groups";
 
 type AddTeammatesModalProps = {
   group: GroupType;
@@ -23,190 +13,103 @@ type AddTeammatesModalProps = {
 export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
   group,
 }) => {
-  const [userTransferList, setUserTransferList] = useState<TransferListData>([
-    [],
-    [],
-  ]);
   const modals = useModals();
   const queryClient = useQueryClient();
 
-  const teamQuery = useQuery({
+  const { data: teamMembers, isLoading } = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
 
-  const buildUserList = (profiles: any): TransferListData => {
-    const list = profiles
-      .filter((profile: any) => !isExistingMember(profile.id))
-      .map((profile: any) => {
-        return {
-          image: profile.avatar_url,
-          label: profile.real_name,
-          value: profile.id.toString(),
-          description: profile.email,
-        };
+  const addToGroupMutation = useMutation({
+    mutationFn: addToGroup,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["group", group.url_slug] });
+    },
+  });
+
+  const removeFromGroupMutation = useMutation({
+    mutationFn: removeFromGroup,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["group", group.url_slug] });
+    },
+  });
+
+  const isExistingMember = (user_id: string): boolean => {
+    for (const existingMember of group.users) {
+      if (existingMember.id === user_id) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const handleAddToGroup = (group_id: string, user_id: string) => {
+    addToGroupMutation.mutate({ group_id, user_id });
+    if (teamMembers) {
+      const newGroupMember = teamMembers.find((user) => user.id === user_id);
+      if (!newGroupMember) return;
+      group.users.push({
+        id: newGroupMember.id,
+        name: newGroupMember.name ?? "",
+        email: newGroupMember.email,
+        avatar_url: newGroupMember.avatar_url,
+        created_at: newGroupMember.created_at,
+        updated_at: newGroupMember.updated_at,
       });
-    return [
-      list,
-      group.group_users.map((profile) => {
-        return {
-          image: profile.avatar_url ?? "",
-          label: profile.name ?? "",
-          value: profile.id,
-          description: profile.email,
-        };
-      }),
-    ];
-  };
-
-  const isExistingMember = (profileId: number): boolean => {
-    for (const existingProfile of existingMembers) {
-      if (existingProfile.id === profileId) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const isInUpdatedList = (
-    profileId: number,
-    updatedList: TransferListItem[]
-  ): boolean => {
-    for (const updatedProfileId of updatedList) {
-      if (profileId === parseInt(updatedProfileId.value)) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const removeGroupMembers = async () => {
-    const newMembersProfileIds = userTransferList[1];
-    const membersToRemove = [];
-    for (const existingProfile of existingMembers) {
-      if (!isInUpdatedList(existingProfile.id, newMembersProfileIds)) {
-        membersToRemove.push({
-          slack_profile_id: existingProfile.id,
-          user_id: existingProfile.user_id,
-          group_id: group.id,
-        });
-      }
-    }
-    if (membersToRemove.length > 0) {
-      for (const member of membersToRemove) {
-        await supabase.from("group_members").delete().match({
-          group_id: member.group_id,
-          slack_profile_id: member.slack_profile_id,
-        });
-      }
-      queryClient.invalidateQueries(["member-count", group.url_name]);
-      modals.closeAll();
     }
   };
 
-  const addNewGroupMembers = async () => {
-    const newMembersProfileIds = userTransferList[1];
-    if (newMembersProfileIds.length > 0 && teamQuery.data) {
-      let membersToAdd: any[] = [];
-      for (const profileId of newMembersProfileIds) {
-        if (!isExistingMember(parseInt(profileId.value))) {
-          membersToAdd.push({
-            group_id: group.id,
-            user_id:
-              teamQuery.data.find(
-                (profile) =>
-                  profile.id.toString() === profileId.value.toString()
-              )?.user_id || null,
-            slack_profile_id: parseInt(profileId.value),
-          });
-        }
-      }
-      const { data, error } = await supabase
-        .from("group_members")
-        .insert(membersToAdd);
-      if (error) {
-        console.warn(error.message);
-      }
-      if (data) {
-        queryClient.invalidateQueries(["member-count", group.url_name]);
-        modals.closeAll();
-      }
-    }
+  const handleRemoveFromGroup = (group_id: string, user_id: string) => {
+    removeFromGroupMutation.mutate({ group_id, user_id });
+    group.users = group.users.filter((user) => user.id !== user_id);
   };
 
-  const handleMemberUpdate = async () => {
-    const updateResults = Promise.all([
-      addNewGroupMembers(),
-      removeGroupMembers(),
-    ]).then(() => queryClient.invalidateQueries("groups-joined"));
-  };
-
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted && teamQuery.data) {
-      setUserTransferList(buildUserList(teamQuery.data));
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [teamQuery.data]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="space-y-4">
-      <TransferList
-        value={userTransferList}
-        onChange={setUserTransferList}
-        classNames={{
-          transferListTitle: "!text-gray-700 !text-sm",
-        }}
-        searchPlaceholder="Search teammates..."
-        nothingFound="No one here"
-        titles={[`Teammates not in #${group.name}`, "Members"]}
-        listHeight={300}
-        breakpoint="sm"
-        itemComponent={ItemComponent}
-        filter={(query, item) =>
-          item.label.toLowerCase().includes(query.toLowerCase().trim()) ||
-          item.description.toLowerCase().includes(query.toLowerCase().trim())
-        }
-      />
-      <div className="flex flex-row justify-end space-x-2">
-        <Button
-          variant="light"
-          color="gray"
-          fullWidth
-          onClick={() => modals.closeAll()}
-        >
-          Cancel
-        </Button>
-        <Button fullWidth onClick={() => handleMemberUpdate()}>
-          Save
-        </Button>
+      <div className="flex flex-row space-y-4">
+        {teamMembers &&
+          teamMembers.map((user) => (
+            <div key={user.id} className="w-full flex items-center space-x-4">
+              <div className="flex-shrink-0 hover:cursor-pointer">
+                <Avatar className="bg-white" size={36} src={user.avatar_url} />
+              </div>
+              <div className="flex-1 flex-grow min-w-0 hover:cursor-pointer">
+                <p className="text-sm font-medium theme-text truncate">
+                  {user.name}
+                </p>
+                <p className="text-sm theme-text-subtle truncate">
+                  {user.email}
+                </p>
+              </div>
+
+              <div>
+                {isExistingMember(user.id) ? (
+                  <Button
+                    size="xs"
+                    radius="xl"
+                    onClick={() => handleRemoveFromGroup(group.id, user.id)}
+                  >
+                    Remove
+                  </Button>
+                ) : (
+                  <Button
+                    size="xs"
+                    variant="outline"
+                    radius="xl"
+                    onClick={() => handleAddToGroup(group.id, user.id)}
+                  >
+                    Add
+                  </Button>
+                )}
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );
 };
-
-const ItemComponent: TransferListItemComponent = ({
-  data,
-  selected,
-}: TransferListItemComponentProps) => (
-  <Group noWrap>
-    <Avatar src={data.image} radius="xl" size="md" />
-    <div style={{ flex: 1 }}>
-      <Text size="sm" weight={500}>
-        {data.label}
-      </Text>
-      <Text size="xs" color="dimmed" weight={400}>
-        {data.description}
-      </Text>
-    </div>
-    <Checkbox
-      checked={selected}
-      onChange={() => {}}
-      tabIndex={-1}
-      sx={{ pointerEvents: "none" }}
-    />
-  </Group>
-);

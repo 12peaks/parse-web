@@ -1,7 +1,7 @@
 export type Group = {
   id: string;
-  created_at: number;
-  updated_at: number;
+  created_at: string;
+  updated_at: string;
   name: string;
   description?: string;
   is_private: boolean;
@@ -10,13 +10,13 @@ export type Group = {
   avatar_url?: string;
   cover_image_url?: string;
   url_slug: string;
-  group_users: GroupUser[];
+  users: GroupUser[];
 };
 
 export type GroupUser = {
   id: string;
-  created_at: number;
-  updated_at: number;
+  created_at: string;
+  updated_at: string;
   name: string;
   email: string;
   avatar_url?: string;
