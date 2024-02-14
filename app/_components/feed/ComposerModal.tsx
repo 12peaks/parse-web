@@ -183,7 +183,9 @@ export const ComposerModal = ({
           />
         </div>
         <div className="ml-4 flex flex-col justify-center">
-          <div className="font-medium theme-text -mb-2">{user?.name}</div>
+          <div className={`font-medium theme-text ${homeFeed ? "-mb-2" : ""}`}>
+            {user?.name}
+          </div>
           {homeFeed && groupsQuery.isSuccess && groupsQuery.data ? (
             <div className="flex flex-row items-center space-x-1 -mb-[6px]">
               <span className="text-sm mt-[2px]">Posting to</span>
