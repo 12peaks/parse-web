@@ -22,7 +22,9 @@ type GroupMemberMutationDTO = {
 };
 
 export const getAllGroups = async (searchTerm: string): Promise<Group[]> => {
-  const response = await axios.get("/api/groups");
+  const response = await axios.get(
+    `/api/groups?search=${encodeURIComponent(searchTerm)}`
+  );
   if (response.status === 200) {
     return response.data;
   } else {
