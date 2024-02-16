@@ -54,6 +54,12 @@
       var(--mantine-color-blue-9)
     );
   }
+  .theme-link-blue {
+    color: light-dark(var(--mantine-color-blue-6), var(--mantine-color-blue-4));
+  }
+  .theme-link-blue:hover {
+    color: light-dark(var(--mantine-color-blue-8), var(--mantine-color-blue-2));
+  }
   #home-sidebar-container {
     max-height: calc(100vh - 4rem);
   }

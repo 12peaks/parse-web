@@ -24,4 +24,16 @@ export type TeamUser = {
   github_image?: string;
   github_username?: string;
   x_username?: string;
+  invitation_created_at?: string;
+  last_sign_in_at?: string;
+};
+
+export type PendingUser = {
+  id: string;
+  email: string;
+  created_at: string;
+  updated_at: string;
+  name?: string;
+  avatar_url?: string;
+  invited_at: string;
 };
