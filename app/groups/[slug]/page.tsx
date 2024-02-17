@@ -321,6 +321,7 @@ export default function GroupPage() {
             <div className="grid grid-cols-12 gap-4 relative lg:pr-4">
               <div className="col-span-12 pt-4 xl:col-span-10 lg:col-start-1 2xl:col-span-8 xl:col-start-2 2xl:col-start-4">
                 <Feed
+                  userId={null}
                   groupId={group.id}
                   teamId={group.team_id}
                   homeFeed={false}

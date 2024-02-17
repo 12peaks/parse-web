@@ -38,6 +38,7 @@ export default function Home() {
                   homeFeed={true}
                   teamId={user?.current_team.id}
                   groupId={null}
+                  userId={null}
                 />
               )}
             </div>

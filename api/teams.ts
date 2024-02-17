@@ -10,6 +10,15 @@ export const getTeamUsers = async (): Promise<TeamUser[]> => {
   }
 };
 
+export const getTeamUser = async (user_id: string): Promise<TeamUser> => {
+  const response = await axios.get(`/api/teams/users/${user_id}`);
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return {} as TeamUser;
+  }
+};
+
 export const getPendingUsers = async (): Promise<PendingUser[]> => {
   return [];
 };

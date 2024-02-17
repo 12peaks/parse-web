@@ -1,24 +1,36 @@
 import { FeedPost } from "@/app/_components/feed/FeedPost";
 import CreatePostWidget from "./CreatePostWidget";
 import { useQuery } from "@tanstack/react-query";
-import { getPosts, getGroupPosts } from "@/api/posts";
+import { getPosts, getGroupPosts, getUserPosts } from "@/api/posts";
 import { getCurrentUser } from "@/api/users";
 
 type FeedProps = {
+  userId: string | null;
   groupId: string | null;
   teamId: string;
   homeFeed: boolean;
 };
 
-export const Feed = ({ groupId, teamId, homeFeed }: FeedProps) => {
+export const Feed = ({ groupId, teamId, homeFeed, userId }: FeedProps) => {
   const { data: user, isLoading: userLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
 
   const { data: posts, isLoading: postsLoading } = useQuery({
-    queryKey: ["feed", groupId, homeFeed],
-    queryFn: homeFeed ? getPosts : () => getGroupPosts(groupId ?? ""),
+    queryKey: ["feed", groupId, homeFeed, userId],
+    queryFn: (() => {
+      switch (true) {
+        case homeFeed:
+          return getPosts;
+        case !!groupId:
+          return () => getGroupPosts(groupId);
+        case !!userId:
+          return () => getUserPosts(userId);
+        default:
+          return undefined;
+      }
+    })(),
   });
 
   return (
