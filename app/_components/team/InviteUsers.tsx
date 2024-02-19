@@ -51,21 +51,28 @@ export const InviteUsers = () => {
       autoClose: false,
       withCloseButton: false,
     });
-    const response = await axios.post(`/api/users/invite`, {
-      teammates: values.teammates,
-    });
-    if (response.status === 201) {
+    const responses = await Promise.all(
+      values.teammates.map((teammate) =>
+        axios.post("/users/invitation", {
+          user: {
+            email: teammate.email,
+          },
+        })
+      )
+    );
+
+    if (responses.every((response) => response.status === 200)) {
       setLoading(false);
-      queryClient.invalidateQueries({
-        queryKey: ["pending-users"],
-      });
       updateNotification({
         id: "invites",
         title: "Invites sent",
         message: "Your invites were successfully sent.",
         color: "green",
         icon: <IconCheck />,
-        autoClose: 3000,
+        autoClose: 1000,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["team", ""],
       });
       modals.closeAll();
     } else {
@@ -74,7 +81,7 @@ export const InviteUsers = () => {
         title: "Error",
         message: "There was an error sending your invites.",
         color: "red",
-        autoClose: 3000,
+        autoClose: 1000,
       });
       setLoading(false);
     }

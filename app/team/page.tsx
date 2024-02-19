@@ -151,7 +151,7 @@ export default function Team() {
                         scope="col"
                         className="px-3 py-3.5 text-left text-sm font-semibold"
                       >
-                        Title
+                        Email
                       </th>
                       <th
                         scope="col"
