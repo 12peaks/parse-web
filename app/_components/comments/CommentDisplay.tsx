@@ -16,9 +16,19 @@ type CommentDisplayProps = {
   user: CurrentUser;
   comment: Comment;
   post: FeedPost;
+  groupId: string | null;
+  homeFeed: boolean;
+  profileId: string | null;
 };
 
-export function CommentDisplay({ post, comment, user }: CommentDisplayProps) {
+export function CommentDisplay({
+  post,
+  comment,
+  user,
+  groupId,
+  homeFeed,
+  profileId,
+}: CommentDisplayProps) {
   const [editing, setEditing] = useState(false);
 
   const queryClient = useQueryClient();
@@ -70,6 +80,9 @@ export function CommentDisplay({ post, comment, user }: CommentDisplayProps) {
             user={user}
             toggleCommentEdit={toggleCommentEdit}
             comment={comment}
+            groupId={groupId}
+            homeFeed={homeFeed}
+            profileId={profileId}
           />
         </div>
       ) : (
@@ -79,7 +92,7 @@ export function CommentDisplay({ post, comment, user }: CommentDisplayProps) {
             style={{ wordBreak: "break-word" }}
           >
             <div className="font-medium">
-              <span className="mr-4">{comment.user.name}</span>
+              <span className="mr-4 theme-text">{comment.user.name}</span>
               <span>
                 {comment.created_at === comment.updated_at ? (
                   <TimeAgo

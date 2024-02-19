@@ -48,7 +48,7 @@ export default function Settings({ children }: { children: React.ReactNode }) {
                     <Link
                       key={item.name}
                       href={item.href}
-                      className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text-subtle"
+                      className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text"
                     >
                       <item.icon
                         className="flex-shrink-0 -ml-1 mr-3 h-6 w-6"
@@ -61,7 +61,7 @@ export default function Settings({ children }: { children: React.ReactNode }) {
                     className="w-full"
                     onClick={() => signOutMutation.mutate()}
                   >
-                    <div className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text-subtle">
+                    <div className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text">
                       <IconLogout
                         className="flex-shrink-0 -ml-1 mr-3 h-6 w-6"
                         aria-hidden="true"

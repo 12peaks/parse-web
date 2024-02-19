@@ -54,7 +54,9 @@ export default function Integrations() {
   return (
     <div className="py-6 px-4 sm:p-6 lg:pb-8">
       <div>
-        <h2 className="text-lg leading-6 font-medium">Integrations</h2>
+        <h2 className="text-lg leading-6 font-medium theme-text">
+          Integrations
+        </h2>
         <p className="mt-1 text-sm theme-text-subtle">
           Add integrations to give your Parse account superpowers.
         </p>
@@ -75,7 +77,9 @@ export default function Integrations() {
             </div>
             <div className="flex-1 min-w-0">
               <span className="absolute inset-0" aria-hidden="true" />
-              <p className="text-sm font-medium">{integration.name}</p>
+              <p className="text-sm font-medium theme-text">
+                {integration.name}
+              </p>
               <p className="text-sm theme-text-subtle truncate">
                 {integration.description}
               </p>

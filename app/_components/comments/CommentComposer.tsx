@@ -15,6 +15,9 @@ type CommentComposerProps = {
   user: CurrentUser;
   toggleCommentEdit?: () => void;
   comment?: Comment;
+  groupId: string | null;
+  homeFeed: boolean;
+  profileId: string | null;
 };
 
 type MentionUserDTO = {
@@ -29,6 +32,9 @@ export function CommentComposer({
   toggleCommentEdit,
   comment,
   user,
+  groupId,
+  homeFeed,
+  profileId,
 }: CommentComposerProps) {
   const [commentContent, setCommentContent] = useState(
     comment ? comment.content : ""
@@ -48,7 +54,7 @@ export function CommentComposer({
     onSuccess: async (data) => {
       setCommentContent("");
       queryClient.invalidateQueries({
-        queryKey: ["feed", post.group_id, post.group_id ? false : true],
+        queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
       });
     },
   });
@@ -59,7 +65,7 @@ export function CommentComposer({
       setCommentContent("");
       toggleCommentEdit && toggleCommentEdit();
       queryClient.invalidateQueries({
-        queryKey: ["feed", post.group_id, post.group_id ? false : true],
+        queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
       });
     },
   });

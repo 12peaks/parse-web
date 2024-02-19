@@ -90,12 +90,14 @@ export default function ProfilePage() {
                     alt="profile"
                   />
                   <div className="hidden sm:inline-block mt-4 min-w-0 px-2 lg:px-4 self-end">
-                    <div className="text-2xl font-bold truncate">
+                    <div className="text-2xl font-bold truncate theme-text">
                       {profile?.name}
                     </div>
                   </div>
                   <div className="sm:hidden mt-6 min-w-0 flex-1 px-4 sm:px-6 lg:px-8 mb-2">
-                    <div className="text-2xl font-bold">{profile.name}</div>
+                    <div className="text-2xl font-bold theme-text">
+                      {profile.name}
+                    </div>
                   </div>
                 </div>
                 <div className="sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">

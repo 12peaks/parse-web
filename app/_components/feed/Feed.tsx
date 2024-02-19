@@ -59,6 +59,7 @@ export const Feed = ({ groupId, teamId, homeFeed, userId }: FeedProps) => {
                       teamId={teamId}
                       groupId={post.group_id}
                       homeFeed={homeFeed}
+                      profileId={userId}
                       user={user}
                     />
                   ))}

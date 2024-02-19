@@ -43,6 +43,7 @@ type FeedPostProps = {
   teamId: string;
   groupId: string | null;
   homeFeed: boolean;
+  profileId: string | null;
   user: CurrentUser;
 };
 
@@ -51,6 +52,7 @@ export const FeedPost = ({
   teamId,
   groupId,
   homeFeed,
+  profileId,
   user,
   ...props
 }: FeedPostProps) => {
@@ -284,7 +286,7 @@ export const FeedPost = ({
                 <RichTextEditor
                   editor={editor}
                   className={
-                    editing ? "mt-2" : "!border-0 ml-8 mb-2 break-words"
+                    editing ? "mt-2" : "!border-0 -mx-4 mb-2 break-words"
                   }
                   styles={{
                     toolbar: {
@@ -377,9 +379,21 @@ export const FeedPost = ({
                     />
                   </div>
                   <div className="my-4">
-                    <CommentsDisplay post={post} user={user} />
+                    <CommentsDisplay
+                      post={post}
+                      user={user}
+                      groupId={groupId}
+                      homeFeed={homeFeed}
+                      profileId={profileId}
+                    />
 
-                    <CommentComposer user={user} post={post} />
+                    <CommentComposer
+                      user={user}
+                      post={post}
+                      homeFeed={homeFeed}
+                      groupId={groupId}
+                      profileId={profileId}
+                    />
                   </div>
                 </>
               </>

@@ -98,7 +98,7 @@ export default function Team() {
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <div className="flex flex-row justify-between items-center">
-            <div className="text-xl font-semibold">Team</div>
+            <div className="text-xl font-semibold theme-text">Team</div>
             <div className="sm:hidden">
               <Button
                 className="self-end sm:hidden"
@@ -195,7 +195,7 @@ export default function Team() {
                                 </div>
                                 <div className="ml-4">
                                   <Link href={`/team/${member.id}`}>
-                                    <div className="font-medium hover:cursor-pointer">
+                                    <div className="font-medium hover:cursor-pointer theme-text">
                                       {member.name}
                                     </div>
                                     {member.name ? (

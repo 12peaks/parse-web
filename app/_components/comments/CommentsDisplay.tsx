@@ -6,9 +6,15 @@ import type { CurrentUser } from "@/types/user";
 export function CommentsDisplay({
   post,
   user,
+  groupId,
+  homeFeed,
+  profileId,
 }: {
   post: FeedPost;
   user: CurrentUser;
+  groupId: string | null;
+  homeFeed: boolean;
+  profileId: string | null;
 }) {
   return (
     <div className="mb-4">
@@ -19,6 +25,9 @@ export function CommentsDisplay({
             post={post}
             comment={comment}
             user={user}
+            groupId={post.group_id}
+            homeFeed={post.group_id ? false : true}
+            profileId={post.user_id}
           />
         ))}
     </div>

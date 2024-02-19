@@ -1,5 +1,6 @@
 "use client";
 import { getCurrentUser } from "@/api/users";
+import { getUnreadNotificationCount } from "@/api/notifications";
 import { AppShell, Button, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
@@ -14,7 +15,12 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
     queryFn: getCurrentUser,
   });
 
-  if (isLoading)
+  const { data: unreadCount, isLoading: unreadCountLoading } = useQuery({
+    queryKey: ["unread-notifications"],
+    queryFn: getUnreadNotificationCount,
+  });
+
+  if (isLoading || unreadCountLoading)
     return (
       <div className="flex justify-center items-center w-screen h-screen">
         <Loader type="dots" size={48} color="blue" />
@@ -27,7 +33,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      {user && user.id ? (
+      {user && user.id && unreadCount ? (
         <AppShell
           navbar={{
             width: 300,
@@ -35,7 +41,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
             collapsed: { mobile: !opened },
           }}
         >
-          <Navigation user={user} unreadNotificationCount={0} />
+          <Navigation user={user} unreadNotificationCount={unreadCount.count} />
           <AppShell.Main>
             <div className="p-4">{children}</div>
           </AppShell.Main>
