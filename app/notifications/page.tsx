@@ -96,21 +96,21 @@ export default function Notifications() {
 
   function buildNotificationUrl(notification: Notification) {
     switch (notification.target_model) {
-      case "posts":
+      case "post":
         if (notification.group_id) {
           return `/post/${notification.target_model_id}`;
         } else {
           return `/post/${notification.target_model_id}`;
         }
-      case "comments":
-      case "mentions":
-      case "reactions":
+      case "comment":
+      case "mention":
+      case "reaction":
         if (notification.group_id) {
           return `/post/${notification.post_id}`;
         } else {
           return `/post/${notification.post_id}`;
         }
-      case "triage_events":
+      case "triage_event":
         return `/triage/${notification.target_model_id}`;
       default:
         return "/notifications";
@@ -173,9 +173,9 @@ export default function Notifications() {
                             >
                               <div className="flex items-center text-sm">
                                 <div className="flex h-10 items-center justify-items-center w-10 rounded-full flex-shrink-0">
-                                  {notification.target_model === "reactions" ? (
-                                    <div className="h-10 w-10 flex relative rounded-full text-2xl">
-                                      <div className="absolute top-[5px] left-[7px]">
+                                  {notification.target_model === "reaction" ? (
+                                    <div className="h-10 w-10 flex relative rounded-full text-2xl bg-white items-center justify-center">
+                                      <div className="text-center mt-1">
                                         {notification.image_url}
                                       </div>
                                     </div>
