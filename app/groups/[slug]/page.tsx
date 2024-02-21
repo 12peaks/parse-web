@@ -6,7 +6,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getGroupBySlug, joinGroup, leaveGroup } from "@/api/groups";
 import { getCurrentUser } from "@/api/users";
 import { Feed } from "@/app/_components/feed/Feed";
-import { Authenticated } from "@/app/_components/auth/Authenticated";
 import { AddTeammatesModal } from "@/app/_components/groups/AddTeammatesModal";
 import { EditGroupButton } from "@/app/_components/groups/EditGroupButton";
 import { Button, Loader, Text, Popover, useMantineTheme } from "@mantine/core";
@@ -100,7 +99,7 @@ export default function GroupPage() {
   };
 
   return (
-    <Authenticated>
+    <>
       {!group || !user || isLoading ? null : (
         <>
           <div className="grid grid-cols-12 gap-4 relative">
@@ -333,6 +332,6 @@ export default function GroupPage() {
           </div>
         </>
       )}
-    </Authenticated>
+    </>
   );
 }

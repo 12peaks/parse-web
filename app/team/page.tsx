@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Authenticated } from "@/app/_components/auth/Authenticated";
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -94,7 +93,7 @@ export default function Team() {
   };
 
   return (
-    <Authenticated>
+    <>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <div className="flex flex-row justify-between items-center">
@@ -281,6 +280,6 @@ export default function Team() {
           <PendingUsersTable pendingUsers={pendingUserQuery.data} />
         </div>
       ) : null}
-    </Authenticated>
+    </>
   );
 }

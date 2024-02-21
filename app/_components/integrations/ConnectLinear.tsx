@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const ConnectLinear = () => {
   const buildLinearAuthUrl = () => {
-    console.log("Building Linear auth URL");
     return "https://google.com";
   };
 

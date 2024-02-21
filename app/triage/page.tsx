@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTriageEvents } from "@/api/triageEvents";
 import { NewEventButton } from "@/app/_components/triage/NewEventButton";
-import { Authenticated } from "@/app/_components/auth/Authenticated";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -21,7 +20,7 @@ export default function TriagePage() {
   }
 
   return (
-    <Authenticated>
+    <>
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold theme-text">Triage Events</h1>
@@ -153,6 +152,6 @@ export default function TriagePage() {
           </div>
         </div>
       </div>
-    </Authenticated>
+    </>
   );
 }

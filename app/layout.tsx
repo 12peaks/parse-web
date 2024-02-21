@@ -6,6 +6,7 @@ import { ModalsProvider } from "@mantine/modals";
 import { Notifications } from "@mantine/notifications";
 import { NavigationProgress } from "@mantine/nprogress";
 import "./globals.css";
+import { Authenticated } from "./_components/auth/Authenticated";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,9 @@ export default async function RootLayout({
           <MantineProvider defaultColorScheme="auto">
             <NavigationProgress />
             <Notifications />
-            <ModalsProvider>{children}</ModalsProvider>
+            <ModalsProvider>
+              <Authenticated>{children}</Authenticated>
+            </ModalsProvider>
           </MantineProvider>
         </QueryProvider>
       </body>

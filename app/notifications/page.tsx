@@ -12,12 +12,12 @@ export default function Notifications() {
   });
 
   return (
-    <Authenticated>
+    <>
       <NotificationPageHeader
         notificationsLoading={query.isLoading}
         notifications={query.data}
       />
       <NotificationTable notifications={query.data} />
-    </Authenticated>
+    </>
   );
 }

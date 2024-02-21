@@ -25,7 +25,6 @@ import {
 import { IconChevronLeft } from "@tabler/icons-react";
 import fire from "@/public/fire.png";
 import { useModals } from "@mantine/modals";
-import { Authenticated } from "@/app/_components/auth/Authenticated";
 import { CustomSelect } from "@/app/_components/ui/CustomSelect";
 //import { FileModal, UploadedFile } from "@/components/FileModal";
 //import { updateTriageFiles } from "../api/updateTriageFiles";
@@ -235,8 +234,8 @@ export default function TriageEventPage() {
   }
 
   return (
-    <Authenticated>
-      <main className="py-4">
+    <>
+      <div className="py-4">
         {/* Page header */}
         <div className="max-w-3xl mx-auto md:flex md:items-center md:justify-between md:space-x-5 lg:max-w-7xl">
           <div className="flex items-center space-x-5">
@@ -653,8 +652,8 @@ export default function TriageEventPage() {
             </div>
           </section>
         </div>
-      </main>
-    </Authenticated>
+      </div>
+    </>
   );
 }
 

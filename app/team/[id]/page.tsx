@@ -9,7 +9,6 @@ import { getCurrentUser } from "@/api/users";
 import { followUser, unfollowUser, getTeamUser } from "@/api/teams";
 import { Button } from "@mantine/core";
 import profilePlaceholderImage from "@/public/sunglasses.png";
-import { Authenticated } from "@/app/_components/auth/Authenticated";
 
 export default function ProfilePage() {
   const params = useParams<{ id: string }>();
@@ -66,7 +65,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <Authenticated>
+    <>
       {profile && user ? (
         <>
           <div>
@@ -141,6 +140,6 @@ export default function ProfilePage() {
           ) : null}
         </>
       ) : null}
-    </Authenticated>
+    </>
   );
 }

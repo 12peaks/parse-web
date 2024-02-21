@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 export const ConnectNotion: React.FC = () => {
   const buildAuthUrl = () => {
-    console.log("Building Notion auth URL");
     return "https://google.com";
   };
 
