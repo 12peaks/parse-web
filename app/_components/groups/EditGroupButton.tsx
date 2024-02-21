@@ -31,12 +31,7 @@ export const EditGroupButton = ({ group }: EditGroupButtonProps) => {
 
   return (
     <div className="">
-      <Button
-        variant="light"
-        fullWidth
-        radius="md"
-        onClick={() => openEditGroupModal()}
-      >
+      <Button variant="light" fullWidth onClick={() => openEditGroupModal()}>
         Edit group
       </Button>
     </div>

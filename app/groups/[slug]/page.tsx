@@ -141,7 +141,6 @@ export default function GroupPage() {
                       (group_user) => group_user.id === user.id
                     ) ? (
                       <Button
-                        radius="md"
                         variant="light"
                         color="red"
                         onClick={() => handleLeaveGroup()}
@@ -149,7 +148,7 @@ export default function GroupPage() {
                         <span>Leave group</span>
                       </Button>
                     ) : (
-                      <Button radius="md" onClick={() => handleJoinGroup()}>
+                      <Button onClick={() => handleJoinGroup()}>
                         <span>Join group</span>
                       </Button>
                     )}

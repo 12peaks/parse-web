@@ -71,7 +71,7 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-row space-y-4">
+      <div className="flex flex-col space-y-4">
         {teamMembers &&
           teamMembers.map((user) => (
             <div key={user.id} className="w-full flex items-center space-x-4">
