@@ -14,7 +14,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
-  
+
   const { data: unreadCount, isLoading: unreadCountLoading } = useQuery({
     queryKey: ["unread-notifications"],
     queryFn: getUnreadNotificationCount,
@@ -43,7 +43,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
         >
           <Navigation user={user} unreadNotificationCount={unreadCount.count} />
           <AppShell.Main>
-            <div className="p-4">{children}</div>
+            <div className="p-8">{children}</div>
           </AppShell.Main>
         </AppShell>
       ) : null}

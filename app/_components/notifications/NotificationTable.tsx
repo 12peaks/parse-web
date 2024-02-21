@@ -85,7 +85,7 @@ export const NotificationTable = ({
     <div className="mt-8 flex flex-col">
       <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div className="inline-block min-w-full py-1 align-middle md:px-6 lg:px-8">
-          <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+          <div className="overflow-hidden shadow border theme-border ring-opacity-5 md:rounded-lg">
             <table className="min-w-full divide-y theme-divide">
               {notifications && notifications.length > 0 ? (
                 <tbody className="divide-y theme-divide">

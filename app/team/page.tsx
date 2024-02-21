@@ -131,15 +131,13 @@ export default function Team() {
           </Button>
         </div>
       </div>
-      {isLoading ? (
-        <Loader size="lg" className="mx-auto mt-12" />
-      ) : (
+      {isLoading ? null : (
         <div className="mt-2 flex flex-col">
           <div className="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
-              <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 md:rounded-lg">
+              <div className="overflow-hidden shadow border theme-border md:rounded-lg">
                 <table className="min-w-full divide-y theme-divide">
-                  <thead>
+                  <thead className="theme-bg-subtle theme-text">
                     <tr>
                       <th
                         scope="col"

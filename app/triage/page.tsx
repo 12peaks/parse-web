@@ -37,7 +37,7 @@ export default function TriagePage() {
       <div className="mt-4 flex flex-col">
         <div className="">
           <div className="inline-block min-w-full py-2 align-middle">
-            <div className="shadow-sm ring-1 ring-black ring-opacity-5">
+            <div className="shadow-sm border theme-border rounded-md">
               <table
                 className="min-w-full border-separate"
                 style={{ borderSpacing: 0 }}
@@ -46,7 +46,7 @@ export default function TriagePage() {
                   <tr>
                     <th
                       scope="col"
-                      className="sticky top-0 z-10 border-b theme-border theme-bg-subtle bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold theme-text backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
+                      className="sticky rounded-tl-md top-0 z-10 border-b theme-border theme-bg-subtle bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold theme-text backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
                     >
                       Event ID
                     </th>
@@ -70,7 +70,7 @@ export default function TriagePage() {
                     </th>
                     <th
                       scope="col"
-                      className="sticky top-0 z-10 border-b theme-border theme-bg-subtle bg-opacity-75 py-3.5 pr-4 pl-3 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
+                      className="sticky rounded-tr-md top-0 z-10 border-b theme-border theme-bg-subtle bg-opacity-75 py-3.5 pr-4 pl-3 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
                     >
                       <span className="sr-only">View</span>
                     </th>
@@ -79,12 +79,12 @@ export default function TriagePage() {
                 <tbody>
                   {events &&
                     events.map((event, eventIdx) => (
-                      <tr key={event.id}>
+                      <tr key={event.id} className="hover:theme-bg-subtle">
                         <td
                           className={classNames(
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
-                              : "",
+                              : "rounded-bl-md",
                             "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium theme-text sm:pl-6 lg:pl-8"
                           )}
                         >
@@ -134,7 +134,7 @@ export default function TriagePage() {
                           className={classNames(
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
-                              : "",
+                              : "rounded-br-md",
                             "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8"
                           )}
                         >
