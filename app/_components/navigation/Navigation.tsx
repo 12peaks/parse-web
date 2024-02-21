@@ -83,7 +83,12 @@ export const Navigation = ({
           <Link
             key={item.name}
             href={item.href}
-            data-active={pathname === item.href ? true : undefined}
+            data-active={
+              pathname === item.href ||
+              (pathname.includes(item.href) && item.href !== "/")
+                ? true
+                : undefined
+            }
             className={classes.link}
           >
             <item.icon
@@ -117,6 +122,9 @@ export const Navigation = ({
               <Link
                 key={group.id}
                 href={`/groups/${group.url_slug ? group.url_slug : group.name}`}
+                data-active={
+                  pathname.includes(group.url_slug) ? true : undefined
+                }
                 className={classes.groupLink}
               >
                 <GroupIcon size={null} groupImage={group.avatar_url} />

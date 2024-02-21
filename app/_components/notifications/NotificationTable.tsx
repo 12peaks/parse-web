@@ -91,6 +91,7 @@ export const NotificationTable = ({
                 <tbody className="divide-y theme-divide">
                   {notifications.map((notification) => (
                     <NotificationRow
+                      key={notification.id}
                       notification={notification}
                       markNotificationRead={markReadMutation.mutate}
                       markNotificationUnread={markUnreadMutation.mutate}
