@@ -15,6 +15,7 @@ export type TriageEvent = {
   owner: TeamUser;
   event_number: number;
   attachments_data: TriageFile[];
+  triage_event_comments: TriageEventComment[];
 };
 
 export type TriageFile = {
@@ -64,16 +65,14 @@ export type TriageTimelineEvent = {
 };
 
 export type TriageEventComment = {
-  id: number;
-  created_at: number;
-  updated_at: number;
+  id: string;
+  created_at: string;
+  updated_at: string;
   text: string;
-  user_id: string;
-  profile_id: number;
-  triage_event_id: number;
-  profile: {
-    id: number;
-    real_name: string;
+  triage_event_id: string;
+  user: {
+    id: string;
+    name: string;
     avatar_url: string;
   };
 };

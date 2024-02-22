@@ -233,7 +233,7 @@ export default function TriageEventPage() {
     };
   }, [teamMembersQuery.isSuccess, teamMembersQuery.data, user?.id]);
 
-  if (eventQuery.isLoading || !eventQuery.data) {
+  if (eventQuery.isLoading || !eventQuery.data || !user) {
     return null;
   }
 
@@ -633,9 +633,10 @@ export default function TriageEventPage() {
               </div>
             </section>
             <TriageEventComments
+              eventComments={eventQuery.data.triage_event_comments}
               eventId={params.id}
               avatarUrl={avatarUrl}
-              user={user!}
+              user={user}
             />
           </div>
 
