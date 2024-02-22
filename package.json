@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/12peaks/parse-web#readme",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
