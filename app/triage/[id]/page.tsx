@@ -14,7 +14,6 @@ import { TriageEventTimeline } from "@/app/_components/triage/TriageEventTimelin
 import { TriageEventComments } from "@/app/_components/triage/TriageEventComments";
 import {
   Badge,
-  Loader,
   Button,
   Select,
   Text,
@@ -22,10 +21,11 @@ import {
   Avatar,
   Group,
 } from "@mantine/core";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft, IconPaperclip } from "@tabler/icons-react";
 import fire from "@/public/fire.png";
 import { useModals } from "@mantine/modals";
 import { CustomSelect } from "@/app/_components/ui/CustomSelect";
+import type { TriageFile } from "@/types/triageEvent";
 //import { FileModal, UploadedFile } from "@/components/FileModal";
 //import { updateTriageFiles } from "../api/updateTriageFiles";
 
@@ -198,6 +198,10 @@ export default function TriageEventPage() {
       }
       setEditingReporter(false);
     }
+  };
+
+  const handleFileRemove = (file: TriageFile) => {
+    console.log("remove file", file);
   };
 
   useEffect(() => {
@@ -579,48 +583,50 @@ export default function TriageEventPage() {
                           </Button>
                         </div>
                       </dt>
-                      {/*
-                    <dd className="mt-1 text-sm theme-text">
-                      <ul className="border border-gray-200 rounded-md divide-y divide-gray-200">
-                        {eventQuery.data.files &&
-                          eventQuery.data.files.map((attachment) => (
-                            <li
-                              key={attachment.split("/").pop()}
-                              className="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
-                            >
-                              <div className="w-0 flex-1 flex items-center">
-                                <PaperClipIcon
-                                  className="flex-shrink-0 h-5 w-5 text-gray-400"
-                                  aria-hidden="true"
-                                />
-                                <span className="ml-2 flex-1 w-0 truncate">
-                                  {attachment.split("/").pop()}
-                                </span>
-                              </div>
-                              <div className="ml-4 flex-shrink-0 flex flex-column items-center">
-                                <a
-                                  href={attachment}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  className="font-medium text-blue-600 hover:text-blue-500"
-                                >
-                                  Download
-                                </a>
-                                <Button
-                                  className="ml-4"
-                                  variant="subtle"
-                                  color="red"
-                                  onClick={() => handleRemoveFile(attachment)}
-                                  size="compact-md"
-                                >
-                                  Remove
-                                </Button>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
-                    </dd>
-                    */}
+
+                      <dd className="mt-1 text-sm theme-text">
+                        <ul className="border theme-border rounded-md divide-y theme-divide">
+                          {eventQuery.data.attachments_data &&
+                            eventQuery.data.attachments_data.map((file) => (
+                              <li
+                                key={file.id}
+                                className="pl-3 pr-4 py-3 flex items-center justify-between text-sm"
+                              >
+                                <div className="w-0 flex-1 flex items-center">
+                                  <IconPaperclip
+                                    className="flex-shrink-0 h-5 w-5 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                  <span className="ml-2 flex-1 w-0 truncate">
+                                    {file.name}
+                                  </span>
+                                </div>
+                                <div className="ml-4 flex-shrink-0 flex flex-column items-center">
+                                  <Button
+                                    component="a"
+                                    href={file.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    variant="subtle"
+                                    size="compact-sm"
+                                    color="blue"
+                                  >
+                                    Download
+                                  </Button>
+                                  <Button
+                                    className="ml-4"
+                                    variant="subtle"
+                                    size="compact-sm"
+                                    color="red"
+                                    onClick={() => handleFileRemove(file)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </div>
+                              </li>
+                            ))}
+                        </ul>
+                      </dd>
                     </div>
                   </dl>
                 </div>

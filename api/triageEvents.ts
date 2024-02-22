@@ -30,7 +30,26 @@ export const getTriageEvent = async (
 export const createTriageEvent = async (
   triage_event: CreateTriageEventDTO
 ): Promise<TriageEvent> => {
-  const response = await axios.post("/api/triage_events", triage_event);
+  const formData = new FormData();
+
+  Object.entries(triage_event).forEach(([key, value]) => {
+    if (key !== "attachments" && value !== undefined) {
+      formData.append(
+        `triage_event[${key}]`,
+        typeof value === "object" ? JSON.stringify(value) : value
+      );
+    }
+  });
+
+  if (triage_event.attachments && triage_event.attachments.length > 0) {
+    triage_event.attachments.forEach((attachment) => {
+      formData.append("triage_event[attachments][]", attachment);
+    });
+  }
+
+  const response = await axios.post("/api/triage_events", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
   if (response.status === 200) {
     return response.data;
   } else {
@@ -61,9 +80,27 @@ export const createTimelineEvent = async ({
 export const updateTriageEvent = async (
   triage_event: UpdateTriageEventDTO
 ): Promise<TriageEvent> => {
+  const formData = new FormData();
+
+  Object.entries(triage_event).forEach(([key, value]) => {
+    if (key !== "attachments" && value !== undefined) {
+      formData.append(
+        `triage_event[${key}]`,
+        typeof value === "object" ? JSON.stringify(value) : value
+      );
+    }
+  });
+
+  if (triage_event.attachments && triage_event.attachments.length > 0) {
+    triage_event.attachments.forEach((attachment) => {
+      formData.append("triage_event[attachments][]", attachment);
+    });
+  }
+
   const response = await axios.put(
     `/api/triage_events/${triage_event.id}`,
-    triage_event
+    formData,
+    { headers: { "Content-Type": "multipart/form-data" } }
   );
   if (response.status === 200) {
     return response.data;

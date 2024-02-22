@@ -1,4 +1,5 @@
 import type { CurrentUser, TeamUser } from "@/types/user";
+import { FileWithPath } from "@mantine/dropzone";
 
 export type TriageEvent = {
   id: string;
@@ -13,6 +14,13 @@ export type TriageEvent = {
   owner_id: string;
   owner: TeamUser;
   event_number: number;
+  attachments_data: TriageFile[];
+};
+
+export type TriageFile = {
+  id: number;
+  name: string;
+  url: string;
 };
 
 export type CreateTriageEventDTO = {
@@ -21,6 +29,7 @@ export type CreateTriageEventDTO = {
   severity: string;
   team_id?: string;
   owner_id: string;
+  attachments?: FileWithPath[];
 };
 
 export type UpdateTriageEventDTO = {
@@ -31,6 +40,7 @@ export type UpdateTriageEventDTO = {
   user_id?: string;
   team_id?: string;
   owner_id?: string;
+  attachments?: FileWithPath[];
 };
 
 export type CreateTimelineEventDTO = {
