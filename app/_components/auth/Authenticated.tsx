@@ -18,6 +18,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
   const { data: unreadCount, isLoading: unreadCountLoading } = useQuery({
     queryKey: ["unread-notifications"],
     queryFn: getUnreadNotificationCount,
+    refetchInterval: 60000,
   });
 
   if (isLoading || unreadCountLoading)
