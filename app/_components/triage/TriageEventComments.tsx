@@ -119,7 +119,7 @@ export const TriageEventComments = ({
             </ul>
           </div>
         </div>
-        <div className="px-4 py-6 sm:px-6">
+        <div className="px-4 py-4 border-t theme-border sm:px-6">
           <div className="flex space-x-3">
             <div className="flex-shrink-0">
               <img
@@ -131,8 +131,7 @@ export const TriageEventComments = ({
             <div className="min-w-0 flex-1">
               <div>
                 <Textarea
-                  label="Comment"
-                  placeholder="Add a comment..."
+                  placeholder="Add a new comment..."
                   id="comment"
                   name="comment"
                   value={commentText}

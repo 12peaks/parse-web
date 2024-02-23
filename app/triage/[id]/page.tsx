@@ -101,10 +101,10 @@ export default function TriageEventPage() {
     if (eventQuery.data) {
       if (newStatus !== eventQuery.data.status) {
         createTimelineEventMutation.mutate({
-          oldValue: eventQuery.data.status,
-          newValue: newStatus,
+          old_value: eventQuery.data.status,
+          new_value: newStatus,
           field: "status",
-          triageEventId: params.id,
+          triage_event_id: params.id,
         });
         saveEventMutation.mutate({
           id: params.id,
@@ -119,10 +119,10 @@ export default function TriageEventPage() {
     if (eventQuery.data) {
       if (newSeverity !== eventQuery.data.severity) {
         createTimelineEventMutation.mutate({
-          oldValue: eventQuery.data.severity,
-          newValue: newSeverity,
+          old_value: eventQuery.data.severity,
+          new_value: newSeverity,
           field: "severity",
-          triageEventId: params.id,
+          triage_event_id: params.id,
         });
         saveEventMutation.mutate({
           id: params.id,
@@ -137,10 +137,10 @@ export default function TriageEventPage() {
     if (eventQuery.data) {
       if (newDescription !== eventQuery.data.description) {
         createTimelineEventMutation.mutate({
-          oldValue: eventQuery.data.description,
-          newValue: newDescription,
+          old_value: eventQuery.data.description,
+          new_value: newDescription,
           field: "description",
-          triageEventId: params.id,
+          triage_event_id: params.id,
         });
         saveEventMutation.mutate({
           id: params.id,
@@ -167,10 +167,10 @@ export default function TriageEventPage() {
       if (newOwnerId !== eventQuery.data.owner_id) {
         const triageEventId = params.id;
         createTimelineEventMutation.mutate({
-          oldValue: eventQuery.data.owner.name,
-          newValue: getNewName(newOwner) || "",
+          old_value: eventQuery.data.owner.name,
+          new_value: getNewName(newOwner) || "",
           field: "owner",
-          triageEventId,
+          triage_event_id: params.id,
         });
         saveEventMutation.mutate({
           id: triageEventId,
@@ -186,10 +186,10 @@ export default function TriageEventPage() {
       const newReporterId = newReporter;
       if (newReporterId !== eventQuery.data.user_id) {
         createTimelineEventMutation.mutate({
-          oldValue: eventQuery.data.user.name,
-          newValue: getNewName(newReporter) || "",
+          old_value: eventQuery.data.user.name,
+          new_value: getNewName(newReporter) || "",
           field: "reporter",
-          triageEventId: params.id,
+          triage_event_id: params.id,
         });
         saveEventMutation.mutate({
           id: params.id,
@@ -654,7 +654,7 @@ export default function TriageEventPage() {
 
               {/* Activity Feed */}
               <div className="flow-root">
-                <TriageEventTimeline eventId={params.id} />
+                <TriageEventTimeline event={eventQuery.data} />
               </div>
             </div>
           </section>

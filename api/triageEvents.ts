@@ -27,6 +27,19 @@ export const getTriageEvent = async (
   }
 };
 
+export const getTriageTimelineEvents = async (
+  event_id: string
+): Promise<TriageTimelineEvent[]> => {
+  const response = await axios.get(
+    `/api/triage_timeline_events?triage_event_id=${event_id}`
+  );
+  if (response.status === 200) {
+    return response.data;
+  } else {
+    return [];
+  }
+};
+
 export const createTriageEvent = async (
   triage_event: CreateTriageEventDTO
 ): Promise<TriageEvent> => {
@@ -58,16 +71,16 @@ export const createTriageEvent = async (
 };
 
 export const createTimelineEvent = async ({
-  oldValue,
-  newValue,
+  old_value,
+  new_value,
   field,
-  triageEventId,
+  triage_event_id,
 }: CreateTimelineEventDTO): Promise<TriageTimelineEvent[]> => {
   const response = await axios.post("/api/triage_timeline_events", {
-    oldValue,
-    newValue,
+    old_value,
+    new_value,
     field,
-    triageEventId,
+    triage_event_id,
   });
 
   if (response.status === 200) {

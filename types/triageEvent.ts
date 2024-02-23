@@ -45,10 +45,10 @@ export type UpdateTriageEventDTO = {
 };
 
 export type CreateTimelineEventDTO = {
-  oldValue?: string | null;
-  newValue: string | number;
+  old_value?: string | null;
+  new_value: string | number;
   field: string;
-  triageEventId: string;
+  triage_event_id: string;
 };
 
 export type TriageTimelineEvent = {
@@ -57,11 +57,9 @@ export type TriageTimelineEvent = {
   updated_at: string;
   old_value?: string;
   new_value: string;
-  updated_by: string;
   triage_event_id: string;
-  updater_id: string;
   field: string;
-  updater: CurrentUser;
+  user: TeamUser;
 };
 
 export type TriageEventComment = {
