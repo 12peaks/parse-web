@@ -1,26 +1,20 @@
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import Link from "next/link";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, Textarea } from "@mantine/core";
-import TimeAgo from "timeago-react";
-import {
-  createTriageEventComment,
-  deleteTriageEventComment,
-} from "@/api/triageEventComments";
-import type { TriageEventComment } from "@/types/triageEvent";
+import { createTriageEventComment } from "@/api/triageEventComments";
+import type { TriageEventComment as TriageEventCommentType } from "@/types/triageEvent";
 import type { CurrentUser } from "@/types/user";
+import { TriageEventComment } from "./TriageEventComment";
 
 type TriageEventCommentsProps = {
-  eventComments: TriageEventComment[];
+  eventComments: TriageEventCommentType[];
   eventId: string;
-  avatarUrl: string;
   user: CurrentUser;
 };
 
 export const TriageEventComments = ({
   eventComments,
   eventId,
-  avatarUrl,
   user,
 }: TriageEventCommentsProps) => {
   const [commentText, setCommentText] = useState("");
@@ -36,27 +30,12 @@ export const TriageEventComments = ({
     },
   });
 
-  const deleteCommentMutation = useMutation({
-    mutationFn: deleteTriageEventComment,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["event", eventId],
-      });
-    },
-  });
-
   const handleAddComment = () => {
     addCommentMutation.mutate({
       text: commentText,
       event_id: eventId,
     });
     setCommentText("");
-  };
-
-  const handleCommentDelete = (comment: TriageEventComment) => {
-    deleteCommentMutation.mutate({
-      comment_id: comment.id,
-    });
   };
 
   return (
@@ -71,45 +50,12 @@ export const TriageEventComments = ({
           <div className="px-4 py-6 sm:px-6">
             <ul className="space-y-4 !list-none">
               {eventComments.map((comment) => (
-                <li key={comment.id}>
-                  <div className="flex space-x-3">
-                    <div className="flex-shrink-0">
-                      <img
-                        className="h-10 w-10 rounded-full bg-white"
-                        src={comment.user.avatar_url}
-                        alt=""
-                      />
-                    </div>
-                    <div>
-                      <div className="text-sm flex flex-column items-center">
-                        <Link
-                          href={`/team/${comment.user.id}`}
-                          className="font-medium theme-text"
-                        >
-                          {comment.user.name}
-                        </Link>
-                      </div>
-                      <div className="mt-1 text-sm theme-text-subtle">
-                        <p>{comment.text}</p>
-                      </div>
-                      <div className="mt-2 text-sm space-x-2">
-                        <span className="text-gray-500 font-medium">
-                          <TimeAgo datetime={comment.created_at} />
-                        </span>
-                        {comment.user.id === user?.id ? (
-                          <Button
-                            variant="subtle"
-                            size="compact-xs"
-                            color="red"
-                            onClick={() => handleCommentDelete(comment)}
-                          >
-                            Remove
-                          </Button>
-                        ) : null}
-                      </div>
-                    </div>
-                  </div>
-                </li>
+                <TriageEventComment
+                  key={comment.id}
+                  comment={comment}
+                  eventId={eventId}
+                  user={user}
+                />
               ))}
               {eventComments.length === 0 ? (
                 <div className="mx-auto text-center">
@@ -124,7 +70,7 @@ export const TriageEventComments = ({
             <div className="flex-shrink-0">
               <img
                 className="h-10 w-10 rounded-full bg-white mt-1"
-                src={avatarUrl}
+                src={user.avatar_url}
                 alt=""
               />
             </div>
