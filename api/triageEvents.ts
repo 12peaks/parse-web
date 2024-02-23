@@ -96,7 +96,7 @@ export const updateTriageEvent = async (
   const formData = new FormData();
 
   Object.entries(triage_event).forEach(([key, value]) => {
-    if (key !== "attachments" && value !== undefined) {
+    if (key !== "id" && key !== "attachments" && value !== undefined) {
       formData.append(
         `triage_event[${key}]`,
         typeof value === "object" ? JSON.stringify(value) : value

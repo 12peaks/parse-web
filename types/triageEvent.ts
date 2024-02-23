@@ -46,7 +46,7 @@ export type UpdateTriageEventDTO = {
 
 export type CreateTimelineEventDTO = {
   old_value?: string | null;
-  new_value: string | number;
+  new_value: string | null;
   field: string;
   triage_event_id: string;
 };

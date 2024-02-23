@@ -31,7 +31,6 @@ type MemberDTO = {
 };
 
 export const EventInformation = ({ event, user }: EventInformationProps) => {
-  const [avatarUrl, setAvatarUrl] = useState("");
   const [teamMembers, setTeamMembers] = useState<MemberDTO[]>([]);
   const [newStatus, setNewStatus] = useState(event ? event.status : "");
   const [newSeverity, setNewSeverity] = useState(event ? event.severity : "");
@@ -43,12 +42,12 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
     event ? event.description : ""
   );
 
+  const queryClient = useQueryClient();
+
   const teamMembersQuery = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
-
-  const queryClient = useQueryClient();
 
   const saveEventMutation = useMutation({
     mutationFn: updateTriageEvent,
@@ -66,103 +65,64 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
     mutationFn: createTimelineEvent,
   });
 
-  const handleStatusSave = () => {
-    if (event) {
-      if (newStatus !== event.status) {
-        createTimelineEventMutation.mutate({
-          old_value: event.status,
-          new_value: newStatus,
-          field: "status",
-          triage_event_id: event.id,
-        });
-        saveEventMutation.mutate({
-          id: event.id,
-          status: newStatus,
-        });
+  const handleFieldSave = ({
+    field,
+    newValue,
+    oldValue,
+    fieldKey,
+    valueTransform,
+  }: {
+    field: string;
+    newValue: string;
+    oldValue?: string;
+    fieldKey?: string;
+    valueTransform?: (val: string) => string;
+  }) => {
+    const key = fieldKey || field;
+    const oldFieldValue = oldValue ?? event[key as keyof TriageEvent];
+    if (newValue === oldFieldValue) return;
+
+    const transformOldValue = () => {
+      if (valueTransform && typeof oldFieldValue === "string") {
+        return valueTransform(oldFieldValue);
+      } else if (typeof oldFieldValue === "string") {
+        return oldFieldValue;
+      } else {
+        null;
       }
-    }
+    };
+
+    const transformNewValue = () => {
+      if (valueTransform) {
+        return valueTransform(newValue);
+      }
+      return newValue;
+    };
+
+    createTimelineEventMutation.mutate({
+      old_value: transformOldValue(),
+      new_value: transformNewValue(),
+      field: field,
+      triage_event_id: event.id,
+    });
+
+    saveEventMutation.mutate({
+      id: event.id,
+      [key]: newValue,
+    });
   };
 
-  const handleSeveritySave = () => {
-    if (event) {
-      if (newSeverity !== event.severity) {
-        createTimelineEventMutation.mutate({
-          old_value: event.severity,
-          new_value: newSeverity,
-          field: "severity",
-          triage_event_id: event.id,
-        });
-        saveEventMutation.mutate({
-          id: event.id,
-          severity: newSeverity,
-        });
-      }
-    }
-  };
-
-  const handleDescriptionSave = () => {
-    if (event) {
-      if (newDescription !== event.description) {
-        createTimelineEventMutation.mutate({
-          old_value: event.description,
-          new_value: newDescription,
-          field: "description",
-          triage_event_id: event.id,
-        });
-        saveEventMutation.mutate({
-          id: event.id,
-          description: newDescription,
-        });
-      }
-    }
-  };
-
-  function getNewName(id: string): string | undefined {
+  function getNameFromId(id: string): string {
+    let newName = "";
     if (teamMembersQuery.data) {
       for (const teamMember of teamMembersQuery.data) {
         if (teamMember.id === id) {
-          return teamMember.name;
+          newName = teamMember.name ?? "";
         }
       }
     }
+    return newName;
   }
-
-  const handleOwnerSave = () => {
-    if (event) {
-      const newOwnerId = newOwner;
-      if (newOwnerId !== event.owner_id) {
-        const triageEventId = event.id;
-        createTimelineEventMutation.mutate({
-          old_value: event.owner.name,
-          new_value: getNewName(newOwner) || "",
-          field: "owner",
-          triage_event_id: event.id,
-        });
-        saveEventMutation.mutate({
-          id: triageEventId,
-          owner_id: newOwnerId,
-        });
-      }
-    }
-  };
-
-  const handleReporterSave = () => {
-    if (event) {
-      const newReporterId = newReporter;
-      if (newReporterId !== event.user_id) {
-        createTimelineEventMutation.mutate({
-          old_value: event.user.name,
-          new_value: getNewName(newReporter) || "",
-          field: "reporter",
-          triage_event_id: event.id,
-        });
-        saveEventMutation.mutate({
-          id: event.id,
-          user_id: newReporterId,
-        });
-      }
-    }
-  };
 
   const handleFileRemove = (file: TriageFile) => {
     console.log("remove file", file);
@@ -173,9 +133,6 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
     if (isMounted && teamMembersQuery.isSuccess && teamMembersQuery.data) {
       let members: MemberDTO[] = [];
       teamMembersQuery.data.forEach((teamMember) => {
-        if (teamMember.id === user?.id) {
-          setAvatarUrl(teamMember.avatar_url ?? "");
-        }
         members.push({
           value: teamMember.id,
           label: teamMember.name ?? "",
@@ -213,7 +170,15 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
             <TriageInlineEdit
               label="Reporter"
               classes="sm:col-span-1"
-              handleSave={handleReporterSave}
+              handleSave={() =>
+                handleFieldSave({
+                  field: "reporter",
+                  newValue: newReporter,
+                  oldValue: event.user_id,
+                  fieldKey: "user_id",
+                  valueTransform: getNameFromId,
+                })
+              }
               inputComponent={
                 <CustomSelect
                   className="w-full"
@@ -242,7 +207,15 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
             <TriageInlineEdit
               label="Owner"
               classes="sm:col-span-1"
-              handleSave={handleOwnerSave}
+              handleSave={() =>
+                handleFieldSave({
+                  field: "owner",
+                  newValue: newOwner,
+                  oldValue: event.owner.id,
+                  fieldKey: "owner_id",
+                  valueTransform: getNameFromId,
+                })
+              }
               inputComponent={
                 <CustomSelect
                   className="w-full"
@@ -271,7 +244,9 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
             <TriageInlineEdit
               label="Severity"
               classes="sm:col-span-1"
-              handleSave={handleSeveritySave}
+              handleSave={() =>
+                handleFieldSave({ field: "severity", newValue: newSeverity })
+              }
               inputComponent={
                 <Select
                   placeholder="Event severity"
@@ -298,7 +273,9 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
             <TriageInlineEdit
               label="Status"
               classes="sm:col-span-1 capitalize"
-              handleSave={handleStatusSave}
+              handleSave={() =>
+                handleFieldSave({ field: "status", newValue: newStatus })
+              }
               inputComponent={
                 <Select
                   placeholder="Event status"
@@ -313,7 +290,12 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
             <TriageInlineEdit
               label="Description"
               classes="sm:col-span-2"
-              handleSave={handleDescriptionSave}
+              handleSave={() =>
+                handleFieldSave({
+                  field: "description",
+                  newValue: newDescription,
+                })
+              }
               inputComponent={
                 <Textarea
                   className="w-full"
