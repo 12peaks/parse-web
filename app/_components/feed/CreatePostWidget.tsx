@@ -44,7 +44,11 @@ const CreatePostWidget = ({
         <div className="flex flex-row items-center">
           <img
             className="h-10 w-10 sm:h-12 sm:w-12 rounded-full self-start bg-white"
-            src={user.avatar_url ? user.avatar_url : placeholderAvatar.src}
+            src={
+              user.avatar_image_url
+                ? user.avatar_image_url
+                : placeholderAvatar.src
+            }
             alt="avatar"
           />
           <div className="w-full !cursor-default">

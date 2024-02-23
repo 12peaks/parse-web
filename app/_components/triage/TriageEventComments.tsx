@@ -70,7 +70,7 @@ export const TriageEventComments = ({
             <div className="flex-shrink-0">
               <img
                 className="h-10 w-10 rounded-full bg-white mt-1"
-                src={user.avatar_url}
+                src={user.avatar_image_url}
                 alt=""
               />
             </div>

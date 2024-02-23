@@ -53,7 +53,7 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
         id: newGroupMember.id,
         name: newGroupMember.name ?? "",
         email: newGroupMember.email,
-        avatar_url: newGroupMember.avatar_url,
+        avatar_url: newGroupMember.avatar_image_url,
         created_at: newGroupMember.created_at,
         updated_at: newGroupMember.updated_at,
       });
@@ -76,7 +76,11 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
           teamMembers.map((user) => (
             <div key={user.id} className="w-full flex items-center space-x-4">
               <div className="flex-shrink-0 hover:cursor-pointer">
-                <Avatar className="bg-white" size={36} src={user.avatar_url} />
+                <Avatar
+                  className="bg-white"
+                  size={36}
+                  src={user.avatar_image_url}
+                />
               </div>
               <div className="flex-1 flex-grow min-w-0 hover:cursor-pointer">
                 <p className="text-sm font-medium theme-text truncate">

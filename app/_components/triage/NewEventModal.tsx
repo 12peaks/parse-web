@@ -83,7 +83,7 @@ const NewEventModal = ({ handleNewEventNavigation }: NewEventModalProps) => {
           .map((user) => ({
             value: user.id,
             label: user.name ?? "",
-            image: user.avatar_url ?? "",
+            image: user.avatar_image_url ?? "",
           }))
       );
     }

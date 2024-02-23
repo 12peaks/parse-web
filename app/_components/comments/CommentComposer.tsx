@@ -129,7 +129,7 @@ export function CommentComposer({
         let mentionUser = {
           id: teamUser.id,
           display: teamUser.name ?? teamUser.email,
-          avatar: teamUser.avatar_url ?? placeholderAvatar.src,
+          avatar: teamUser.avatar_image_url ?? placeholderAvatar.src,
           uid: teamUser.id,
         };
         mentionUsers.push(mentionUser);
@@ -147,7 +147,7 @@ export function CommentComposer({
     <div className="w-full flex flex-row">
       {!comment && (
         <Avatar
-          src={user.avatar_url}
+          src={user.avatar_image_url}
           alt="profile image"
           radius="xl"
           size={32}

@@ -138,13 +138,15 @@ export const Navigation = ({
       )}
       {user ? (
         <AppShell.Section className={classes.footer}>
-          <Link href="/profile" className={classes.link}>
+          <Link href={`/team/${user.id}`} className={classes.link}>
             <div className="flex items-center">
               <div>
                 <img
                   className="inline-block h-9 w-9 rounded-full bg-white"
                   src={
-                    user.avatar_url ? user.avatar_url : placeholderAvatar.src
+                    user.avatar_image_url
+                      ? user.avatar_image_url
+                      : placeholderAvatar.src
                   }
                   alt="placeholder avatar"
                 />

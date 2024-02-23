@@ -139,7 +139,7 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
           icon: (
             <Avatar
               className="bg-white"
-              src={teamMember.avatar_url}
+              src={teamMember.avatar_image_url}
               size={32}
               radius="xl"
             />
@@ -186,9 +186,6 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
                   defaultValue={newReporter}
                   setValue={(value) => setNewReporter(value || "")}
                   data={teamMembers}
-                  itemComponent={SelectItem}
-                  searchable
-                  nothingFoundMessage="Teammate not found"
                 />
               }
               displayComponent={
@@ -196,7 +193,7 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
                   <Avatar
                     className="bg-white mr-2"
                     size={32}
-                    src={event.user.avatar_url}
+                    src={event.user.avatar_image_url}
                     alt="reporter"
                   />
                   <div>{event.user?.name}</div>
@@ -223,9 +220,6 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
                   defaultValue={newOwner}
                   setValue={(value) => setNewOwner(value || "")}
                   data={teamMembers}
-                  itemComponent={SelectItem}
-                  searchable
-                  nothingFoundMessage="Teammate not found"
                 />
               }
               displayComponent={

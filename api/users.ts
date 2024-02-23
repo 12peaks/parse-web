@@ -3,7 +3,7 @@ import axios from "@/libs/axios";
 
 type UpdateUserDTO = {
   name: string;
-  email: string;
+  avatar?: File;
 };
 
 export const getCurrentUser = async (): Promise<CurrentUser | null> => {
@@ -25,11 +25,13 @@ export const signOut = async (): Promise<void> => {
 
 export const updateUser = async ({
   name,
-  email,
+  avatar,
 }: UpdateUserDTO): Promise<CurrentUser | null> => {
-  const response = await axios.put("/api/users", {
-    name,
-    email,
+  const formData = new FormData();
+  formData.append("user[name]", name);
+  avatar ? formData.append("user[avatar]", avatar) : null;
+  const response = await axios.put("/api/users", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
   });
   if (response.status === 200) {
     return response.data;

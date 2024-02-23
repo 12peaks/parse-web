@@ -69,7 +69,7 @@ export function CommentDisplay({
       <div className="mr-2 min-w-[32px]">
         <img
           className="inline-block h-8 w-8 rounded-full bg-white"
-          src={comment.user.avatar_url}
+          src={comment.user.avatar_image_url}
           alt="profile"
         />
       </div>

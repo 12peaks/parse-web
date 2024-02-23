@@ -5,6 +5,7 @@ import { Button, TextInput } from "@mantine/core";
 import { updateUser } from "@/api/users";
 import { useModals } from "@mantine/modals";
 import type { TeamUser } from "@/types/user";
+import { FileWithPath } from "@mantine/dropzone";
 
 type EditProfileProps = {
   profile: TeamUser;
@@ -12,6 +13,7 @@ type EditProfileProps = {
 
 export const EditProfileModal = ({ profile }: EditProfileProps) => {
   const [name, setName] = useState(profile && profile.name ? profile.name : "");
+  const [avatar, setAvatar] = useState<File | null>(null);
 
   const [email, setEmail] = useState(
     profile && profile.email ? profile.email : ""
@@ -26,9 +28,12 @@ export const EditProfileModal = ({ profile }: EditProfileProps) => {
 
   const handleFiles = async (files: FileList | null) => {
     if (files && files.length > 0) {
-      const file = files[0];
-
-      console.log("file", file);
+      setAvatar(files[0]);
+      const reader = new FileReader();
+      reader.onload = () => {
+        setIconPhotoUrl(reader.result as string);
+      };
+      reader.readAsDataURL(files[0]);
     }
   };
 
@@ -45,7 +50,7 @@ export const EditProfileModal = ({ profile }: EditProfileProps) => {
   const handleProfileEdit = async () => {
     updateProfileMutation.mutate({
       name: name,
-      email,
+      avatar: avatar ?? undefined,
     });
   };
 
@@ -143,6 +148,7 @@ export const EditProfileModal = ({ profile }: EditProfileProps) => {
             label="Email"
             id="email"
             value={email}
+            disabled
             onChange={(e) => setEmail(e.currentTarget.value)}
           />
         </div>

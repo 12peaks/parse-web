@@ -184,7 +184,7 @@ export const FeedPost = ({
                   <Link href={`/team/${post.user_id}`}>
                     <img
                       className="h-10 w-10 rounded-full bg-white"
-                      src={post.user.avatar_url}
+                      src={post.user.avatar_image_url}
                       alt=""
                     />
                   </Link>

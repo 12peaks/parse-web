@@ -23,6 +23,7 @@ export interface FeedPost extends Post {
     name: string;
     github_image: string;
     avatar_url: string;
+    avatar_image_url?: string;
   };
   comments: Comment[];
   reactions: Reaction[];

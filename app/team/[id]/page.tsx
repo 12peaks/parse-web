@@ -82,8 +82,8 @@ export default function ProfilePage() {
                   <img
                     className="h-24 w-24 bg-white rounded-full ring-4 ring-white sm:h-32 sm:w-32"
                     src={
-                      profile.avatar_url
-                        ? profile.avatar_url
+                      profile.avatar_image_url
+                        ? profile.avatar_image_url
                         : profilePlaceholder.src
                     }
                     alt="profile"

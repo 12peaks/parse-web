@@ -40,7 +40,7 @@ export const TriageEventComment = ({
           <Avatar
             className="bg-white"
             size="md"
-            src={comment.user.avatar_url}
+            src={comment.user.avatar_image_url}
             alt="user avatar"
           />
         </div>
