@@ -5,7 +5,7 @@ import { NotificationPageHeader } from "@/app/_components/notifications/Notifica
 import { NotificationTable } from "@/app/_components/notifications/NotificationTable";
 
 export default function Notifications() {
-  const query = useQuery({
+  const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: getNotifications,
   });
@@ -13,10 +13,10 @@ export default function Notifications() {
   return (
     <>
       <NotificationPageHeader
-        notificationsLoading={query.isLoading}
-        notifications={query.data}
+        notificationsLoading={isLoading}
+        notifications={notifications}
       />
-      <NotificationTable notifications={query.data} />
+      <NotificationTable notifications={notifications} />
     </>
   );
 }
