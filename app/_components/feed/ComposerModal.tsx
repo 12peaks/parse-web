@@ -134,10 +134,6 @@ export const ComposerModal = ({
           });
         }
       });
-      //const { error } = await supabase.from("mentions").insert(mentionsToSave);
-      //if (error) {
-      //  console.error(error);
-      //}
     }
   };
 

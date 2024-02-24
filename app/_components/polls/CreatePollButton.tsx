@@ -1,24 +1,19 @@
-import { useState } from "react";
-import { ThemeIcon, Popover } from "@mantine/core";
+import { ThemeIcon } from "@mantine/core";
 import { IconChartBar } from "@tabler/icons-react";
 import { useModals } from "@mantine/modals";
 import CreatePollModal from "@/app/_components/polls/CreatePollModal";
-import { CurrentUser } from "@/types/user";
 
 type CreatePollButtonProps = {
   groupId: string | null;
   teamId: string;
   homeFeed: boolean;
-  user: CurrentUser;
 };
 
 export const CreatePollButton = ({
   groupId,
   teamId,
   homeFeed,
-  user,
 }: CreatePollButtonProps) => {
-  const [pollPopoverOpen, setPollPopoverOpen] = useState(false);
   const modals = useModals();
 
   const openNewPollModal = () => {
@@ -29,7 +24,6 @@ export const CreatePollButton = ({
         <CreatePollModal
           groupId={groupId}
           teamId={teamId}
-          user={user}
           homeFeed={homeFeed}
         />
       ),

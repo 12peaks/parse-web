@@ -1,3 +1,5 @@
+import { TeamUser } from "./user";
+
 export type Poll = {
   id: string;
   created_at: string;
@@ -7,42 +9,37 @@ export type Poll = {
   group_id?: string;
   team_id: string;
   post_id: string;
-  allow_multiple: boolean;
   poll_options: PollOption[];
 };
 
 export type PollOption = {
-  id: number;
-  created_at: number;
-  updated_at: number;
+  id: string;
+  created_at: string;
+  updated_at: string;
   poll_id: string;
   text: string;
+  poll_votes: PollVote[];
 };
 
 export type PollVote = {
   id: string;
   created_at: string;
   updated_at: string;
-  voter_id: string;
+  user: {
+    id: string;
+    avatar_image_url?: string;
+  };
   poll_id: string;
   poll_option_id: string;
-  voter_profile_id: string;
 };
-
-export interface PollVoteWithAvatar extends PollVote {
-  slack_profiles: {
-    avatar_url: string;
-  };
-}
 
 export type CreatePollDTO = {
   content: string;
-  poll_options: PollOptionDTO[];
-  allow_multiple: boolean;
+  poll_options_attributes: PollOptionDTO[];
   group_id: string | null;
 };
 
 export type PollOptionDTO = {
   text: string;
-  poll_id: string | null;
+  //poll_id: string | null;
 };

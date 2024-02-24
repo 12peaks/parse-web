@@ -1,45 +1,44 @@
 import { TextInput, Button } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
-import { useState, useEffect } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { createPoll } from "@/api/polls";
-import type { CurrentUser } from "@/types/user";
-import type { PollOptionDTO } from "@/types/poll";
+import { randomId } from "@mantine/hooks";
 
 type CreatePollModalProps = {
   groupId: string | null;
   teamId: string;
   homeFeed: boolean;
-  user: CurrentUser;
 };
 
 const CreatePollModal = ({
   groupId,
   teamId,
   homeFeed,
-  user,
 }: CreatePollModalProps) => {
-  const [content, setContent] = useState("");
-  const [pollOptions, setPollOptions] = useState<PollOptionDTO[]>([]);
-  const allowMultiple = false;
   const modals = useModals();
   const queryClient = useQueryClient();
 
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      setPollOptions(
-        [...Array(3)].map((_) => {
-          return { text: "", poll_id: null };
-        })
-      );
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+  const form = useForm({
+    initialValues: {
+      content: "",
+      pollOptions: [
+        { text: "", key: randomId() },
+        { text: "", key: randomId() },
+        { text: "", key: randomId() },
+      ],
+    },
+    validate: {
+      content: (value: string) =>
+        value.length > 0 ? null : "Poll topic cannot be empty",
+      pollOptions: {
+        text: (value: string) =>
+          value.length > 0 ? null : "Option cannot be empty",
+      },
+    },
+  });
 
   const createPollMutation = useMutation({
     mutationFn: createPoll,
@@ -48,15 +47,15 @@ const CreatePollModal = ({
         queryKey: ["posts", groupId, teamId, homeFeed],
       });
       modals.closeAll();
-      setContent("");
+      form.reset();
     },
   });
 
-  const handlePollCreation = async () => {
-    const optionsWithContent = pollOptions.filter(
+  const handlePollCreation = async (values: typeof form.values) => {
+    const optionsWithContent = values.pollOptions.filter(
       (option) => option.text.length > 0
     );
-    if (content.length === 0) {
+    if (values.content.length === 0) {
       showNotification({
         title: "Provide a poll topic",
         message: "Looks like you forgot to provide a poll topic!",
@@ -70,47 +69,36 @@ const CreatePollModal = ({
       });
     } else {
       createPollMutation.mutate({
-        content,
-        poll_options: pollOptions.filter((option) => option.text.length > 0),
-        allow_multiple: allowMultiple,
+        content: values.content,
+        poll_options_attributes: values.pollOptions
+          .filter((option) => option.text.length > 0)
+          .map((option) => ({ text: option.text })),
         group_id: groupId,
       });
     }
   };
 
-  const handleOptionRemove = (index: number) => {
-    setPollOptions([...pollOptions.splice(index, 1)]);
-  };
-
-  const handleAddOption = () => {
-    setPollOptions([...pollOptions, { text: "", poll_id: null }]);
-  };
-
-  const handleOptionChange = (text: string, index: number) => {
-    setPollOptions([
-      ...pollOptions.slice(0, index),
-      Object.assign({}, pollOptions[index], { text: text }),
-      ...pollOptions.slice(index + 1),
-    ]);
-  };
-
   return (
-    <div className="grid grid-cols-6 gap-4">
+    <form
+      onSubmit={form.onSubmit(handlePollCreation)}
+      className="grid grid-cols-6 gap-4"
+    >
       <TextInput
         label="Poll topic"
         className="col-span-6 mb-2"
         placeholder="What's your poll about?"
         required
-        value={content}
-        onChange={(e) => setContent(e.currentTarget.value)}
+        {...form.getInputProps("content")}
       />
-      {pollOptions.map((option, idx) => (
-        <div key={idx} className="items-center col-span-6 flex flex-column">
+      {form.values.pollOptions.map((option, idx) => (
+        <div
+          key={option.key}
+          className="items-center col-span-6 flex flex-column"
+        >
           <TextInput
             className="w-full ml-8"
             placeholder={`Option ${idx + 1}`}
-            value={option.text}
-            onChange={(e) => handleOptionChange(e.currentTarget.value, idx)}
+            {...form.getInputProps(`pollOptions.${idx}.text`)}
           />
 
           <Button
@@ -118,7 +106,7 @@ const CreatePollModal = ({
             variant="light"
             color="red"
             size="sm"
-            onClick={() => handleOptionRemove(idx)}
+            onClick={() => form.removeListItem("pollOptions", idx)}
           >
             <IconTrash size={16} />
           </Button>
@@ -131,7 +119,9 @@ const CreatePollModal = ({
           size="xs"
           radius="xl"
           leftSection={<IconPlus size={18} />}
-          onClick={() => handleAddOption()}
+          onClick={() =>
+            form.insertListItem("pollOptions", { text: "", key: randomId() })
+          }
         >
           Add option
         </Button>
@@ -148,12 +138,12 @@ const CreatePollModal = ({
       <Button
         className="col-span-3 col-start-4"
         variant="gradient"
+        type="submit"
         gradient={{ from: "indigo", to: "cyan" }}
-        onClick={() => handlePollCreation()}
       >
         Create poll
       </Button>
-    </div>
+    </form>
   );
 };
 

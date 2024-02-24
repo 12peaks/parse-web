@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ActionIcon, TextInput, UnstyledButton } from "@mantine/core";
-import { useQuery } from "@tanstack/react-query";
+import { TextInput } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { ComposerModal } from "@/app/_components/feed/ComposerModal";
 import { CreatePollButton } from "@/app/_components/polls/CreatePollButton";
@@ -80,7 +79,6 @@ const CreatePostWidget = ({
               groupId={groupId}
               teamId={teamId}
               homeFeed={homeFeed}
-              user={user}
             />
 
             <RecordVideoButton
