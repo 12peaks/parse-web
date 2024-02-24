@@ -1,5 +1,5 @@
 import { FeedPost } from "@/app/_components/feed/FeedPost";
-import CreatePostWidget from "./CreatePostWidget";
+import { CreatePostWidget } from "./CreatePostWidget";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts, getGroupPosts, getUserPosts } from "@/api/posts";
 import { getCurrentUser } from "@/api/users";

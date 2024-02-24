@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { TextInput } from "@mantine/core";
+import { TextInput, Avatar } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { ComposerModal } from "@/app/_components/feed/ComposerModal";
 import { CreatePollButton } from "@/app/_components/polls/CreatePollButton";
@@ -14,7 +14,7 @@ type CreatePostWidgetProps = {
   user: CurrentUser;
 };
 
-const CreatePostWidget = ({
+export const CreatePostWidget = ({
   groupId,
   teamId,
   homeFeed,
@@ -41,8 +41,10 @@ const CreatePostWidget = ({
     <>
       <div className="mx-auto rounded shadow border theme-border px-4 pt-4 pb-4 items-center">
         <div className="flex flex-row items-center">
-          <img
-            className="h-10 w-10 sm:h-12 sm:w-12 rounded-full self-start bg-white"
+          <Avatar
+            className="sm:h-12 sm:w-12 self-start bg-white border theme-border"
+            size={40}
+            radius="xl"
             src={
               user.avatar_image_url
                 ? user.avatar_image_url
@@ -93,5 +95,3 @@ const CreatePostWidget = ({
     </>
   );
 };
-
-export default CreatePostWidget;

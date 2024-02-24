@@ -27,6 +27,7 @@ export interface FeedPost extends Post {
   };
   comments: Comment[];
   reactions: Reaction[];
+  type?: string;
 }
 
 export type HiddenPost = {

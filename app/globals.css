@@ -48,6 +48,12 @@
       var(--mantine-color-dark-6)
     );
   }
+  .feed-header-bg {
+    background-color: light-dark(
+      var(--mantine-color-white),
+      var(--mantine-color-dark-6)
+    );
+  }
   .theme-reaction-bg {
     background-color: light-dark(
       var(--mantine-color-blue-0),

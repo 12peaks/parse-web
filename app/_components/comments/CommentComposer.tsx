@@ -151,7 +151,7 @@ export function CommentComposer({
           alt="profile image"
           radius="xl"
           size={32}
-          className="mr-2 bg-white"
+          className="mr-2 bg-white border theme-border"
         />
       )}
       <MentionsInput

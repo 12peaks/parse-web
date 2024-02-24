@@ -12,7 +12,7 @@ import { CommentComposer } from "@/app/_components/comments/CommentComposer";
 import { CommentsDisplay } from "@/app/_components/comments/CommentsDisplay";
 import { Reactions } from "@/app/_components/reactions/Reactions";
 import TimeAgo from "timeago-react";
-import { Menu, Button, Text, ActionIcon } from "@mantine/core";
+import { Menu, Button, Text, ActionIcon, Avatar } from "@mantine/core";
 import {
   IconEdit,
   IconTrash,
@@ -178,18 +178,19 @@ export const FeedPost = ({
       {post && post.user && user ? (
         <div id={post.id.toString()}>
           <div className="mb-2 px-4 pt-4 shadow border theme-border rounded">
-            <div className="text-start font-medium flex justify-between">
+            <div className="text-start font-medium flex items-center justify-between feed-header-bg -mx-4 -mt-4 p-4 rounded-tr-md rounded-tl-md">
               <div className="flex items-center">
-                <div className="h-10 w-10 flex-shrink-0">
-                  <Link href={`/team/${post.user_id}`}>
-                    <img
-                      className="h-10 w-10 rounded-full bg-white"
-                      src={post.user.avatar_image_url}
-                      alt=""
-                    />
-                  </Link>
-                </div>
-                <div className="ml-2">
+                <Link href={`/team/${post.user_id}`}>
+                  <Avatar
+                    className="border theme-border"
+                    src={post.user.avatar_image_url}
+                    size={40}
+                    variant="default"
+                    radius="xl"
+                  />
+                </Link>
+
+                <div className="ml-4">
                   <div className="font-medium theme-text">
                     <Link href={`/team/${post.user_id}`}>{post.user.name}</Link>
                     {post.group ? (

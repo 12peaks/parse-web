@@ -138,7 +138,7 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
           label: teamMember.name ?? "",
           icon: (
             <Avatar
-              className="bg-white"
+              className="bg-white border theme-border"
               src={teamMember.avatar_image_url}
               size={32}
               radius="xl"
@@ -191,7 +191,7 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
               displayComponent={
                 <>
                   <Avatar
-                    className="bg-white mr-2"
+                    className="bg-white mr-2 border theme-border"
                     size={32}
                     src={event.user.avatar_image_url}
                     alt="reporter"
@@ -225,7 +225,7 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
               displayComponent={
                 <>
                   <Avatar
-                    className="bg-white mr-2"
+                    className="bg-white mr-2 border theme-border"
                     size={32}
                     src={event.owner?.avatar_url}
                     alt="owner"

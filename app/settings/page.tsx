@@ -70,7 +70,7 @@ export default function Integrations() {
           >
             <div className="flex-shrink-0">
               <Avatar
-                className="h-10 w-10 rounded-full"
+                className="h-10 w-10 rounded-full border theme-border"
                 src={integration.logo}
                 alt={integration.name}
               />

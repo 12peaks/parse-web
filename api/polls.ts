@@ -37,15 +37,20 @@ export const votePoll = async ({
 };
 
 export const removePollVote = async ({
-  poll_option_id,
+  poll_vote_id,
 }: {
-  poll_option_id: string;
+  poll_vote_id: string;
 }): Promise<void> => {
-  const response = await axios.delete(`/api/poll_votes`, {
-    data: {
-      poll_option_id,
-    },
-  });
+  const response = await axios.delete(`/api/poll_votes/${poll_vote_id}`);
+  if (response.status === 200) {
+    return;
+  } else {
+    return;
+  }
+};
+
+export const deletePoll = async (pollId: string): Promise<void> => {
+  const response = await axios.delete(`/api/polls/${pollId}`);
   if (response.status === 200) {
     return;
   } else {

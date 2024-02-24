@@ -77,7 +77,7 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
             <div key={user.id} className="w-full flex items-center space-x-4">
               <div className="flex-shrink-0 hover:cursor-pointer">
                 <Avatar
-                  className="bg-white"
+                  className="bg-white border theme-border"
                   size={36}
                   src={user.avatar_image_url}
                 />

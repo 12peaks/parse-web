@@ -9,6 +9,11 @@ export type Poll = {
   group_id?: string;
   team_id: string;
   post_id: string;
+  user: {
+    id: string;
+    name: string;
+    avatar_image_url?: string;
+  };
   poll_options: PollOption[];
 };
 

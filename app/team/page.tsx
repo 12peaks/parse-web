@@ -181,8 +181,8 @@ export default function Team() {
                                     <Avatar
                                       className={
                                         member.avatar_image_url
-                                          ? "bg-white"
-                                          : ""
+                                          ? "bg-white border theme-border"
+                                          : "border theme-border"
                                       }
                                       radius="xl"
                                       size={42}

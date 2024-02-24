@@ -38,7 +38,7 @@ export const TriageEventComment = ({
       <div className="flex space-x-3">
         <div className="flex-shrink-0">
           <Avatar
-            className="bg-white"
+            className="bg-white border theme-border"
             size="md"
             src={comment.user.avatar_image_url}
             alt="user avatar"

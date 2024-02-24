@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ActionIcon, Menu, Text } from "@mantine/core";
+import { ActionIcon, Avatar, Menu, Text } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import TimeAgo from "timeago-react";
 import Linkify from "react-linkify";
@@ -67,8 +67,9 @@ export function CommentDisplay({
   return (
     <div key={comment.id} className="text-sm mb-4 flex flex-row">
       <div className="mr-2 min-w-[32px]">
-        <img
-          className="inline-block h-8 w-8 rounded-full bg-white"
+        <Avatar
+          className="bg-white border theme-border"
+          size={32}
           src={comment.user.avatar_image_url}
           alt="profile"
         />

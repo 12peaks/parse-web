@@ -1,8 +1,10 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/api/users";
+import { getFeedItems } from "@/api/feed";
 import { Feed } from "@/app/_components/feed/Feed";
 import { Loader } from "@mantine/core";
+import { CompositeFeed } from "./_components/feed/CompositeFeed";
 
 export default function Home() {
   const { data: user, isLoading } = useQuery({
@@ -10,7 +12,12 @@ export default function Home() {
     queryFn: getCurrentUser,
   });
 
-  if (isLoading) {
+  const { data: feedItems, isLoading: feedItemsLoading } = useQuery({
+    queryKey: ["feedItems"],
+    queryFn: getFeedItems,
+  });
+
+  if (isLoading || !user || !feedItems) {
     return (
       <div className="flex justify-center items-center w-screen h-screen">
         <Loader type="dots" size={48} color="blue" />
@@ -32,7 +39,9 @@ export default function Home() {
         <div className="grid grid-cols-12 gap-4 relative lg:pr-4">
           <div className="col-span-12 xl:col-span-10 lg:col-start-1 2xl:col-span-8 xl:col-start-2 2xl:col-start-4 pt-8">
             {user && (
-              <Feed
+              <CompositeFeed
+                feedItems={feedItems}
+                user={user}
                 homeFeed={true}
                 teamId={user?.current_team.id}
                 groupId={null}
