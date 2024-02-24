@@ -180,12 +180,14 @@ export default function Team() {
                                   <Link href={`/team/${member.id}`}>
                                     <Avatar
                                       className={
-                                        member.avatar_url ? "bg-white" : ""
+                                        member.avatar_image_url
+                                          ? "bg-white"
+                                          : ""
                                       }
                                       radius="xl"
                                       size={42}
                                       variant="white"
-                                      src={member.avatar_url}
+                                      src={member.avatar_image_url}
                                       alt="avatar"
                                     />
                                   </Link>

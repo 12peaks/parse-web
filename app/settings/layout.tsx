@@ -1,6 +1,7 @@
 "use client";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Button, UnstyledButton } from "@mantine/core";
+import { usePathname } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { UnstyledButton } from "@mantine/core";
 import {
   IconBell,
   IconCreditCard,
@@ -9,24 +10,17 @@ import {
   IconSettings,
   IconUserCircle,
 } from "@tabler/icons-react";
-import { signOut } from "@/api/users";
+import { signOut, getCurrentUser } from "@/api/users";
 import Link from "next/link";
 
-const subNavigation = [
-  { name: "Profile", href: "/team", icon: IconUserCircle, current: false },
-  {
-    name: "Integrations",
-    href: ".",
-    icon: IconComponents,
-    current: false,
-  },
-  { name: "Notifications", href: "#", icon: IconBell, current: false },
-  { name: "Account", href: "#", icon: IconSettings, current: false },
-  { name: "Billing", href: "#", icon: IconCreditCard, current: false },
-];
-
 export default function Settings({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
   const queryClient = useQueryClient();
+
+  const { data: user, isLoading } = useQuery({
+    queryKey: ["currentUser"],
+    queryFn: getCurrentUser,
+  });
 
   const signOutMutation = useMutation({
     mutationFn: signOut,
@@ -34,6 +28,27 @@ export default function Settings({ children }: { children: React.ReactNode }) {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
     },
   });
+
+  const subNavigation = [
+    {
+      name: "Integrations",
+      href: "/settings",
+      icon: IconComponents,
+      current: false,
+    },
+    {
+      name: "Notifications",
+      href: "/settings/notifications",
+      icon: IconBell,
+      current: false,
+    },
+    {
+      name: "Profile",
+      href: `/team/${user?.id}`,
+      icon: IconUserCircle,
+      current: false,
+    },
+  ];
 
   return (
     <div className="relative">
@@ -46,7 +61,13 @@ export default function Settings({ children }: { children: React.ReactNode }) {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text"
+                    className="navigation-link group border-l-4 mx-4 rounded-md px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text"
+                    data-active={
+                      pathname === item.href ||
+                      (pathname.includes(item.href) && item.href !== "/")
+                        ? true
+                        : undefined
+                    }
                   >
                     <item.icon
                       className="flex-shrink-0 -ml-1 mr-3 h-6 w-6"
@@ -59,7 +80,7 @@ export default function Settings({ children }: { children: React.ReactNode }) {
                   className="w-full"
                   onClick={() => signOutMutation.mutate()}
                 >
-                  <div className="group border-l-4 px-6 py-2 flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text">
+                  <div className="group border-l-4 px-6 py-2 mx-4 rounded-md flex items-center text-sm font-medium border-transparent theme-text-subtle hover:theme-bg-subtle hover:theme-text">
                     <IconLogout
                       className="flex-shrink-0 -ml-1 mr-3 h-6 w-6"
                       aria-hidden="true"

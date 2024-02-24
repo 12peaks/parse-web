@@ -63,6 +63,19 @@
   #home-sidebar-container {
     max-height: calc(100vh - 4rem);
   }
+  .navigation-link {
+    &[data-active] {
+      &,
+      &:hover {
+        background-color: var(--mantine-color-blue-light);
+        color: var(--mantine-color-blue-light-color);
+
+        & .linkIcon {
+          color: var(--mantine-color-blue-light-color);
+        }
+      }
+    }
+  }
 }
 
 .mantine-Modal-content .tiptap.ProseMirror {
