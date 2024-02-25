@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getJoinedGroups } from "@/api/groups";
-import { AppShell, ScrollArea } from "@mantine/core";
+import { AppShell, Burger, ScrollArea } from "@mantine/core";
 import { GroupIcon } from "@/app/_components/groups/GroupIcon";
 import placeholderAvatar from "@/public/sunglasses.png";
 import {
@@ -62,14 +62,17 @@ const navigation = [
 type NavigationProps = {
   unreadNotificationCount: number;
   user: CurrentUser;
+  toggleNav: () => void;
+  mobileOpen: boolean;
 };
 
 export const Navigation = ({
   unreadNotificationCount,
   user,
+  toggleNav,
+  mobileOpen,
 }: NavigationProps) => {
   const pathname = usePathname();
-  const queryClient = useQueryClient();
   const groupQuery = useQuery({
     queryKey: ["groups-joined"],
     queryFn: getJoinedGroups,
@@ -77,7 +80,19 @@ export const Navigation = ({
 
   return (
     <AppShell.Navbar p="md">
-      <AppShell.Section className={classes.title}>parse</AppShell.Section>
+      <AppShell.Section className={classes.title}>
+        <div className="flex flex-row justify-between items-center">
+          <div>parse</div>
+          <div>
+            <Burger
+              opened={mobileOpen}
+              onClick={toggleNav}
+              size="sm"
+              hiddenFrom="sm"
+            />
+          </div>
+        </div>
+      </AppShell.Section>
       <AppShell.Section className={classes.navbarMain}>
         {navigation.map((item) => (
           <Link

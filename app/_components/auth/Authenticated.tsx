@@ -1,7 +1,7 @@
 "use client";
 import { getCurrentUser } from "@/api/users";
 import { getUnreadNotificationCount } from "@/api/notifications";
-import { AppShell, Loader } from "@mantine/core";
+import { AppShell, Burger, Loader } from "@mantine/core";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Navigation } from "@/app/_components/navigation/Navigation";
@@ -9,7 +9,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 export const Authenticated = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const [opened] = useDisclosure();
+  const [opened, { toggle }] = useDisclosure();
   const { data: user, isLoading } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
@@ -37,14 +37,30 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
       {user && user.id && unreadCount ? (
         <AppShell
           navbar={{
-            width: 300,
+            width: { base: 200, md: 300 },
             breakpoint: "sm",
             collapsed: { mobile: !opened },
           }}
         >
-          <Navigation user={user} unreadNotificationCount={unreadCount.count} />
+          <AppShell.Header
+            className="flex flex-row justify-between items-center px-4 py-2"
+            hiddenFrom="sm"
+          >
+            <div className="font-montserrat font-medium theme-text text-2xl">
+              parse
+            </div>
+            <Burger opened={opened} onClick={toggle} size="sm" />
+          </AppShell.Header>
+          <AppShell.Navbar>
+            <Navigation
+              user={user}
+              unreadNotificationCount={unreadCount.count}
+              mobileOpen={opened}
+              toggleNav={toggle}
+            />
+          </AppShell.Navbar>
           <AppShell.Main>
-            <div className="p-8">{children}</div>
+            <div className="p-4 sm:p-8 mt-12 sm:mt-0">{children}</div>
           </AppShell.Main>
         </AppShell>
       ) : null}

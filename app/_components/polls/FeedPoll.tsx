@@ -14,7 +14,6 @@ import { votePoll, removePollVote, deletePoll } from "@/api/polls";
 import {
   IconCheck,
   IconX,
-  IconChartBar,
   IconEdit,
   IconTrash,
   IconLink,
@@ -31,6 +30,7 @@ type FeedPollProps = {
 };
 
 export const FeedPoll = ({ poll, user }: FeedPollProps) => {
+  const [isEditing, setIsEditing] = useState(false);
   const clipboard = useClipboard();
   const queryClient = useQueryClient();
 
