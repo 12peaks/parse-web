@@ -20,8 +20,19 @@ export type CreateGoalDTO = {
   name: string;
   description?: string;
   format: string;
-  start_date: string;
-  end_date: string;
+  start_date: Date;
+  end_date: Date;
+  initial_value: number;
+  target_value: number;
+};
+
+export type UpdateGoalDTO = {
+  id: string;
+  name: string;
+  description?: string;
+  format: string;
+  start_date: Date;
+  end_date: Date;
   initial_value: number;
   target_value: number;
 };

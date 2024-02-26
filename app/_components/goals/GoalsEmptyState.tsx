@@ -1,17 +1,31 @@
 import { Button } from "@mantine/core";
+import { IconPlus } from "@tabler/icons-react";
+import Dart from "@/public/dart.png";
 
-type GoalsEmptyStateProps = {
+type EmptyStateProps = {
   handleGoalCreate: () => void;
 };
 
-export const GoalsEmptyState = ({ handleGoalCreate }: GoalsEmptyStateProps) => {
+export const GoalsEmptyState = ({ handleGoalCreate }: EmptyStateProps) => {
   return (
-    <div className="flex flex-col items-center justify-center h-full">
-      <h1 className="text-3xl font-bold text-gray-700 mb-4">
-        You don't have any goals yet
-      </h1>
-      <p className="text-gray-500 mb-6">Create a new goal to get started</p>
-      <Button onClick={handleGoalCreate}>Create new goal</Button>
+    <div className="text-center mt-12">
+      <img src={Dart.src} className="mx-auto h-12 w-12" />
+
+      <h3 className="mt-2 text-sm font-medium theme-text">No goals</h3>
+      <p className="mt-1 text-sm theme-text-subtle">
+        Get started by creating a new goal.
+      </p>
+      <div className="mt-6">
+        <Button
+          type="button"
+          onClick={() => handleGoalCreate()}
+          rightSection={
+            <IconPlus className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+          }
+        >
+          New Goal
+        </Button>
+      </div>
     </div>
   );
 };

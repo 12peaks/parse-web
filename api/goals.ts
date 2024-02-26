@@ -1,5 +1,5 @@
 import axios from "@/libs/axios";
-import type { CreateGoalDTO, Goal } from "@/types/goal";
+import type { CreateGoalDTO, UpdateGoalDTO, Goal } from "@/types/goal";
 
 export const getGoals = async (): Promise<Goal[]> => {
   const response = await axios.get("/api/goals");
@@ -34,7 +34,11 @@ export const getGoal = async (goalId: string): Promise<Goal> => {
   }
 };
 
-export const updateGoal = async ({ goal }: { goal: Goal }): Promise<Goal> => {
+export const updateGoal = async ({
+  goal,
+}: {
+  goal: UpdateGoalDTO;
+}): Promise<Goal> => {
   const response = await axios.put(`/api/goals/${goal.id}`, {
     goal: goal,
   });
