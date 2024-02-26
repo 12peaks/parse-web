@@ -28,7 +28,7 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
       </div>
     );
 
-  if (!isLoading && !user) {
+  if (!isLoading && !unreadCountLoading && !user) {
     router.push(process.env.NEXT_PUBLIC_AUTH_URL!);
   }
 

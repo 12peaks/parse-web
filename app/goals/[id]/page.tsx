@@ -59,7 +59,7 @@ export default function GoalPage() {
     return () => {
       isMounted = false;
     };
-  }, [goal]);
+  }, [goal, goal?.goal_updates.length]);
 
   const badgeProps: { [key: string]: { color: string; text: string } } = {
     "on-track": { color: "green", text: "On Track" },
