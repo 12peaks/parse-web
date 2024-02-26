@@ -29,6 +29,7 @@
     "@heroicons/react": "^2.1.1",
     "@loomhq/loom-embed": "^1.7.0",
     "@loomhq/record-sdk": "^2.36.18",
+    "@mantine/charts": "^7.6.0",
     "@mantine/core": "^7.5.0",
     "@mantine/dates": "^7.5.0",
     "@mantine/dropzone": "^7.5.0",
@@ -41,6 +42,7 @@
     "@mantine/tiptap": "^7.5.0",
     "@tabler/icons-react": "^2.46.0",
     "@tanstack/react-query": "^5.18.0",
+    "@tanstack/react-table": "^8.12.0",
     "@tiptap/extension-code-block-lowlight": "^2.2.2",
     "@tiptap/extension-highlight": "^2.2.2",
     "@tiptap/extension-link": "^2.2.1",
@@ -62,6 +64,7 @@
     "react-dom": "^18",
     "react-linkify": "1.0.0-alpha",
     "react-mentions": "^4.4.10",
+    "recharts": "2",
     "timeago-react": "^3.0.6"
   },
   "devDependencies": {

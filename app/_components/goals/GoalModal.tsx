@@ -36,12 +36,13 @@ type GoalCollaborator = {
 export const GoalModal = ({ goal }: GoalModalProps) => {
   const [userList, setUserList] = useState<GoalCollaborator[]>([]);
 
+  const modals = useModals();
+  const queryClient = useQueryClient();
+
   const teamQuery = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
-
-  const queryClient = useQueryClient();
 
   const createGoalMutation = useMutation({
     mutationFn: createGoal,
@@ -51,6 +52,10 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
         message: "Goal has been created successfully",
         color: "teal",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["goals"],
+      });
+      modals.closeAll();
     },
   });
 
@@ -62,10 +67,13 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
         message: "Goal has been updated successfully",
         color: "teal",
       });
+      queryClient.invalidateQueries({
+        queryKey: ["goals"],
+      });
+      modals.closeAll();
     },
   });
 
-  const modals = useModals();
   const form = useForm({
     initialValues: {
       name: goal ? goal.name : "",

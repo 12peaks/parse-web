@@ -14,6 +14,8 @@ export type Goal = {
     name: string;
     avatar_image_url?: string;
   };
+  goal_updates: GoalUpdate[];
+  goal_collaborators: GoalCollaborator[];
 };
 
 export type CreateGoalDTO = {
@@ -35,4 +37,40 @@ export type UpdateGoalDTO = {
   end_date: Date;
   initial_value: number;
   target_value: number;
+};
+
+export type GoalUpdate = {
+  id: string;
+  created_at: string; // ;
+  updated_at: string;
+  note: string;
+  status: string;
+  value: number;
+  user: {
+    id: string;
+    name: string;
+    avatar_image_url?: string;
+  };
+};
+
+export type CreateGoalUpdateDTO = {
+  goal_id: string;
+  note: string;
+  status: string;
+  value: number;
+};
+
+export type UpdateGoalUpdateDTO = {
+  id: string;
+  note: string;
+  status: string;
+  value: number;
+};
+
+export type GoalCollaborator = {
+  user: {
+    id: string;
+    name: string;
+    avatar_image_url?: string;
+  };
 };
