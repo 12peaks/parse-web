@@ -7,7 +7,9 @@ import { createComment, editComment } from "@/api/comments";
 import type { Comment } from "@/types/comment";
 import type { CurrentUser } from "@/types/user";
 import type { FeedPost } from "@/types/post";
+import type { CreateMentionDTO } from "@/types/mention";
 import { getTeamUsers } from "@/api/teams";
+import { createMention } from "@/api/mentions";
 import placeholderAvatar from "@/public/sunglasses.png";
 
 type CommentComposerProps = {
@@ -56,6 +58,7 @@ export function CommentComposer({
       queryClient.invalidateQueries({
         queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
       });
+      await getMentionsAndCreate(data);
     },
   });
 
@@ -67,6 +70,13 @@ export function CommentComposer({
       queryClient.invalidateQueries({
         queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
       });
+    },
+  });
+
+  const createMentionMutation = useMutation({
+    mutationFn: createMention,
+    onSuccess: () => {
+      setCommentMentions([]);
     },
   });
 
@@ -109,6 +119,26 @@ export function CommentComposer({
         handleSubmit();
         e.target.blur();
       }
+    }
+  };
+
+  const getMentionsAndCreate = async (comment: Comment) => {
+    let mentionsToSave: CreateMentionDTO[] = [];
+    console.log("mentions", commentMentions);
+
+    if (commentMentions.length > 0) {
+      for (const profileId of commentMentions) {
+        const mentionUser = userList.find((user) => user.id === profileId);
+        if (mentionUser) {
+          mentionsToSave.push({
+            post_id: comment.post_id,
+            mentioned_user_id: mentionUser?.uid,
+            group_id: post.group_id,
+            comment_id: comment.id,
+          });
+        }
+      }
+      createMentionMutation.mutate(mentionsToSave);
     }
   };
 
