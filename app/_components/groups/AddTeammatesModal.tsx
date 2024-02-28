@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTeamUsers } from "@/api/teams";
 import { useModals } from "@mantine/modals";
 import { addToGroup, removeFromGroup } from "@/api/groups";
+import { showNotification } from "@mantine/notifications";
 
 type AddTeammatesModalProps = {
   group: GroupType;
@@ -16,7 +17,12 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
   const modals = useModals();
   const queryClient = useQueryClient();
 
-  const { data: teamMembers, isLoading } = useQuery({
+  const {
+    data: teamMembers,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
@@ -25,6 +31,18 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
     mutationFn: addToGroup,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["group", group.url_slug] });
+      showNotification({
+        title: "Success",
+        message: "User added to group",
+        color: "green",
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -32,6 +50,18 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
     mutationFn: removeFromGroup,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["group", group.url_slug] });
+      showNotification({
+        title: "Success",
+        message: "User removed from group",
+        color: "green",
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -66,7 +96,15 @@ export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return null;
+  }
+
+  if (isError && error) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
   }
 
   return (

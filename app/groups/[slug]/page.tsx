@@ -21,6 +21,7 @@ import {
 import groupPlaceholder from "@/public/speech_balloon.png";
 import { useModals } from "@mantine/modals";
 import { Group } from "@/types/group";
+import { showNotification } from "@mantine/notifications";
 
 const tabs = [
   { name: "Discussion", alias: "discussion" },
@@ -46,7 +47,12 @@ export default function GroupPage() {
   });
 
   const queryClient = useQueryClient();
-  const { data: group, isLoading } = useQuery({
+  const {
+    data: group,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["group", params.slug],
     queryFn: () => getGroupBySlug(params.slug),
     enabled: !!params.slug,
@@ -64,6 +70,13 @@ export default function GroupPage() {
         queryKey: ["groups-joined"],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const leaveGroupMutation = useMutation({
@@ -74,6 +87,13 @@ export default function GroupPage() {
       });
       queryClient.invalidateQueries({
         queryKey: ["groups-joined"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -97,6 +117,14 @@ export default function GroupPage() {
       children: <AddTeammatesModal group={group} />,
     });
   };
+
+  if (isError && error) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return (
     <>

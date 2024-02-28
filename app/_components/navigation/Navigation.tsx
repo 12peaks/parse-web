@@ -20,6 +20,7 @@ import { CreateGroupButton } from "@/app/_components/groups/CreateGroupButton";
 import { BrowseGroupsButton } from "@/app/_components/groups/BrowseGroupsButton";
 import type { CurrentUser } from "@/types/user";
 import classes from "@/app/_components/navigation/Navigation.module.css";
+import { showNotification } from "@mantine/notifications";
 
 const navigation = [
   { name: "Home", href: "/", icon: HomeIcon, current: false, badgeCount: null },
@@ -73,10 +74,23 @@ export const Navigation = ({
   mobileOpen,
 }: NavigationProps) => {
   const pathname = usePathname();
-  const groupQuery = useQuery({
+  const {
+    data: joinedGroups,
+    isSuccess,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["groups-joined"],
     queryFn: getJoinedGroups,
   });
+
+  if (isError && error) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return (
     <AppShell.Navbar p="md">
@@ -121,7 +135,7 @@ export const Navigation = ({
           </Link>
         ))}
       </AppShell.Section>
-      {groupQuery.isSuccess ? (
+      {isSuccess ? (
         <AppShell.Section grow component={ScrollArea}>
           <div className="sticky top-0">
             <div className="flex flex-row px-4 mb-1 justify-between items-center">
@@ -133,7 +147,7 @@ export const Navigation = ({
             </div>
           </div>
           <div>
-            {groupQuery.data.map((group) => (
+            {joinedGroups.map((group) => (
               <Link
                 key={group.id}
                 href={`/groups/${group.url_slug ? group.url_slug : group.name}`}

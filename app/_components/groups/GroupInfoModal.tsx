@@ -14,6 +14,7 @@ import {
   PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { CustomSelect } from "@/app/_components/ui/CustomSelect";
+import { showNotification } from "@mantine/notifications";
 
 type GroupInfoModalProps = {
   group?: Group;
@@ -98,8 +99,20 @@ export const GroupInfoModal = ({
           queryKey: ["group", data.url_slug],
         });
         queryClient.invalidateQueries({ queryKey: ["groups-joined"] });
+        showNotification({
+          title: "Success",
+          message: "Group created",
+          color: "teal",
+        });
         modals.closeAll();
       }
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -110,8 +123,20 @@ export const GroupInfoModal = ({
         queryClient.invalidateQueries({
           queryKey: ["group", data.url_slug],
         });
+        showNotification({
+          title: "Success",
+          message: "Group updated",
+          color: "teal",
+        });
         modals.closeAll();
       }
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 

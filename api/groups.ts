@@ -28,7 +28,7 @@ export const getAllGroups = async (searchTerm: string): Promise<Group[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to fetch groups");
   }
 };
 
@@ -37,7 +37,7 @@ export const getJoinedGroups = async (): Promise<Group[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to fetch joined groups");
   }
 };
 
@@ -46,7 +46,7 @@ export const getGroupById = async (groupId: string): Promise<Group> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Group;
+    throw new Error("Failed to fetch group");
   }
 };
 
@@ -55,7 +55,7 @@ export const getGroupBySlug = async (groupSlug: string): Promise<Group> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Group;
+    throw new Error("Failed to fetch group");
   }
 };
 
@@ -74,7 +74,7 @@ export const createGroup = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Group;
+    throw new Error("Failed to create group");
   }
 };
 
@@ -94,7 +94,7 @@ export const updateGroup = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Group;
+    throw new Error("Failed to update group");
   }
 };
 
@@ -103,7 +103,7 @@ export const joinGroup = async (groupId: string): Promise<GroupUser> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as GroupUser;
+    throw new Error("Failed to join group");
   }
 };
 
@@ -112,7 +112,7 @@ export const leaveGroup = async (groupId: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to leave group");
   }
 };
 
@@ -127,7 +127,7 @@ export const addToGroup = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as GroupUser;
+    throw new Error("Failed to add user to group");
   }
 };
 
@@ -141,4 +141,9 @@ export const removeFromGroup = async ({
       user_id,
     },
   });
+  if (response.status === 200) {
+    return;
+  } else {
+    throw new Error("Failed to remove user from group");
+  }
 };
