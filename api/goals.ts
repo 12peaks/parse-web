@@ -13,7 +13,7 @@ export const getGoals = async (): Promise<Goal[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to get goals")
   }
 };
 
@@ -28,7 +28,7 @@ export const createGoal = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Goal;
+    throw new Error("Failed to create goal");
   }
 };
 
@@ -37,7 +37,7 @@ export const getGoal = async (goalId: string): Promise<Goal> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Goal;
+    throw new Error("Failed to get goal")
   }
 };
 
@@ -52,7 +52,7 @@ export const updateGoal = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Goal;
+    throw new Error("Failed to update goal")
   }
 };
 
@@ -61,7 +61,7 @@ export const deleteGoal = async (goalId: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete goal")
   }
 };
 
@@ -72,7 +72,7 @@ export const createGoalUpdate = async (
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as GoalUpdate;
+    throw new Error("Failed to save goal update")
   }
 };
 
@@ -85,7 +85,7 @@ export const updateGoalUpdate = async (
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as GoalUpdate;
+    throw new Error("Failed to save goal progress update")
   }
 };
 
@@ -94,6 +94,6 @@ export const deleteGoalUpdate = async (updateId: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete goal progress update")
   }
 };
