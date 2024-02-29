@@ -8,7 +8,7 @@ export const createPoll = async (poll: CreatePollDTO): Promise<Poll> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Poll;
+    throw new Error("Failed to get polls")
   }
 };
 
@@ -17,7 +17,7 @@ export const getPoll = async (pollId: string): Promise<Poll> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Poll;
+    throw new Error("Failed to get poll")
   }
 };
 
@@ -32,7 +32,7 @@ export const votePoll = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Poll;
+    throw new Error("Failed to save vote")
   }
 };
 
@@ -45,7 +45,7 @@ export const removePollVote = async ({
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to remove vote")
   }
 };
 
@@ -54,6 +54,6 @@ export const deletePoll = async (pollId: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete poll")
   }
 };
