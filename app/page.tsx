@@ -1,8 +1,8 @@
 "use client";
+import { showNotification } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getCurrentUser } from "@/api/users";
 import { getFeedItems } from "@/api/feed";
-import { Feed } from "@/app/_components/feed/Feed";
 import { Loader } from "@mantine/core";
 import { CompositeFeed } from "./_components/feed/CompositeFeed";
 
@@ -12,12 +12,25 @@ export default function Home() {
     queryFn: getCurrentUser,
   });
 
-  const { data: feedItems, isLoading: feedItemsLoading } = useQuery({
+  const {
+    data: feedItems,
+    isLoading: feedItemsLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["feedItems"],
     queryFn: getFeedItems,
   });
 
-  if (isLoading || !user || !feedItems) {
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
+
+  if (isLoading || !user || feedItemsLoading || !feedItems) {
     return (
       <div className="flex justify-center items-center w-screen h-screen">
         <Loader type="dots" size={48} color="blue" />
