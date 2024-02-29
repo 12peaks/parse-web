@@ -6,7 +6,7 @@ export const getNotifications = async (): Promise<Notification[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to fetch notifications");
   }
 };
 
@@ -17,7 +17,7 @@ export const getUnreadNotificationCount = async (): Promise<{
   if (response.status === 200) {
     return response.data;
   } else {
-    return { count: 0 };
+    throw new Error("Failed to fetch unread notification count");
   }
 };
 
@@ -28,7 +28,7 @@ export const markRead = async (notification_id: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to mark notification as read");
   }
 };
 
@@ -39,7 +39,7 @@ export const markUnread = async (notification_id: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to mark notification as unread");
   }
 };
 
@@ -48,18 +48,18 @@ export const markAllRead = async (): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to mark all notifications as read");
   }
 };
 
 export const deleteNotification = async (
-  notification_id: string
+  notification_id: string,
 ): Promise<void> => {
   const response = await axios.delete(`/api/notifications/${notification_id}`);
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete notification");
   }
 };
 
@@ -68,6 +68,6 @@ export const deleteAllNotifications = async (): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete all notifications");
   }
 };

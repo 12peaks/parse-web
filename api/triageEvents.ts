@@ -12,36 +12,36 @@ export const getAllTriageEvents = async (): Promise<TriageEvent[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to fetch triage events");
   }
 };
 
 export const getTriageEvent = async (
-  triage_event_id: string
+  triage_event_id: string,
 ): Promise<TriageEvent> => {
   const response = await axios.get(`/api/triage_events/${triage_event_id}`);
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as TriageEvent;
+    throw new Error("Failed to fetch triage event");
   }
 };
 
 export const getTriageTimelineEvents = async (
-  event_id: string
+  event_id: string,
 ): Promise<TriageTimelineEvent[]> => {
   const response = await axios.get(
-    `/api/triage_timeline_events?triage_event_id=${event_id}`
+    `/api/triage_timeline_events?triage_event_id=${event_id}`,
   );
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to fetch triage timeline events");
   }
 };
 
 export const createTriageEvent = async (
-  triage_event: CreateTriageEventDTO
+  triage_event: CreateTriageEventDTO,
 ): Promise<TriageEvent> => {
   const formData = new FormData();
 
@@ -49,7 +49,7 @@ export const createTriageEvent = async (
     if (key !== "attachments" && value !== undefined) {
       formData.append(
         `triage_event[${key}]`,
-        typeof value === "object" ? JSON.stringify(value) : value
+        typeof value === "object" ? JSON.stringify(value) : value,
       );
     }
   });
@@ -66,7 +66,7 @@ export const createTriageEvent = async (
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as TriageEvent;
+    throw new Error("Failed to create triage event");
   }
 };
 
@@ -86,12 +86,12 @@ export const createTimelineEvent = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to create timeline event");
   }
 };
 
 export const updateTriageEvent = async (
-  triage_event: UpdateTriageEventDTO
+  triage_event: UpdateTriageEventDTO,
 ): Promise<TriageEvent> => {
   const formData = new FormData();
 
@@ -99,7 +99,7 @@ export const updateTriageEvent = async (
     if (key !== "id" && key !== "attachments" && value !== undefined) {
       formData.append(
         `triage_event[${key}]`,
-        typeof value === "object" ? JSON.stringify(value) : value
+        typeof value === "object" ? JSON.stringify(value) : value,
       );
     }
   });
@@ -113,22 +113,22 @@ export const updateTriageEvent = async (
   const response = await axios.put(
     `/api/triage_events/${triage_event.id}`,
     formData,
-    { headers: { "Content-Type": "multipart/form-data" } }
+    { headers: { "Content-Type": "multipart/form-data" } },
   );
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as TriageEvent;
+    throw new Error("Failed to update triage event");
   }
 };
 
 export const deleteTriageEvent = async (
-  triage_event_id: string
+  triage_event_id: string,
 ): Promise<void> => {
   const response = await axios.delete(`/api/triage_events/${triage_event_id}`);
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete triage event");
   }
 };

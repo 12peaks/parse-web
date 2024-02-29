@@ -13,7 +13,7 @@ export const createReaction = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Reaction;
+    throw new Error("Failed to create reaction");
   }
 };
 
@@ -22,5 +22,10 @@ export const deleteReaction = async ({
 }: {
   reaction_id: string;
 }): Promise<void> => {
-  await axios.delete(`/api/reactions/${reaction_id}`);
+  const response = await axios.delete(`/api/reactions/${reaction_id}`);
+  if (response.status === 200) {
+    return;
+  } else {
+    throw new Error("Failed to delete reaction");
+  }
 };

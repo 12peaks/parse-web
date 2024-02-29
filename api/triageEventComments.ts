@@ -15,7 +15,7 @@ export const createTriageEventComment = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as TriageEventComment;
+    throw new Error("Failed to create triage event comment");
   }
 };
 
@@ -25,11 +25,11 @@ export const deleteTriageEventComment = async ({
   comment_id: string;
 }): Promise<void> => {
   const response = await axios.delete(
-    `/api/triage_event_comments/${comment_id}`
+    `/api/triage_event_comments/${comment_id}`,
   );
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete triage event comment");
   }
 };
