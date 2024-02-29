@@ -11,6 +11,7 @@ import type { CreateMentionDTO } from "@/types/mention";
 import { getTeamUsers } from "@/api/teams";
 import { createMention } from "@/api/mentions";
 import placeholderAvatar from "@/public/sunglasses.png";
+import { showNotification } from "@mantine/notifications";
 
 type CommentComposerProps = {
   post: FeedPost;
@@ -39,14 +40,18 @@ export function CommentComposer({
   profileId,
 }: CommentComposerProps) {
   const [commentContent, setCommentContent] = useState(
-    comment ? comment.content : ""
+    comment ? comment.content : "",
   );
   const [commentMentions, setCommentMentions] = useState<string[]>([]);
   const [userList, setUserList] = useState<MentionUserDTO[]>([]);
 
   const queryClient = useQueryClient();
 
-  const teamQuery = useQuery({
+  const {
+    data: teamMembers,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["team-members"],
     queryFn: getTeamUsers,
   });
@@ -60,15 +65,29 @@ export function CommentComposer({
       });
       await getMentionsAndCreate(data);
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const updateCommentMutation = useMutation({
     mutationFn: editComment,
-    onSuccess: async (data: Comment) => {
+    onSuccess: async () => {
       setCommentContent("");
       toggleCommentEdit && toggleCommentEdit();
       queryClient.invalidateQueries({
         queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -77,6 +96,13 @@ export function CommentComposer({
     mutationFn: createMention,
     onSuccess: () => {
       setCommentMentions([]);
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -112,7 +138,7 @@ export function CommentComposer({
         document.getElementById(`comment-composer-field-${post.id}`)
     ) {
       const suggestionsList = document.getElementsByClassName(
-        "mentions-input__suggestions"
+        "mentions-input__suggestions",
       );
       if (!suggestionsList || suggestionsList.length === 0) {
         e.preventDefault();
@@ -143,19 +169,19 @@ export function CommentComposer({
   };
 
   const handleMentionsChange = (
-    event: any,
-    newValue: any,
+    _event: any,
+    _newValue: any,
     newPlainTextValue: any,
-    mentions: any
+    _mentions: any,
   ) => {
     setCommentContent(newPlainTextValue);
   };
 
   useEffect(() => {
     let isMounted = true;
-    if (teamQuery.data && teamQuery.data.length > 0) {
+    if (teamMembers && teamMembers.length > 0) {
       let mentionUsers: MentionUserDTO[] = [];
-      for (const teamUser of teamQuery.data) {
+      for (const teamUser of teamMembers) {
         let mentionUser = {
           id: teamUser.id,
           display: teamUser.name ?? teamUser.email,
@@ -171,7 +197,19 @@ export function CommentComposer({
     return () => {
       isMounted = false;
     };
-  }, [teamQuery.data]);
+  }, [teamMembers]);
+
+  if (isLoading) {
+    return null;
+  }
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: "Error loading team members",
+      color: "red",
+    });
+  }
 
   return (
     <div className="w-full flex flex-row">
