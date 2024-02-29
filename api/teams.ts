@@ -6,7 +6,7 @@ export const getTeamUsers = async (): Promise<TeamUser[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to get team users")
   }
 };
 
@@ -15,12 +15,8 @@ export const getTeamUser = async (user_id: string): Promise<TeamUser> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as TeamUser;
+    throw new Error("Failed to get user")
   }
-};
-
-export const getPendingUsers = async (): Promise<PendingUser[]> => {
-  return [];
 };
 
 export const followUser = async (user_id: string): Promise<void> => {

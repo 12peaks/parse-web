@@ -16,7 +16,7 @@ export const createComment = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Comment;
+    throw new Error("Failed to create comment");
   }
 };
 
@@ -30,7 +30,7 @@ export const editComment = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Comment;
+    throw new Error("Failed to save edited comment");
   }
 };
 
@@ -39,6 +39,6 @@ export const deleteComment = async (commentId: string): Promise<void> => {
   if (response.status === 200) {
     return;
   } else {
-    return;
+    throw new Error("Failed to delete comment");
   }
 };

@@ -11,7 +11,7 @@ export const getCurrentUser = async (): Promise<CurrentUser | null> => {
     const response = await axios.get("/api/users/current_user");
     return response.data;
   } catch (error) {
-    return null;
+    throw new Error("Failed to get current user")
   }
 };
 
@@ -19,7 +19,7 @@ export const signOut = async (): Promise<void> => {
   try {
     await axios.delete("/api/users/sign_out");
   } catch (err) {
-    console.error(err);
+    throw new Error("Failed to sign out")
   }
 };
 
@@ -36,6 +36,6 @@ export const updateUser = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return null;
+    throw new Error("Failed to update user");
   }
 };

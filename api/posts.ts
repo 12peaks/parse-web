@@ -11,7 +11,7 @@ export const getPosts = async (): Promise<FeedPost[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to get posts")
   }
 };
 
@@ -20,7 +20,7 @@ export const getGroupPosts = async (group_id: string): Promise<FeedPost[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to get posts for group")
   }
 };
 
@@ -29,7 +29,7 @@ export const getUserPosts = async (user_id: string): Promise<FeedPost[]> => {
   if (response.status === 200) {
     return response.data;
   } else {
-    return [];
+    throw new Error("Failed to get posts for profile")
   }
 };
 
@@ -46,7 +46,7 @@ export const createPost = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Post;
+    throw new Error("Failed to create post")
   }
 };
 
@@ -64,7 +64,7 @@ export const updatePost = async ({
   if (response.status === 200) {
     return response.data;
   } else {
-    return {} as Post;
+    throw new Error("Failed to update post")
   }
 };
 
