@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, TextInput } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { updateUser } from "@/api/users";
 import { useModals } from "@mantine/modals";
 import type { TeamUser } from "@/types/user";
-import { FileWithPath } from "@mantine/dropzone";
 
 type EditProfileProps = {
   profile: TeamUser;
@@ -16,11 +16,11 @@ export const EditProfileModal = ({ profile }: EditProfileProps) => {
   const [avatar, setAvatar] = useState<File | null>(null);
 
   const [email, setEmail] = useState(
-    profile && profile.email ? profile.email : ""
+    profile && profile.email ? profile.email : "",
   );
 
   const [iconPhotoUrl, setIconPhotoUrl] = useState(
-    profile && profile.avatar_url ? profile.avatar_url : ""
+    profile && profile.avatar_url ? profile.avatar_url : "",
   );
 
   const modals = useModals();
@@ -44,6 +44,13 @@ export const EditProfileModal = ({ profile }: EditProfileProps) => {
         queryKey: ["profile", profile.id],
       });
       modals.closeAll();
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
