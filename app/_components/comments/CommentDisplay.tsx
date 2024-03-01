@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { ActionIcon, Avatar, Menu, Text } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import TimeAgo from "timeago-react";
 import Linkify from "react-linkify";
 import { IconEdit, IconTrash, IconDots } from "@tabler/icons-react";
@@ -39,6 +40,13 @@ export function CommentDisplay({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["feed", post.group_id, post.group_id ? false : true],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });

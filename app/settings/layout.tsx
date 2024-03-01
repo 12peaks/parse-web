@@ -3,12 +3,11 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { UnstyledButton } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import {
   IconBell,
-  IconCreditCard,
   IconLogout,
   IconComponents,
-  IconSettings,
   IconUserCircle,
 } from "@tabler/icons-react";
 import { signOut, getCurrentUser } from "@/api/users";
@@ -18,7 +17,7 @@ export default function Settings({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
@@ -27,6 +26,13 @@ export default function Settings({ children }: { children: React.ReactNode }) {
     mutationFn: signOut,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -65,7 +71,7 @@ export default function Settings({ children }: { children: React.ReactNode }) {
                       !(
                         item.name === "Integrations" &&
                         process.env.NEXT_PUBLIC_HOSTED !== "true"
-                      )
+                      ),
                   )
                   .map((item) => (
                     <Link

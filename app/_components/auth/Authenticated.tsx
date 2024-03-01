@@ -2,6 +2,7 @@
 import { getCurrentUser } from "@/api/users";
 import { getUnreadNotificationCount } from "@/api/notifications";
 import { AppShell, Burger, Loader } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Navigation } from "@/app/_components/navigation/Navigation";
@@ -10,7 +11,12 @@ import { useDisclosure } from "@mantine/hooks";
 export const Authenticated = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const [opened, { toggle }] = useDisclosure();
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
@@ -27,6 +33,14 @@ export const Authenticated = ({ children }: { children: React.ReactNode }) => {
         <Loader type="dots" size={48} color="blue" />
       </div>
     );
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   if (!isLoading && !unreadCountLoading && !user) {
     router.push(process.env.NEXT_PUBLIC_AUTH_URL!);

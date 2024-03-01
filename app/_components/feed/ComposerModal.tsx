@@ -3,6 +3,7 @@ import { Button, Select } from "@mantine/core";
 import { useState, useMemo, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import he from "he";
 import hljs from "highlight.js";
 import "highlight.js/styles/github.css";
@@ -32,16 +33,8 @@ type MentionDTO = {
   group_id: string | null;
 };
 
-type MentionUserDTO = {
-  id: string;
-  value: string;
-  avatar: string;
-  uid: string;
-};
-
 export const ComposerModal = ({
   groupId,
-  teamId,
   homeFeed,
   user,
 }: ComposerModalProps) => {
@@ -58,12 +51,20 @@ export const ComposerModal = ({
     enabled: homeFeed,
   });
 
-  const teamQuery = useQuery({
+  const {
+    data: teamMembers,
+    isError: teamIsError,
+    error: teamError,
+  } = useQuery({
     queryKey: ["team-members"],
     queryFn: getTeamUsers,
   });
 
-  const groupQuery = useQuery({
+  const {
+    data: _group,
+    isError: groupIsError,
+    error: groupError,
+  } = useQuery({
     queryKey: ["group-info", groupId],
     queryFn: () => getGroupById(groupId ?? ""),
     enabled: !!groupId,
@@ -86,8 +87,8 @@ export const ComposerModal = ({
       allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
       mentionDenotationChars: ["@"],
       dataAttributes: ["id", "value", "uid"],
-      source: (searchTerm: string, renderList: any, mentionChar: string) => {
-        const list = teamQuery.data?.map((user) => {
+      source: (searchTerm: string, renderList: any, _mentionChar: string) => {
+        const list = teamMembers?.map((user) => {
           return {
             id: user.id,
             value: user.name,
@@ -96,7 +97,7 @@ export const ComposerModal = ({
           };
         });
         const includesSearchTerm = list?.filter((item) =>
-          item.value?.toLowerCase().includes(searchTerm.toLowerCase())
+          item.value?.toLowerCase().includes(searchTerm.toLowerCase()),
         );
         renderList(includesSearchTerm);
       },
@@ -104,7 +105,7 @@ export const ComposerModal = ({
         insertItem(item);
       },
     }),
-    [teamQuery.data]
+    [teamMembers],
   );
 
   const handleImageUpload = useCallback(async (file: File) => {
@@ -120,8 +121,8 @@ export const ComposerModal = ({
     let mentionsToSave: MentionDTO[] = [];
     const mentionElements = Array.from(
       document.querySelectorAll(
-        ".composer .ql-editor .mention"
-      ) as NodeListOf<HTMLElement>
+        ".composer .ql-editor .mention",
+      ) as NodeListOf<HTMLElement>,
     );
     if (mentionElements && mentionElements.length > 0) {
       mentionElements.forEach((el) => {
@@ -154,7 +155,7 @@ export const ComposerModal = ({
     let postGroupId = groupId;
     if (groupToPost !== "my profile" && groupsQuery.data) {
       const postGroup = groupsQuery.data.find(
-        (group) => group.name === groupToPost
+        (group) => group.name === groupToPost,
       );
       postGroupId = postGroup ? postGroup.id : null;
     }
@@ -167,6 +168,22 @@ export const ComposerModal = ({
     }
     setLoading(false);
   };
+
+  if (teamIsError) {
+    showNotification({
+      title: "Error",
+      message: teamError.message,
+      color: "red",
+    });
+  }
+
+  if (groupIsError) {
+    showNotification({
+      title: "Error",
+      message: groupError.message,
+      color: "red",
+    });
+  }
 
   return (
     <>

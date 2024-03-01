@@ -1,5 +1,4 @@
 import { CommentDisplay } from "@/app/_components/comments/CommentDisplay";
-import { useQuery } from "@tanstack/react-query";
 import type { FeedPost } from "@/types/post";
 import type { CurrentUser } from "@/types/user";
 
@@ -25,9 +24,9 @@ export function CommentsDisplay({
             post={post}
             comment={comment}
             user={user}
-            groupId={post.group_id}
-            homeFeed={post.group_id ? false : true}
-            profileId={post.user_id}
+            groupId={groupId}
+            homeFeed={homeFeed}
+            profileId={profileId}
           />
         ))}
     </div>
