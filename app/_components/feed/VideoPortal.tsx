@@ -33,7 +33,11 @@ export const VideoPortal = ({
   const queryClient = useQueryClient();
   const modals = useModals();
 
-  const groupQuery = useQuery({
+  const {
+    data: group,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["group", groupId],
     queryFn: () => getGroupById(groupId ?? ""),
     enabled: !!groupId,
@@ -46,6 +50,13 @@ export const VideoPortal = ({
         queryKey: ["posts", groupId, teamId, user.id, homeFeed],
       });
       modals.closeAll();
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -65,7 +76,7 @@ export const VideoPortal = ({
         });
       }
     },
-    [groupId, user, createPostMutation]
+    [groupId, user, createPostMutation],
   );
 
   useEffect(() => {
@@ -97,7 +108,7 @@ export const VideoPortal = ({
         showNotification({
           title: "Video posted",
           message: `Video was posted to ${
-            groupId && groupQuery.data ? groupQuery.data.name : "your profile"
+            groupId && group ? group.name : "your profile"
           }`,
           autoClose: 7000,
           color: "green",
@@ -116,7 +127,15 @@ export const VideoPortal = ({
     if (isActive) {
       initLoom();
     }
-  }, [endPortal, groupId, groupQuery.data, handlePostCreate, isActive]);
+  }, [endPortal, groupId, group, handlePostCreate, isActive]);
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return createPortal(<div id={BUTTON_ID}></div>, document.body);
 };

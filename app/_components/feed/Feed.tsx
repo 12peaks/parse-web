@@ -1,5 +1,6 @@
 import { FeedPost } from "@/app/_components/feed/FeedPost";
-import { CreatePostWidget } from "./CreatePostWidget";
+import { CreatePostWidget } from "@/app/_components/feed/CreatePostWidget";
+import { showNotification } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getPosts, getGroupPosts, getUserPosts } from "@/api/posts";
 import { getCurrentUser } from "@/api/users";
@@ -17,7 +18,12 @@ export const Feed = ({ groupId, teamId, homeFeed, userId }: FeedProps) => {
     queryFn: getCurrentUser,
   });
 
-  const { data: posts, isLoading: postsLoading } = useQuery({
+  const {
+    data: posts,
+    isLoading: postsLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["feed", groupId, homeFeed, userId],
     queryFn: (() => {
       switch (true) {
@@ -32,6 +38,14 @@ export const Feed = ({ groupId, teamId, homeFeed, userId }: FeedProps) => {
       }
     })(),
   });
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return (
     <>

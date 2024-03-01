@@ -13,12 +13,12 @@ import { CommentsDisplay } from "@/app/_components/comments/CommentsDisplay";
 import { Reactions } from "@/app/_components/reactions/Reactions";
 import TimeAgo from "timeago-react";
 import { Menu, Button, Text, ActionIcon, Avatar } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import {
   IconEdit,
   IconTrash,
   IconLink,
   IconPinned,
-  IconEyeOff,
   IconDots,
   IconMessage2,
 } from "@tabler/icons-react";
@@ -28,11 +28,9 @@ import { useClipboard } from "@mantine/hooks";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { createLowlight } from "lowlight";
 import ts from "highlight.js/lib/languages/typescript";
-import { showNotification } from "@mantine/notifications";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { updatePost, deletePost } from "@/api/posts";
-//import { FeedPoll } from "@/features/polls";
-import { FeedPost as FeedPostType, Post } from "@/types/post";
+import { FeedPost as FeedPostType } from "@/types/post";
 import { CurrentUser } from "@/types/user";
 
 const lowlight = createLowlight();
@@ -62,14 +60,21 @@ export const FeedPost = ({
   const [postContentHidden, setPostContentHidden] = useState(false);
 
   const clipboard = useClipboard();
-
   const queryClient = useQueryClient();
+
   const updatePostMutation = useMutation({
     mutationFn: updatePost,
     onSuccess: () => {
       setEditing(false);
       queryClient.invalidateQueries({
         queryKey: ["posts", groupId, teamId, homeFeed],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -79,6 +84,13 @@ export const FeedPost = ({
       setEditing(false);
       queryClient.invalidateQueries({
         queryKey: ["posts", groupId, teamId, homeFeed],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
