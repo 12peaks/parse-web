@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from "react";
+import { useState } from "react";
 import { Link as RTELink, RichTextEditor } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import Highlight from "@tiptap/extension-highlight";

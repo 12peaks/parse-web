@@ -1,12 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import {
-  Combobox,
-  Group,
-  Input,
-  InputBase,
-  Text,
-  useCombobox,
-} from "@mantine/core";
+import { Combobox, Input, InputBase, Text, useCombobox } from "@mantine/core";
 
 type Item = {
   icon: React.ReactNode;
