@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button, Textarea } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { createTriageEventComment } from "@/api/triageEventComments";
 import type { TriageEventComment as TriageEventCommentType } from "@/types/triageEvent";
 import type { CurrentUser } from "@/types/user";
@@ -26,6 +27,13 @@ export const TriageEventComments = ({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["event", eventId],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });

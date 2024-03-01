@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Popover } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import EmojiPicker from "./EmojiPicker";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createReaction, deleteReaction } from "@/api/reactions";
 import type { DisplayReaction, Reaction } from "@/types/reaction";
 
@@ -33,6 +34,13 @@ export const Reactions = ({
         queryKey: ["feed", group_id, group_id ? false : true],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const deleteReactionMutation = useMutation({
@@ -40,6 +48,13 @@ export const Reactions = ({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["home-feed-posts"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -147,7 +162,7 @@ export const Reactions = ({
                 reaction.has_reacted
                   ? "border-blue-300 theme-reaction-bg hover:border-blue-400"
                   : "theme-border hover:theme-border-dark",
-                "ml-1 mt-2 py-1.5 pl-4 pr-3 text-center text-xs border rounded-full hover:cursor-pointer"
+                "ml-1 mt-2 py-1.5 pl-4 pr-3 text-center text-xs border rounded-full hover:cursor-pointer",
               )}
             >
               <span className="-ml-1">{reaction.emoji_text}</span>{" "}

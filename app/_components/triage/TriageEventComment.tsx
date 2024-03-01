@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import TimeAgo from "timeago-react";
 import { Avatar, Button } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { deleteTriageEventComment } from "@/api/triageEventComments";
 import type { TriageEventComment as TriageEventCommentType } from "@/types/triageEvent";
 import type { CurrentUser } from "@/types/user";
@@ -26,7 +27,15 @@ export const TriageEventComment = ({
         queryKey: ["event", eventId],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
+
   const handleCommentDelete = (comment: TriageEventCommentType) => {
     deleteCommentMutation.mutate({
       comment_id: comment.id,

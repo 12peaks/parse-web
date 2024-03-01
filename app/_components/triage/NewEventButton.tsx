@@ -1,7 +1,7 @@
 import { Button } from "@mantine/core";
 import { useModals } from "@mantine/modals";
 import { useRouter } from "next/navigation";
-import NewEventModal from "@/app/_components/triage/NewEventModal";
+import { NewEventModal } from "@/app/_components/triage/NewEventModal";
 
 export const NewEventButton = () => {
   const modals = useModals();

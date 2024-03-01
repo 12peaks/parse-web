@@ -1,14 +1,7 @@
-import { useState, useEffect, forwardRef } from "react";
+import { useState, useEffect } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  Badge,
-  Button,
-  Select,
-  Text,
-  Textarea,
-  Avatar,
-  Group,
-} from "@mantine/core";
+import { Badge, Button, Select, Textarea, Avatar } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { IconPaperclip } from "@tabler/icons-react";
 import { getTeamUsers } from "@/api/teams";
 import { updateTriageEvent, createTimelineEvent } from "@/api/triageEvents";
@@ -36,15 +29,19 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
   const [newSeverity, setNewSeverity] = useState(event ? event.severity : "");
   const [newOwner, setNewOwner] = useState(event ? event.owner_id ?? "" : "");
   const [newReporter, setNewReporter] = useState<string>(
-    event ? event.user_id ?? "" : ""
+    event ? event.user_id ?? "" : "",
   );
   const [newDescription, setNewDescription] = useState(
-    event ? event.description : ""
+    event ? event.description : "",
   );
 
   const queryClient = useQueryClient();
 
-  const teamMembersQuery = useQuery({
+  const {
+    data: teamMemberData,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
@@ -57,6 +54,13 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
       });
       queryClient.invalidateQueries({
         queryKey: ["timeline-events", event.id],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -114,8 +118,8 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
 
   function getNameFromId(id: string): string {
     let newName = "";
-    if (teamMembersQuery.data) {
-      for (const teamMember of teamMembersQuery.data) {
+    if (teamMemberData) {
+      for (const teamMember of teamMemberData) {
         if (teamMember.id === id) {
           newName = teamMember.name ?? "";
         }
@@ -130,9 +134,9 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted && teamMembersQuery.isSuccess && teamMembersQuery.data) {
+    if (isMounted && teamMemberData) {
       let members: MemberDTO[] = [];
-      teamMembersQuery.data.forEach((teamMember) => {
+      teamMemberData.forEach((teamMember) => {
         members.push({
           value: teamMember.id,
           label: teamMember.name ?? "",
@@ -152,7 +156,15 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
     return () => {
       isMounted = false;
     };
-  }, [teamMembersQuery.isSuccess, teamMembersQuery.data, user?.id]);
+  }, [teamMemberData, user?.id]);
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return (
     <section aria-labelledby="applicant-information-title">
@@ -366,22 +378,6 @@ export const EventInformation = ({ event, user }: EventInformationProps) => {
     </section>
   );
 };
-
-const SelectItem = forwardRef<HTMLDivElement, MemberDTO>(
-  ({ icon, label, description, ...others }: MemberDTO, ref) => (
-    <div ref={ref} {...others}>
-      <Group>
-        <div>{icon}</div>
-        <div className="flex flex-col space-y-1">
-          <Text size="sm">{label}</Text>
-          <Text size="xs" opacity={0.6}>
-            {description}
-          </Text>
-        </div>
-      </Group>
-    </div>
-  )
-);
 
 const statusOptions = [
   { value: "new", label: "New" },

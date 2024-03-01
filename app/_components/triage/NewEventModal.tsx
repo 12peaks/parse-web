@@ -9,7 +9,6 @@ import { getTeamUsers } from "@/api/teams";
 import { FileDropzone } from "@/app/_components/ui/FileDropzone";
 import {
   IconPaperclip,
-  IconCheck,
   IconCloudDownload,
   IconTrash,
 } from "@tabler/icons-react";
@@ -28,12 +27,9 @@ export interface FileWithPath extends File {
   readonly path?: string;
 }
 
-type TriageFile = {
-  file: FileWithPath;
-  url: string;
-};
-
-const NewEventModal = ({ handleNewEventNavigation }: NewEventModalProps) => {
+export const NewEventModal = ({
+  handleNewEventNavigation,
+}: NewEventModalProps) => {
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [severity, setSeverity] = useState("medium");
@@ -76,7 +72,6 @@ const NewEventModal = ({ handleNewEventNavigation }: NewEventModalProps) => {
   useEffect(() => {
     let isMounted = true;
     if (isMounted && !isLoading && teamUsers) {
-      let members: MemberDTO[] = [];
       setTeamMembers(
         teamUsers
           .filter((user) => user.name)
@@ -84,7 +79,7 @@ const NewEventModal = ({ handleNewEventNavigation }: NewEventModalProps) => {
             value: user.id,
             label: user.name ?? "",
             image: user.avatar_image_url ?? "",
-          }))
+          })),
       );
     }
     return () => {
@@ -121,7 +116,7 @@ const NewEventModal = ({ handleNewEventNavigation }: NewEventModalProps) => {
 
   const handleFileRemove = (file: any) => {
     setAttachments((prevFiles) =>
-      prevFiles.filter((f) => f.name !== file.name)
+      prevFiles.filter((f) => f.name !== file.name),
     );
   };
 
@@ -255,5 +250,3 @@ const severityOptions = [
   { value: "medium", label: "Medium" },
   { value: "low", label: "Low" },
 ];
-
-export default NewEventModal;

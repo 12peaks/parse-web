@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Timeline, Text, Loader } from "@mantine/core";
+import { Timeline, Text } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { IconAlertCircle, IconCheck, IconClock } from "@tabler/icons-react";
 import { getTriageTimelineEvents } from "@/api/triageEvents";
@@ -10,23 +11,33 @@ type TriageEventTimelineProps = {
 };
 
 export const TriageEventTimeline = ({ event }: TriageEventTimelineProps) => {
-  const timelineEventQuery = useQuery({
+  const {
+    data: timelineEvents,
+    isSuccess,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["timeline-events", event.id],
     queryFn: () => getTriageTimelineEvents(event.id),
     enabled: !!event.id,
   });
 
-  if (!timelineEventQuery.isSuccess) {
-    return null;
+  if (isSuccess && timelineEvents.length === 0) {
+    return <div className="mx-auto text-center">No timeline events yet.</div>;
   }
 
-  if (timelineEventQuery.isSuccess && timelineEventQuery?.data?.length === 0) {
-    return <div className="mx-auto text-center">No timeline events yet.</div>;
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+    return null;
   }
 
   return (
     <>
-      {timelineEventQuery.isSuccess && timelineEventQuery.data ? (
+      {isSuccess && timelineEvents ? (
         <Timeline
           bulletSize={24}
           lineWidth={2}
@@ -34,7 +45,7 @@ export const TriageEventTimeline = ({ event }: TriageEventTimelineProps) => {
             itemTitle: "!text-sm",
             item: "!mt-4",
           }}
-          active={timelineEventQuery.data.length}
+          active={timelineEvents.length}
         >
           <Timeline.Item
             bullet={<IconAlertCircle size={16} strokeWidth={2} />}
@@ -51,7 +62,7 @@ export const TriageEventTimeline = ({ event }: TriageEventTimelineProps) => {
               {new Date(event.created_at).toLocaleString()}
             </Text>
           </Timeline.Item>
-          {timelineEventQuery.data.map((event, idx) => (
+          {timelineEvents.map((event) => (
             <Timeline.Item
               key={event.id}
               className="capitalize"
