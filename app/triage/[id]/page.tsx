@@ -1,5 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
+import { showNotification } from "@mantine/notifications";
 import { useQuery } from "@tanstack/react-query";
 import { getTriageEvent } from "@/api/triageEvents";
 import { getCurrentUser } from "@/api/users";
@@ -11,16 +12,29 @@ import { EventInformation } from "@/app/_components/triage/EventInformation";
 export default function TriageEventPage() {
   const params = useParams<{ id: string }>();
 
-  const { data: event, isLoading: eventIsLoading } = useQuery({
+  const {
+    data: event,
+    isLoading: eventIsLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["event", params.id],
     queryFn: () => getTriageEvent(params.id),
     enabled: !!params.id,
   });
 
-  const { data: user, isLoading } = useQuery({
+  const { data: user } = useQuery({
     queryKey: ["currentUser"],
     queryFn: getCurrentUser,
   });
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   if (eventIsLoading || !event || !user) {
     return null;
