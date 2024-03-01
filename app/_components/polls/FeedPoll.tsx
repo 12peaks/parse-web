@@ -1,15 +1,8 @@
-import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Menu,
-  Button,
-  ThemeIcon,
-  ActionIcon,
-  Avatar,
-  Text,
-} from "@mantine/core";
+import { Menu, Button, ActionIcon, Avatar, Text } from "@mantine/core";
 import { modals } from "@mantine/modals";
 import { useClipboard } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { votePoll, removePollVote, deletePoll } from "@/api/polls";
 import {
   IconCheck,
@@ -30,7 +23,6 @@ type FeedPollProps = {
 };
 
 export const FeedPoll = ({ poll, user }: FeedPollProps) => {
-  const [isEditing, setIsEditing] = useState(false);
   const clipboard = useClipboard();
   const queryClient = useQueryClient();
 
@@ -39,6 +31,13 @@ export const FeedPoll = ({ poll, user }: FeedPollProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["feedItems"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -50,6 +49,13 @@ export const FeedPoll = ({ poll, user }: FeedPollProps) => {
         queryKey: ["feedItems"],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const deletePollMutation = useMutation({
@@ -57,6 +63,13 @@ export const FeedPoll = ({ poll, user }: FeedPollProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["feedItems"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
@@ -71,7 +84,7 @@ export const FeedPoll = ({ poll, user }: FeedPollProps) => {
 
   const handleRemoveVote = (option: PollOption) => {
     const poll_vote_id = option.poll_votes.find(
-      (v) => v.user.id === user.id
+      (v) => v.user.id === user.id,
     )?.id;
     if (poll && user && poll_vote_id) {
       removeVoteMutation.mutate({
@@ -104,7 +117,7 @@ export const FeedPoll = ({ poll, user }: FeedPollProps) => {
   };
 
   const hasVoted = poll.poll_options.some((option) =>
-    option.poll_votes.map((v) => v.user.id).includes(user.id)
+    option.poll_votes.map((v) => v.user.id).includes(user.id),
   );
 
   return (

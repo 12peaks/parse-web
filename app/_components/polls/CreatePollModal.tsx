@@ -49,11 +49,18 @@ const CreatePollModal = ({
       modals.closeAll();
       form.reset();
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const handlePollCreation = async (values: typeof form.values) => {
     const optionsWithContent = values.pollOptions.filter(
-      (option) => option.text.length > 0
+      (option) => option.text.length > 0,
     );
     if (values.content.length === 0) {
       showNotification({
