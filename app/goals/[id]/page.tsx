@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Avatar, Badge, Button, Loader, Progress } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import { Avatar, Badge, Button, Progress } from "@mantine/core";
 import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { getGoal } from "@/api/goals";
 import { GoalUpdateModal } from "@/app/_components/goals/GoalUpdateModal";
 import { GoalModal } from "@/app/_components/goals/GoalModal";
@@ -15,12 +16,17 @@ export default function GoalPage() {
   const params = useParams<{ id: string }>();
   const [progressValue, setProgressValue] = useState(0);
   const [mostRecentUpdate, setMostRecentUpdate] = useState<GoalUpdate | null>(
-    null
+    null,
   );
 
   const modals = useModals();
 
-  const { data: goal, isLoading } = useQuery({
+  const {
+    data: goal,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["goal", params.id],
     queryFn: () => getGoal(params.id),
     enabled: !!params.id,
@@ -53,7 +59,7 @@ export default function GoalPage() {
       setProgressValue(
         goal.goal_updates.length > 0
           ? goal.goal_updates[goal.goal_updates.length - 1].value
-          : 0
+          : 0,
       );
     }
     return () => {
@@ -68,7 +74,15 @@ export default function GoalPage() {
     complete: { color: "blue", text: "Complete" },
   };
 
-  if (!goal) {
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
+
+  if (!goal || isLoading) {
     return null;
   }
 
@@ -76,7 +90,7 @@ export default function GoalPage() {
     <div className="grid grid-cols-6 gap-4 mt-4">
       <div className="flex flex-row justify-between items-center col-span-6">
         <div className="text-xl font-semibold flex flex-row items-center space-x-4">
-          <img src={Target.src} className="h-8 w-8" />
+          <img src={Target.src} className="h-8 w-8" alt="user avatar" />
           <div className="mt-2">{goal.name}</div>
           {mostRecentUpdate ? (
             <Badge

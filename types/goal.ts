@@ -68,6 +68,7 @@ export type UpdateGoalUpdateDTO = {
 };
 
 export type GoalCollaborator = {
+  id: string;
   user: {
     id: string;
     name: string;
