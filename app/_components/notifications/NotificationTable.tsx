@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { showNotification } from "@mantine/notifications";
 import { markRead, markUnread, deleteNotification } from "@/api/notifications";
 import type { Notification } from "@/types/notification";
 import { NotificationRow } from "@/app/_components/notifications/NotificationRow";
@@ -25,6 +26,13 @@ export const NotificationTable = ({
         queryKey: ["unread-notifications"],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const markUnreadMutation = useMutation({
@@ -47,6 +55,13 @@ export const NotificationTable = ({
       });
       queryClient.invalidateQueries({
         queryKey: ["unread-notifications"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });

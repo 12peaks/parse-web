@@ -4,7 +4,7 @@ export const NotificationsEmptyState = () => {
       <tr>
         <td>
           <div className="p-4 text-center">
-            You don't have any notifications.
+            You don&apos;t have any notifications.
           </div>
         </td>
       </tr>

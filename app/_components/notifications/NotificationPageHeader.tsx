@@ -1,4 +1,5 @@
 import { Button } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { Notification } from "@/types/notification";
 import { markAllRead, deleteAllNotifications } from "@/api/notifications";
@@ -24,6 +25,13 @@ export const NotificationPageHeader = ({
         queryKey: ["unread-notifications"],
       });
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const deleteAllMutation = useMutation({
@@ -34,6 +42,13 @@ export const NotificationPageHeader = ({
       });
       queryClient.invalidateQueries({
         queryKey: ["unread-notifications"],
+      });
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
       });
     },
   });
