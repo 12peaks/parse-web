@@ -1,13 +1,11 @@
-import { useMemo } from "react";
 import { LineChart } from "@mantine/charts";
-import type { Goal, GoalUpdate } from "@/types/goal";
+import type { GoalUpdate } from "@/types/goal";
 
 type GoalChartProps = {
   updates: GoalUpdate[];
-  goal: Goal;
 };
 
-export const GoalChart: React.FC<GoalChartProps> = ({ updates, goal }) => {
+export const GoalChart: React.FC<GoalChartProps> = ({ updates }) => {
   const data = {
     label: "Values",
     data: updates.map((update) => {

@@ -9,7 +9,6 @@ import { Goal, GoalUpdate } from "@/types/goal";
 import { useModals } from "@mantine/modals";
 import { GoalUpdateModal } from "@/app/_components/goals/GoalUpdateModal";
 import { useRouter } from "next/navigation";
-import { TeamUser } from "@/types/user";
 
 type GoalsTableProps = {
   goals: Goal[];
@@ -103,7 +102,7 @@ export const GoalsTable = ({ goals, handleGoalCreate }: GoalsTableProps) => {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </th>
                 ))}
@@ -183,7 +182,7 @@ export const StatusCell = ({ goal }: { goal: Goal }) => {
   const sortedUpdates = goal.goal_updates.sort(
     (a: GoalUpdate, b: GoalUpdate) => {
       return new Date(a.created_at) > new Date(b.created_at) ? 1 : -1;
-    }
+    },
   );
 
   const latestUpdate = sortedUpdates.length > 0 ? sortedUpdates[0] : null;

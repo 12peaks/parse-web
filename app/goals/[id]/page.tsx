@@ -120,7 +120,7 @@ export default function GoalPage() {
           <div>{progressValue || 0}% complete</div>
         </div>
         {goal.goal_updates && goal.goal_updates.length > 0 ? (
-          <GoalChart goal={goal} updates={goal.goal_updates} />
+          <GoalChart updates={goal.goal_updates} />
         ) : null}
       </div>
       <div className="info col-span-2 rounded shadow border theme-border p-4 text-sm">

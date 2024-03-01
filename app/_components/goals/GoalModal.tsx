@@ -1,4 +1,4 @@
-import { useEffect, useState, forwardRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Button,
   MultiSelect,
@@ -6,9 +6,6 @@ import {
   Select,
   Textarea,
   TextInput,
-  Group,
-  Avatar,
-  Text,
 } from "@mantine/core";
 import { DatePickerInput } from "@mantine/dates";
 import { useForm } from "@mantine/form";
@@ -39,14 +36,18 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
   const modals = useModals();
   const queryClient = useQueryClient();
 
-  const teamQuery = useQuery({
+  const {
+    data: teamMembers,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["team-members"],
     queryFn: () => getTeamUsers(),
   });
 
   const createGoalMutation = useMutation({
     mutationFn: createGoal,
-    onSuccess: (data) => {
+    onSuccess: () => {
       showNotification({
         title: "Goal created",
         message: "Goal has been created successfully",
@@ -57,11 +58,18 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
       });
       modals.closeAll();
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const updateGoalMutation = useMutation({
     mutationFn: updateGoal,
-    onSuccess: (data) => {
+    onSuccess: () => {
       showNotification({
         title: "Goal updated",
         message: "Goal has been updated successfully",
@@ -71,6 +79,13 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
         queryKey: ["goals"],
       });
       modals.closeAll();
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -119,8 +134,8 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted && teamQuery.data) {
-      let list = teamQuery.data.map((profile) => {
+    if (isMounted && teamMembers) {
+      let list = teamMembers.map((profile) => {
         return {
           image: profile.avatar_image_url ?? "",
           label: profile.name ?? "",
@@ -134,7 +149,15 @@ export const GoalModal = ({ goal }: GoalModalProps) => {
     return () => {
       isMounted = false;
     };
-  }, [teamQuery.data]);
+  }, [teamMembers]);
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   return (
     <div className="grid grid-cols-6 gap-4 pl-1 mr-2">
@@ -238,26 +261,3 @@ const formatOptions = [
   { label: "Percentage (%)", value: "percentage" },
   { label: "Money ($)", value: "money" },
 ];
-
-interface ItemProps extends React.ComponentPropsWithoutRef<"div"> {
-  image: string;
-  label: string;
-  description: string;
-}
-
-const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
-  ({ image, label, description, ...others }: ItemProps, ref) => (
-    <div ref={ref} {...others}>
-      <Group>
-        <Avatar radius="xl" src={image} />
-
-        <div>
-          <Text size="sm">{label}</Text>
-          <Text size="xs" color="dimmed">
-            {description}
-          </Text>
-        </div>
-      </Group>
-    </div>
-  )
-);

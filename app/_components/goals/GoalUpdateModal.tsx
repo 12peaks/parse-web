@@ -2,6 +2,7 @@ import { useForm } from "@mantine/form";
 import { Button, Chip, Slider, Textarea } from "@mantine/core";
 import Target from "@/public/dart.png";
 import { useModals } from "@mantine/modals";
+import { showNotification } from "@mantine/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGoalUpdate, updateGoalUpdate } from "@/api/goals";
 import { Goal, GoalUpdate } from "@/types/goal";
@@ -62,6 +63,13 @@ export const GoalUpdateModal = ({ goal, update }: GoalUpdateModalProps) => {
 
       modals.closeAll();
     },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    },
   });
 
   const editUpdateMutation = useMutation({
@@ -74,6 +82,13 @@ export const GoalUpdateModal = ({ goal, update }: GoalUpdateModalProps) => {
         queryKey: ["goal", goal.id],
       });
       modals.closeAll();
+    },
+    onError: (error) => {
+      showNotification({
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
     },
   });
 
@@ -92,19 +107,6 @@ export const GoalUpdateModal = ({ goal, update }: GoalUpdateModalProps) => {
         value: values.value,
         status: values.status,
       });
-    }
-  };
-
-  const getValueColor = () => {
-    switch (form.values.status) {
-      case "on-track":
-        return "green";
-      case "behind":
-        return "yellow";
-      case "at-risk":
-        return "red";
-      default:
-        return "";
     }
   };
 
@@ -133,7 +135,7 @@ export const GoalUpdateModal = ({ goal, update }: GoalUpdateModalProps) => {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <div className="space-y-6">
           <div className="flex flex-row items-center justify-center">
-            <img src={Target.src} className="h-8 w-8 mr-2" />
+            <img src={Target.src} className="h-8 w-8 mr-2" alt="goal icon" />
             <div className="font-semibold mt-2 text-lg">{goal.name}</div>
           </div>
           <div className="">
