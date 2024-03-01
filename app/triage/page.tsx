@@ -1,5 +1,6 @@
 "use client";
 import { Badge } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { getAllTriageEvents } from "@/api/triageEvents";
@@ -10,10 +11,23 @@ function classNames(...classes: any) {
 }
 
 export default function TriagePage() {
-  const { data: events, isLoading } = useQuery({
+  const {
+    data: events,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["events"],
     queryFn: () => getAllTriageEvents(),
   });
+
+  if (isError) {
+    showNotification({
+      title: "Error",
+      message: error.message,
+      color: "red",
+    });
+  }
 
   if (isLoading) {
     return null;
@@ -84,7 +98,7 @@ export default function TriagePage() {
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
                               : "rounded-bl-md",
-                            "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium theme-text sm:pl-6 lg:pl-8"
+                            "whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium theme-text sm:pl-6 lg:pl-8",
                           )}
                         >
                           {`TEV-${10000 + event.event_number}`}
@@ -94,7 +108,7 @@ export default function TriagePage() {
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
                               : "",
-                            "max-w-sm truncate px-3 py-4 text-sm theme-text-subtle hidden sm:table-cell"
+                            "max-w-sm truncate px-3 py-4 text-sm theme-text-subtle hidden sm:table-cell",
                           )}
                         >
                           <span className="truncate">{event.description}</span>
@@ -104,7 +118,7 @@ export default function TriagePage() {
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
                               : "",
-                            "whitespace-nowrap px-3 py-4 text-sm theme-text-subtle hidden lg:table-cell"
+                            "whitespace-nowrap px-3 py-4 text-sm theme-text-subtle hidden lg:table-cell",
                           )}
                         >
                           <Badge
@@ -124,7 +138,7 @@ export default function TriagePage() {
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
                               : "",
-                            "whitespace-nowrap px-3 py-4 text-sm theme-text-subtle capitalize"
+                            "whitespace-nowrap px-3 py-4 text-sm theme-text-subtle capitalize",
                           )}
                         >
                           {event.status.split("_").join(" ")}
@@ -134,7 +148,7 @@ export default function TriagePage() {
                             eventIdx !== events.length - 1
                               ? "border-b theme-border"
                               : "rounded-br-md",
-                            "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8"
+                            "relative whitespace-nowrap py-4 pr-4 pl-3 text-right text-sm font-medium sm:pr-6 lg:pr-8",
                           )}
                         >
                           <Link
