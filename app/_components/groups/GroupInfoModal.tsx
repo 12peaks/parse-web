@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useState, forwardRef } from "react";
+import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createGroup } from "@/api/groups";
 import { updateGroup } from "@/api/groups";
@@ -11,7 +11,6 @@ import {
   EyeIcon,
   EyeSlashIcon,
   LockClosedIcon,
-  PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { CustomSelect } from "@/app/_components/ui/CustomSelect";
 import { showNotification } from "@mantine/notifications";
@@ -61,22 +60,19 @@ const visibilityOptions = [
   },
 ];
 
-export const GroupInfoModal = ({
-  group,
-  handleNewNameNavigation,
-}: GroupInfoModalProps) => {
+export const GroupInfoModal = ({ group }: GroupInfoModalProps) => {
   const [name, setName] = useState(group ? group.name : "");
   const [description, setDescription] = useState(
-    group ? group.description ?? "" : ""
+    group ? group.description ?? "" : "",
   );
   const [isGroupPublic, setIsGroupPublic] = useState(
-    group ? (!group.is_private).toString() : "true"
+    group ? (!group.is_private).toString() : "true",
   );
   const [isGroupVisible, setIsGroupVisible] = useState(
-    group ? group.is_visible.toString() : "true"
+    group ? group.is_visible.toString() : "true",
   );
   const [iconPhotoUrl, setIconPhotoUrl] = useState(
-    group ? group.avatar_url : ""
+    group ? group.avatar_url : "",
   );
   const headerImageUrl =
     "https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80";

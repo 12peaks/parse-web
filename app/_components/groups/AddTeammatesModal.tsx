@@ -1,9 +1,7 @@
 import type { Group as GroupType } from "@/types/group";
-import { forwardRef, useEffect, useState } from "react";
-import { Avatar, Group, Text, Checkbox, Button } from "@mantine/core";
+import { Avatar, Button } from "@mantine/core";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getTeamUsers } from "@/api/teams";
-import { useModals } from "@mantine/modals";
 import { addToGroup, removeFromGroup } from "@/api/groups";
 import { showNotification } from "@mantine/notifications";
 
@@ -14,7 +12,6 @@ type AddTeammatesModalProps = {
 export const AddTeammatesModal: React.FC<AddTeammatesModalProps> = ({
   group,
 }) => {
-  const modals = useModals();
   const queryClient = useQueryClient();
 
   const {
