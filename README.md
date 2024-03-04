@@ -25,6 +25,8 @@ I'm currently in the process of rebuilding it from the old React + Vite version 
 - [ ] Add user settings for notifications and display
 - [ ] E2E tests for key user flows
 - [ ] Ensure all images can be updated
+- [ ] Refactor to use server components and actions
+- [ ] Refactor to use useForm consistently for all forms
 
 ## Getting Started
 
