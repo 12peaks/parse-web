@@ -2,7 +2,7 @@
 
 This is the front end for the Parse application. It's built with [Next.js](https://nextjs.org/docs) (App Router) and [Tailwind](https://tailwindcss.com/) with [Mantine](https://mantine.dev) for the UI components. The backend is powered by a Rails application which handles authentication and also the API for the front end. Users are authenticated via the Rails app and then redirected to the Next.js app.
 
-I'm currently in the process of rebuilding it from the old React + Vite version and updating all of the dependencies along the way. The application is currently in a broken state and is not ready for use. An overview of progress is shown below:
+I'm currently in the process of rebuilding it from the old React + Vite version and updating all of the dependencies along the way. The application is currently incomplete and is not yet ready for use. Contributions are welcome as long as they are make progress towards feature completeness. An overview of progress is shown below:
 
 - [x] Setup Next.js App
 - [x] Wire up basic auth redirect from Rails app
@@ -11,15 +11,20 @@ I'm currently in the process of rebuilding it from the old React + Vite version 
 - [x] Home feed page
 - [x] Ability to create, edit, delete basic posts
 - [x] Ability to create, edit, delete basic comments
-- [ ] Ability to create, edit, delete reactions
-- [ ] Notifications for new posts, comments, and reactions
-- [ ] Notifications page
-- [ ] Group specific feeds and pages
-- [ ] Team page
-- [ ] Invites and team management
+- [x] Ability to create, edit, delete reactions
+- [x] Notifications for new posts, comments, and reactions
+- [x] Notifications page
+- [x] Group specific feeds and pages
+- [x] Team page
+- [x] Invites and team management
 - [ ] User settings + preferences
-- [ ] Triage page skeleton and basic UI
-- [ ] Goals page skeleton and basic UI
+- [x] Triage page skeleton and basic UI
+- [x] Goals page skeleton and basic UI
+- [ ] Update feeds to use composite feeds
+- [ ] Implement infinite scrolling for feeds
+- [ ] Add user settings for notifications and display
+- [ ] E2E tests for key user flows
+- [ ] Ensure all images can be updated
 
 ## Getting Started
 
