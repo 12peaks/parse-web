@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getGroupBySlug, joinGroup, leaveGroup } from "@/api/groups";
 import { getCurrentUser } from "@/api/users";
-import { Feed } from "@/app/_components/feed/Feed";
 import { AddTeammatesModal } from "@/app/_components/groups/AddTeammatesModal";
 import { EditGroupButton } from "@/app/_components/groups/EditGroupButton";
 import { Button, Loader, Text, Popover, useMantineTheme } from "@mantine/core";
@@ -22,15 +21,7 @@ import groupPlaceholder from "@/public/speech_balloon.png";
 import { useModals } from "@mantine/modals";
 import { Group } from "@/types/group";
 import { showNotification } from "@mantine/notifications";
-
-const tabs = [
-  { name: "Discussion", alias: "discussion" },
-  { name: "Files", alias: "files" },
-];
-
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ");
-}
+import { CompositeFeed } from "@/app/_components/feed/CompositeFeed";
 
 export default function GroupPage() {
   const params = useParams<{ slug: string }>();
@@ -194,7 +185,8 @@ export default function GroupPage() {
 
           <div className="grid grid-cols-12 gap-4 relative mt-4">
             <div className="col-span-12 pt-4 2xl:col-span-6 2xl:col-start-3 lg:col-span-7 lg:col-start-2">
-              <Feed
+              <CompositeFeed
+                user={user}
                 userId={null}
                 groupId={group.id}
                 teamId={group.team_id}
