@@ -61,7 +61,7 @@ export function CommentComposer({
     onSuccess: async (data) => {
       setCommentContent("");
       queryClient.invalidateQueries({
-        queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
+        queryKey: ["feed", groupId, homeFeed, profileId],
       });
       await getMentionsAndCreate(data);
     },
@@ -80,7 +80,7 @@ export function CommentComposer({
       setCommentContent("");
       toggleCommentEdit && toggleCommentEdit();
       queryClient.invalidateQueries({
-        queryKey: ["feed", homeFeed ? null : groupId, homeFeed, profileId],
+        queryKey: ["feed", groupId, homeFeed, profileId],
       });
     },
     onError: (error) => {

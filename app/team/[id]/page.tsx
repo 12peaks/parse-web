@@ -9,6 +9,7 @@ import { getCurrentUser } from "@/api/users";
 import { followUser, unfollowUser, getTeamUser } from "@/api/teams";
 import { Button } from "@mantine/core";
 import profilePlaceholderImage from "@/public/sunglasses.png";
+import { CompositeFeed } from "@/app/_components/feed/CompositeFeed";
 
 export default function ProfilePage() {
   const params = useParams<{ id: string }>();
@@ -129,7 +130,8 @@ export default function ProfilePage() {
           {profile && profile.id ? (
             <div className="grid grid-cols-12 gap-4 relative lg:pr-4">
               <div className="col-span-12 pt-4 xl:col-span-10 lg:col-start-1 2xl:col-span-8 xl:col-start-2 2xl:col-start-4">
-                <Feed
+                <CompositeFeed
+                  user={user}
                   userId={profile.id}
                   teamId={""}
                   homeFeed={false}

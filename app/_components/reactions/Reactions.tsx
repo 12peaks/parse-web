@@ -5,22 +5,27 @@ import EmojiPicker from "./EmojiPicker";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { createReaction, deleteReaction } from "@/api/reactions";
 import type { DisplayReaction, Reaction } from "@/types/reaction";
+import type { CurrentUser } from "@/types/user";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 type ReactionsProps = {
-  user_id: string;
-  post_id: string;
-  group_id: string | null;
+  homeFeed: boolean;
+  user: CurrentUser;
+  profileId: string | null;
+  postId: string;
+  groupId: string | null;
   reactions: Reaction[];
 };
 
 export const Reactions = ({
-  user_id,
-  post_id,
-  group_id,
+  homeFeed,
+  user,
+  profileId,
+  postId,
+  groupId,
   reactions,
 }: ReactionsProps) => {
   const [opened, setOpened] = useState(false);
@@ -31,7 +36,7 @@ export const Reactions = ({
     onSuccess: () => {
       setOpened(false);
       queryClient.invalidateQueries({
-        queryKey: ["feed", group_id, group_id ? false : true],
+        queryKey: ["feed", groupId, homeFeed, profileId],
       });
     },
     onError: (error) => {
@@ -61,7 +66,7 @@ export const Reactions = ({
 
   const handleAddReaction = async (emoji_text: string, emoji_code: string) => {
     addReactionMutation.mutate({
-      post_id,
+      post_id: postId,
       emoji_text,
       emoji_code,
     });
@@ -90,7 +95,7 @@ export const Reactions = ({
         return false;
       });
       if (reactionInArray) {
-        if (reaction?.user_id === user_id) {
+        if (reaction?.user_id === user.id) {
           reactionInArray.has_reacted = true;
           reactionInArray.my_reaction = reaction;
         }
@@ -101,12 +106,14 @@ export const Reactions = ({
           emoji_text: reaction.emoji_text,
           emoji_code: reaction.emoji_code,
           count: 1,
-          has_reacted: reaction.user_id === user_id ? true : false,
-          my_reaction: reaction.user_id === user_id ? reaction : null,
+          has_reacted: reaction.user_id === user.id ? true : false,
+          my_reaction: reaction.user_id === user.id ? reaction : null,
         });
       }
     });
     return reactionsToDisplay;
+    {
+    }
   };
 
   return (
